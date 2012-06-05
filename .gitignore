@@ -1,0 +1,4 @@
+*.pyc
+
+jmol_dir/
+backup_*

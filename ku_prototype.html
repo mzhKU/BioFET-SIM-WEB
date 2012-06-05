@@ -1,0 +1,223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+    <head>
+        <link rel="stylesheet" href="./bfs_jvs/baker.css" type="text/css">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
+        <script type="text/javascript" src="./jmol_dir/jmol.js"></script>
+        <script type="text/javascript" src="./bfs_jvs/init.js"></script> 
+        <script type="text/javascript" src="./bfs_jvs/round.js"></script>
+        <script type="text/javascript" src="./bfs_jvs/engine.js"></script> 
+        <script type="text/javascript" src="./bfs_jvs/sim.js"></script> 
+    </head>
+<body>
+    <div id="setPDB" style="display:block">
+        <form method="get" action="./bfs_cgi/bio_def.cgi" id="setup">
+            <table>
+                <tr>
+                    <td style="width:650px">
+                        <label for="target">PDB Identifier:</label>
+                        <input value="kk8add" type="text" size="6" name="target" id="target">
+                        <label for="pH">pH Value:</label>
+                        <input value="7.4" type="text" size="6" name="pH" id="pH">
+                        <input type="submit" value="Initialize">
+                    </td>
+                    <td style="width:250px"><div style="visibility:visible" id="status">Ready.</div></td>
+                    <td style="width:50px"><div style="visibility:hidden" id="loader">
+                            <img src='./bfs_jvs/ajax-loader.gif' alt='Loading...'>
+                        </div>
+                    </td>
+                    <td><input type="hidden" name="state" value="download"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    <table>
+        <tr>
+            <td><h2>BioFET-SIM</h2></td>
+        </tr>
+        <tr>
+            <td>
+            <script type="text/javascript">
+                jmolInitialize("./jmol_dir");
+                jmolApplet([400,300]);
+            </script>
+            </td>
+            <td>
+                <img id="resPlot" src="./bfs_res/result_default.svg" style="width:400px;height=300px">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div id="imn"></div>
+            </td> 
+        </tr> 
+    </table>
+    <script type="text/javascript" src="./bfs_jvs/interface.js"></script>
+
+    <!--BFS Parameter definitions-->
+    <form id="form_bfs" action="./bfs_cgi/bio_sim.cgi">
+    <fieldset> 
+            <table style="align:left">
+                <tr>
+                    <td id="targetLab">Structure: </td>
+                    <input type="hidden" id="targetLabHid" name="targetLab" value="">
+                    <input type="hidden" id="timestamp" name="timestamp" value="">
+                    <td><input type="submit" id="submit_bfs" value="BioFET-SIM"></td>
+                </tr>
+                <tr>
+                <!--
+                <tr>
+                    <td>Q<sub>tot</sub> at pH:<input size="6" type="text" id="pHLab" value="0.0"></td>
+                </tr>
+                <tr>
+                    <td><div id="sens">Sensitivity: 0.0</div></td>
+                </tr>
+                -->
+                    <td id="pHLab">Q<sub>tot</sub> at pH 0.0:</td>
+                </tr>
+            </table>
+        <div class="setup">
+        <table>
+            <tr>
+                <td class="prop_title"><strong>NW Properties</strong></td>
+                <td class="tab_head">Value</td>
+                <td class="low">Lower Limit</td>
+                <td class="tab_head">Upper Limit</td>
+                <td class="tab_head">Plot</td>
+            </tr>
+            <tr> 
+                <td><label for="nw_len">NW Length [nm]:</label></td>
+                <td><input class="val" type="text" id="nw_len" name="nw_len" value="2000.0"></td>
+                <td><input class="low" type="text" id="nw_len_x_min" name="nw_len_x_min" value="1500.0" onfocus="xLabel('nw_len')"></td>
+                <td><input class="high" type="text" id="nw_len_x_max" name="nw_len_x_max" value="2500.0" onfocus="xLabel('nw_len')"></td>
+                <td><input type="radio" name="abs" value="nw_len" onclick="xLabel('nw_len')"></td>
+            </tr> 
+            <tr> 
+                <td><label for="nw_rad">NW Radius [nm]:</label></td>
+                <td><input class="val" type="text" id="nw_rad" name="nw_rad" value="10.0"></td>
+                <td><input class="low" type="text" id="nw_rad_x_min" name="nw_rad_x_min" value="8.0" onfocus="xLabel('nw_rad')"></td>
+                <td><input class="high" type="text" id="nw_rad_x_max" name="nw_rad_x_max" value="12.0" onfocus="xLabel('nw_rad')"></td>
+                <td><input type="radio" name="abs" value="nw_rad" onclick="xLabel('nw_rad')"></td>
+            </tr> 
+            <tr>
+                <td><label for="L_tf">Thomas-Fermi Length [nm]:</label></td>
+                <td><input class="val" type="text" id="L_tf" name="L_tf" value="2.04"></td>
+                <td><input class="low" type="text" id="L_tf_x_min" name="L_tf_x_min" value="1.54" onfocus="xLabel('L_tf')"></td>
+                <td><input class="high" type="text" id="L_tf_x_max" name="L_tf_x_max" value="2.54" onfocus="xLabel('L_tf')"></td>
+                <td><input type="radio" name="abs" value="L_tf" onclick="xLabel('L_tf')"></td>
+            </tr>
+            <tr>
+                <td><label for="eps_1">NW Permittivity [&#949;<sub>0</sub>]:</label></td>
+                <td><input class="val" type="text" id="eps_1" name="eps_1" value="12.0"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr> 
+            <tr>
+                <td><label for="mu">Charge Carrier Mobility [m<sup>2</sup>V<sup>-1</sup>s<sup>-1</sup>]:</label></td>
+                <td><input class="val" type="text" id="mu" name="mu" value="0.01"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr> 
+            <tr>
+                <td><label for="n_0">Charge Carrier Density [m<sup>-3</sup>]:</label></td>
+                <td><input class="val" type="text" id="n_0" name="n_0" value="1.11e+24"></td>
+            </tr> 
+            <tr>
+                <td><label for="nw_type">NW Type:</label></td>
+                <td><input class="val" type="text" id="nw_type" name="nw_type" value="P"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr> 
+            <tr>
+                <td colspan="5" class="prop_title"><strong>Oxide and Biofunctionalization Layer Properties</strong></th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr> 
+            <tr>
+                <td><label for="lay_ox">Oxide Layer Thickness [nm]:</label></td>
+                <td><input class="val" type="text" id="lay_ox" name="lay_ox" value="2.0"></td>
+                <td><input class="low" type="text" id="lay_ox_x_min" name="lay_ox_x_min" value="1.0" onfocus="xLabel('lay_ox')"></td>
+                <td><input class="high" type="text" id="lay_ox_x_max" name="lay_ox_x_max" value="3.0" onfocus="xLabel('lay_ox')"></td>
+                <td><input type="radio" name="abs" value="lay_ox" onclick="xLabel('lay_ox')"></td>
+            </tr> 
+            <tr>
+                <td><label for="eps_2">Oxide Layer Permittivity [&#949;<sub>0</sub>]:</td></label>
+                <td><input class="val" type="text" id="eps_2" name="eps_2" value="3.9"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr> 
+            <tr>
+                <td><label for="lay_bf">Biofunctionalization Thickness [nm]:</label></td>
+                <td><input class="val" type="text" id="lay_bf" name="lay_bf" value="1.0"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr> 
+            <tr>
+                <td class="prop_title"><strong>Solvent Properties</strong></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr> 
+            <tr>
+                <td><label for="L_d">Debye Length [nm]:</label></td>
+                <td><input class="val" type="text" id="L_d" name="L_d" value="2.0"></td>
+                <td><input class="low" type="text" id="L_d_x_min" name="L_d_x_min" value="1.0" onfocus="xLabel('L_d')"></td>
+                <td><input class="high" type="text" id="L_d_x_max" name="L_d_x_max" value="3.0" onfocus="xLabel('L_d')"></td>
+                <td><input type="radio" name="abs" value="L_d" checked="true" onclick="xLabel('L_d')"> 
+            </tr>
+            <tr>
+                <td><label for="eps_3">Solvent Permittivity [&#949;<sub>0</sub>]:</label></td>
+                <td><input class="val" type="text" id="eps_3" name="eps_3" value=78.0></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><label for="start"><strong>Calculation</strong></label></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><label>Charge Model</label></td>
+                <td><input type="radio" disabled="disabled" name="model" id="singl" value="singl">
+                    <label for="singl">Single (disabled)</label></td>
+                <td><input type="radio" name="model" id="multi" value="multi" checked="true">
+                    <label for="multi">Multiple</label></td>
+            </tr>
+            <tr>
+                <td><label for="num_prot">Number of Proteins on NW:</label></td>
+                <td><input class="val" type="text" id="num_prot" name="num_prot_inp" value="4000"></td>
+                <td><label for="overwrite">Constant?</label><input type="checkbox" id="overwrite" name="num_prot_box" checked="checked"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><label for="fileName">BioFET-SIM input file name:</label></td>
+                <td><input class="val" type="text" id="fileName" name="fileName" value="1AVD.bfs"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><label for="comment">Add comment to BFS input file:</label></td>
+                <td colspan="4"><textarea name="comment" rows="5" style="width:300px" id="comment">
+                                </textarea>
+            </tr>
+        </table>
+        <input type="hidden" id="pqr" value="$pqr" name="pqr">
+        <input type="hidden" value="$16.59" name="Q_tot"> 
+        </form>
+</body>
+</html>
