@@ -37,7 +37,7 @@
 # - Load HTML Form
 # - Establish PQR file
 # ........................................................................
-print "Content-type: text/plain\n" 
+print "Content-type: text/html\n" 
 import cgi
 import cgitb
 cgitb.enable() 

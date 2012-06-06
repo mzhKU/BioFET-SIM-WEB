@@ -3,3 +3,6 @@
 jmol_dir/
 backup_*
 *.swp
+
+bfs_pdb/
+bfs_res/
