@@ -44,12 +44,14 @@ $(document).ready(function()
     /* ------------------------------------------------------- */
     $("#form_bfs").submit(function()
     {
-        var data = getJmolCoordinates();
+        // Submit event parameters.
         var res_base_path = './bfs_res/';
         var cgi_base_path = './bfs_cgi/';
         var target = $('#target').val();
         var pH     = $('#pHLab').val();
         var d      = new Date();
+
+        var data = getJmolCoordinates();
         $('#pqr').attr("value", data); 
 
         // Select again PQR and PDB data
@@ -63,19 +65,24 @@ $(document).ready(function()
         // Ajax BFS call.
         $.post(cgi_base_path + 'bio_sim.cgi', bfsForm, reload_plot);
 
-        // Check HTTP response.
-        function cr(resp)
-        {
-            console.log(resp);
-        }
-
         function reload_plot()
         { 
             $("#resPlot").attr("src", res_base_path + target + "-reo.svg?" + d.getTime());
         } 
 
         // Prevent default form submit
-        return false;
+        return false; 
+    }); // End submit 
 
-    }); // end submit 
-}); // end ready
+    $('#pHresp').click(function()
+    {
+        var data = getJmolCoordinates();
+        var form = $('#form_bfs').serialize();
+        console.log("pH response click event."); 
+        $.post(cgi_base_path + 'bio_run.cgi', bfsForm, cr);
+    }); // End pH response click event.
+
+    // Check HTTP response.
+    function cr(resp) { console.log(resp); }
+
+}); // End ready
