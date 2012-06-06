@@ -48,7 +48,8 @@ $(document).ready(function()
         var res_base_path = './bfs_res/';
         var cgi_base_path = './bfs_cgi/';
         var target = $('#target').val();
-        var d = new Date();
+        var pH     = $('#pHLab').val();
+        var d      = new Date();
         $('#pqr').attr("value", data); 
 
         // Select again PQR and PDB data
@@ -66,8 +67,7 @@ $(document).ready(function()
         function cr(resp)
         {
             console.log(resp);
-            //$("#cbResp").html(resp);
-        } // End check response.
+        }
 
         function reload_plot()
         { 

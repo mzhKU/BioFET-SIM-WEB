@@ -18,12 +18,12 @@ $('document').ready(function()
         //status_update('Calculating...');
         console.log(res_base_path + target + "-reo.png");
         console.log("Calculating sensitivity, waiting for response..."); 
-        $.get(cgi_base_path + "bio_sim.cgi", formData, cr);
+        //$.get(cgi_base_path + "bio_sim.cgi", formData, cr);
 
-        function update_sens(resp)
-        {
-            $('#sens').html("Sensitivity: " + resp);
-        }
+        //function update_sens(resp)
+        //{
+        //    $('#sens').html("Sensitivity: " + resp);
+        //}
 
 
         // Status update.
