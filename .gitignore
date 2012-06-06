@@ -6,3 +6,5 @@ backup_*
 
 bfs_pdb/*
 bfs_res/*
+
+bfs_res/
