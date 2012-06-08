@@ -66,7 +66,7 @@ $('document').ready(function()
         function rho()
         { 
             status_update('Charge distribution...');
-            $.get(cgi_base_path + 'bio_rho.cgi', formData, build_interface);
+            $.get(cgi_base_path + 'bio_rho.cgi', formData, cr);
             console.log("Charge distribution calculation request sent, waiting for response...");
         } 
 
