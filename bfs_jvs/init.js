@@ -130,6 +130,7 @@ $('document').ready(function()
             {
                 $('#loader').css({"visibility":"hidden"});
                 $('#status').html("Ready.");
+                console.log(resp);
                 console.log("Response done.");
             } else {
                 console.log(resp);
