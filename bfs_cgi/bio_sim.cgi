@@ -125,6 +125,7 @@ if charge_model == 'multi':
     # distribution when the model starts the calculation.
     sim = SimMulti(target, av_RQ, pqr, params)
     sim.set_rho() 
+    print sim.rho[0]
     # Configuring protein population on NW.
     if not form.getvalue('num_prot_box'):
         # Compute number of proteins based on orientation.

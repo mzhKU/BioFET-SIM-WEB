@@ -45,6 +45,9 @@ $(document).ready(function()
     $("#form_bfs").submit(function()
     {
         var data = getJmolCoordinates();
+        for(var i=0; i<fileInfo.length-1; i++) { 
+            console.log(data[i]);
+        }
         var res_base_path = './bfs_res/';
         var cgi_base_path = './bfs_cgi/';
         var target = $('#target').val();
@@ -56,11 +59,12 @@ $(document).ready(function()
 
         // Serialize BFS parameter form data.
         var bfsForm = $("#form_bfs").serialize();
-        //bfsForm += '&timestamp=' + d.getTime();
-        $('#timestamp').attr('value', d);
+        bfsForm += '&timestamp=' + d.getTime();
+        console.log(bfsForm);
+        $('#timestamp').attr('value', d.getTime());
 
         // Ajax BFS call.
-        $.post(cgi_base_path + 'bio_sim.cgi', bfsForm, reload_plot);
+        $.post(cgi_base_path + 'bio_sim.cgi', bfsForm, cr);
 
         // Check HTTP response.
         function cr(resp)
