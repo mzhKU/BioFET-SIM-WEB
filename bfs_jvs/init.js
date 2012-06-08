@@ -87,6 +87,7 @@ $('document').ready(function()
 
             // Charge distribution evaluation.
             var pqr = resp.split(';')[1].split('=')[1];
+            console.log(pqr)
             $('#pqr').attr("value", pqr);
 
             //var useSignedApplet = true;

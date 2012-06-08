@@ -288,7 +288,7 @@ if __name__ == '__main__':
     # ------------------------------ 
     z_dim = bio_lib.get_box_dimensions(rho.pqr)[2]
     bio_lib.get_nw_surface(z_dim, target)
-    bio_lib.write_pqr(target,rho.pqr)
+    bio_lib.write_pqr(target,pH,rho.pqr)
     # ------------------------------ 
     # Handled by Javascript:
     #bio_lib.prepare_Jmol(target)

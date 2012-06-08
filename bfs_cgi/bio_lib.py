@@ -489,7 +489,8 @@ def set_pqr(target, av_RQ, pH, pka_dat):
                     pqr += "%6.3f".rjust(6) % q_i + ' 1.0\n'
                     cnt += 1
                 else:
-                    pqr += "%6.3f".rjust(6) % q_i + ' 1.0' 
+                    # Strictly cannot append '\n' character.
+                    pqr += "%6.3f".rjust(6) % q_i + ' 1.0'
     return pqr
 
 def get_q_i(res_nam, pKa, pH): 
@@ -508,8 +509,8 @@ def get_q_i(res_nam, pKa, pH):
         q_i -= 1.0
     return q_i
 
-def write_pqr(target, pqr):
-    pqr_file = open(pdb_base_path + target + '-reo.pqr', 'w')
+def write_pqr(target, pH, pqr):
+    pqr_file = open(pdb_base_path + target + '-%05.2f-reo.pqr' % pH, 'w')
     pqr_file.write(pqr)
     pqr_file.close() 
 

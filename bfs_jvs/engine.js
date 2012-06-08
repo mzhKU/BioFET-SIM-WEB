@@ -23,21 +23,6 @@ $(document).ready(function()
     }
 
     /* ------------------------------------------------------- */
-    /* Show coordinate update.
-    /* ------------------------------------------------------- */
-    $("#update").click(function()
-    {
-        console.log(-123.23.toPrecision(6));
-        console.log(-123.23.toPrecision(3));
-        console.log(-123.23.toPrecision(1));
-        console.log(-123.23.toPrecision(8));
-        console.log(123.23.toPrecision(8));
-        var data = getJmolCoordinates();
-        console.log(data);
-        jmolScript("select 1.1 or 2.1"); 
-    });
-
-    /* ------------------------------------------------------- */
     /* Two events assigned to form submission:
     - text area write
     - BFS cgi script
@@ -47,11 +32,12 @@ $(document).ready(function()
         // Submit event parameters.
         var res_base_path = './bfs_res/';
         var cgi_base_path = './bfs_cgi/';
-        var target = $('#target').val();
-        var pH     = $('#pHLab').val();
-        var d      = new Date();
+        var target        = $('#target').val();
+        var pH            = $('#pHLab').val();
+        var d             = new Date();
 
         var data = getJmolCoordinates();
+        console.log(data);
         $('#pqr').attr("value", data); 
 
         // Select again PQR and PDB data
