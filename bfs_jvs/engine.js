@@ -44,14 +44,12 @@ $(document).ready(function()
     /* ------------------------------------------------------- */
     $("#form_bfs").submit(function()
     {
-        var data = getJmolCoordinates();
-        for(var i=0; i<fileInfo.length-1; i++) { 
-            console.log(data[i]);
-        }
         var res_base_path = './bfs_res/';
         var cgi_base_path = './bfs_cgi/';
-        var target = $('#target').val();
-        var d = new Date();
+        var target        = $('#target').val();
+        var d             = new Date();
+
+        var data = getJmolCoordinates();
         $('#pqr').attr("value", data); 
 
         // Select again PQR and PDB data
@@ -60,7 +58,6 @@ $(document).ready(function()
         // Serialize BFS parameter form data.
         var bfsForm = $("#form_bfs").serialize();
         //bfsForm += '&timestamp=' + d.getTime();
-        console.log(bfsForm);
         $('#timestamp').attr('value', d.getTime());
 
         // Ajax BFS call.
