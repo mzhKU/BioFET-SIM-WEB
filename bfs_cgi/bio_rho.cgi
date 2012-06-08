@@ -294,7 +294,7 @@ if __name__ == '__main__':
     #bio_lib.prepare_Jmol(target)
     # ------------------------------ 
     response += "pqr=%s;\n" % rho.pqr
-    print "RESPONSE:", response
+    print response
     #print bio_lib.prepare_setup(target, rho.pqr, pH, Q_tot)
     #print "<h1>Here</h1>"
     #print target
