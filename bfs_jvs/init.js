@@ -80,7 +80,9 @@ $('document').ready(function()
             */ 
 
             // Q_tot evaluation.
+            console.log(resp);
             var q_tot = resp.split(';')[0].split('=')[1];
+            console.log(q_tot);
             //$('#Q_tot').html(q_tot);
             $('#pHLab').html("Q<sub>tot</sub>at pH " + pH + ": " + q_tot);
 
