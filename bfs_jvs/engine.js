@@ -59,7 +59,7 @@ $(document).ready(function()
 
         // Serialize BFS parameter form data.
         var bfsForm = $("#form_bfs").serialize();
-        bfsForm += '&timestamp=' + d.getTime();
+        //bfsForm += '&timestamp=' + d.getTime();
         console.log(bfsForm);
         $('#timestamp').attr('value', d.getTime());
 
