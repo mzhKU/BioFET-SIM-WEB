@@ -10,6 +10,8 @@ import cgi
 import cgitb
 cgitb.enable() 
 import bio_com
+import bio_lib
+import copy
 
 # ************************************************************************
 # EXTERNAL CALCULATION SETUP
@@ -90,7 +92,7 @@ else:
     # Use constant number of proteins.
     num_prot = int(form['num_prot_inp'].value) 
 # Results data container and setting label, base value and percentage range of results graph.
-dG_G0 = round(compute(sim.rho, nw_len, nw_rad, lay_ox, L_d, L_tf, lay_bf,
+dG_G0 = round(bio_com.compute(sim.rho, nw_len, nw_rad, lay_ox, L_d, L_tf, lay_bf,
                       eps_1, eps_2, eps_3, n_0, nw_type, num_prot), 8)
 G0    = round(bio_lib.G0(nw_len, nw_rad, n_0, mu))
 print dG_G0

@@ -60,7 +60,7 @@ $(document).ready(function()
         // Serialize BFS parameter form data.
         var bfsForm = $("#form_bfs").serialize();
         //bfsForm += '&timestamp=' + d.getTime();
-        $('#timestamp').attr('value', d);
+        $('#timestamp').attr('value', d.getTime());
 
         // Ajax BFS call.
         $.post(cgi_base_path + 'bio_sim.cgi', bfsForm, reload_plot);
@@ -76,11 +76,23 @@ $(document).ready(function()
 
     $('#pHresp').click(function()
     {
-        var data = getJmolCoordinates();
-        var form = $('#form_bfs').serialize();
+        var res_base_path = './bfs_res/';
+        var cgi_base_path = './bfs_cgi/';
+        var target        = $('#target').val();
+        var data          = getJmolCoordinates();
+        var bfsForm       = $('#form_bfs').serialize();
+        var d             = new Date();
+        $('#timestamp').attr('value', d.getTime());
         console.log("pH response click event."); 
         $.post(cgi_base_path + 'bio_run.cgi', bfsForm, cr);
     }); // End pH response click event.
+
+    function rho()
+    { 
+        status_update('Charge distribution...');
+        $.get(cgi_base_path + 'bio_rho.cgi', formData, build_interface);
+        console.log("Charge distribution calculation request sent, waiting for response...");
+    } 
 
     // Check HTTP response.
     function cr(resp) { console.log(resp); }
