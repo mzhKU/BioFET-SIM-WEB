@@ -1,5 +1,8 @@
 $(document).ready(function()
 { 
+    var res_base_path = './bfs_res/';
+    var cgi_base_path = './bfs_cgi/';
+    var pdb_base_path = './bfs_pdb/';
     /* ------------------------------------------------------- */
     /* Get Jmol coordinates
     /* ------------------------------------------------------- */
@@ -19,19 +22,17 @@ $(document).ready(function()
             data += atomsInfo[i].z.toPrecision(5) + ' ';
             data += fileInfo[i].slice(55) + '\n';
         } 
+        /* Select movable atoms. */
+        jmolScript("select 1.1 or 2.1"); 
         return data;
     }
 
-    /* ------------------------------------------------------- */
-    /* Two events assigned to form submission:
-    - text area write
-    - BFS cgi script
-    /* ------------------------------------------------------- */
+    /* -------------------------------------------------------
+       Form submission.
+       ------------------------------------------------------- */
     $("#form_bfs").submit(function()
     {
         // Submit event parameters.
-        var res_base_path = './bfs_res/';
-        var cgi_base_path = './bfs_cgi/';
         var target        = $('#target').val();
         var pH            = $('#pHLab').val();
         var d             = new Date();
@@ -40,44 +41,62 @@ $(document).ready(function()
         var data = getJmolCoordinates(); 
         $('#pqr').attr('value', data); 
 
-        // Select again PQR and PDB data
+        // Select movable atoms.
         jmolScript("select 1.1 or 2.1"); 
 
-        // Serialize BFS parameter form data.
+        // Serialize BFS parameter form data and submit AJAX call.
         var bfsForm = $("#form_bfs").serialize();
-        $('#timestamp').attr('value', d.getTime());
-
-        // Ajax BFS call.
+        $('#timestamp').attr('value', d.getTime()); 
         $.post(cgi_base_path + 'bio_sim.cgi', bfsForm, reload_plot);
-
+        
         function reload_plot()
         { 
             $("#resPlot").attr("src", res_base_path + target + "-reo.svg?" + d.getTime());
         } 
 
-        // Prevent default form submit
+        // Prevent default form submit.
         return false; 
     }); // End submit 
 
+    /* -------------------------------------------------------
+       pH response.
+       ------------------------------------------------------- */
     $('#pHresp').click(function()
     {
-        var res_base_path = './bfs_res/';
-        var cgi_base_path = './bfs_cgi/';
+        // Jmol selectors
         var target        = $('#target').val();
-        var data          = getJmolCoordinates();
+        var atomInfo      = jmolGetPropertyAsArray("atomInfo", "all");
+        var fileInfo      = jmolGetPropertyAsArray("fileContents", pdb_base_path+target+"-reo.pdb").split(" | ");
         var bfsForm       = $('#form_bfs').serialize();
-        var d             = new Date();
-        $('#timestamp').attr('value', d.getTime());
-        console.log("pH response click event."); 
+        var pdb           = '';
+        for(var i=0; i<fileInfo.length-1; i++)
+        {
+            var pdbi=''
+            pdbi += fileInfo[i].slice(0, 31) + '';
+            pdbi += atomInfo[i].x.toPrecision(3) + ' '; 
+            pdbi += atomInfo[i].y.toPrecision(3) + ' '; 
+            pdbi += atomInfo[i].z.toPrecision(3) + ' '; 
+            pdbi += fileInfo[i].slice(55)+'\n';
+            //console.log(pdbi);
+            pdb+=pdbi;
+        }
+        console.log(pdb);
+        $('#tmp_pdb').attr('value', pdb);
         $.post(cgi_base_path + 'bio_run.cgi', bfsForm, cr);
     }); // End pH response click event.
 
-    function rho()
+    function pH_response()
     { 
-        status_update('Charge distribution...');
-        $.get(cgi_base_path + 'bio_rho.cgi', formData, build_interface);
-        console.log("Charge distribution calculation request sent, waiting for response...");
-    } 
+        for (var i=0; i<15; i++)
+        {
+            $.post(cgi_base_path + 'bio_sim.cgi', bfsForm, pH_plot);
+        }
+    } // End pH response.
+
+    function pH_plot(result)
+    {
+        console.log(result);
+    }
 
     // Check HTTP response.
     function cr(resp) { console.log(resp); }

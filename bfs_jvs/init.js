@@ -83,7 +83,6 @@ $('document').ready(function()
 
             // Q_tot evaluation.
             var q_tot = resp.split(';')[0].split('=')[1];
-            //$('#Q_tot').html(q_tot);
             $('#pHLab').html("Q<sub>tot</sub>at pH " + pH + ": " + q_tot);
 
             // Charge distribution evaluation.

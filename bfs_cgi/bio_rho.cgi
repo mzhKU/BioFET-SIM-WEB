@@ -1,6 +1,6 @@
 #!/Library/Frameworks/Python.framework/Versions/Current/bin/python
 
-print "Content-type: text/plain\n"
+print "Content-type: text/html\n"
 
 import cgi
 import cgitb

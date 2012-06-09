@@ -9,20 +9,18 @@ print "Content-type: text/plain\n"
 import cgi
 import cgitb
 cgitb.enable() 
+from bio_rho import Rho
 import bio_com
 import bio_lib
 import copy
 
 # ************************************************************************
-# EXTERNAL CALCULATION SETUP
+# READ FORM DATA AND EXTERNAL CALCULATION SETUP
 # ........................................................................
 # Obtaining properties from the HTML form.
 form              = cgi.FieldStorage()
 target            = form['targetLab'].value 
-# Stored in input type hidden
-pqr               = form['pqr'].value
-av_RQ             = copy.deepcopy(pqr)
-abs_axis          = form['abs'].value 
+tmp_pdb           = form['tmp_pdb'].value
 # Should BioFET-SIM single or multiple charge model be used.
 charge_model      = form['model'].value
 # Handling the "Number of Proteins on NW" checkbox.
@@ -31,10 +29,7 @@ if form.getvalue('num_prot_box'):
     calc_num_prot = "no"
 else:
     calc_num_prot = "yes"
-
-# ************************************************************************
-# READ FORM DATA
-# ........................................................................
+# PARAMETERS
 # NW properties
 params = {}
 params['nw_len' ]  = float(form['nw_len' ].value)
@@ -66,13 +61,14 @@ n_0                = float(form['n_0'    ].value)
 nw_type            =       form['nw_type'].value 
 comment            = form['comment'].value
 bfs_file_name      = form['fileName'].value
-timestamp          = form['timestamp'].value
+#timestamp          = form['timestamp'].value
 # ........................................................................
 # ------------------------------------------------------------------------ 
 
 # ************************************************************************
 # BioFET-SIM Start
 # ........................................................................
+"""
 # Starting BioFET-SIM calculation.
 from bio_mod import SimMulti
 from bio_mod import SimSingl
@@ -96,3 +92,29 @@ dG_G0 = round(bio_com.compute(sim.rho, nw_len, nw_rad, lay_ox, L_d, L_tf, lay_bf
                       eps_1, eps_2, eps_3, n_0, nw_type, num_prot), 8)
 G0    = round(bio_lib.G0(nw_len, nw_rad, n_0, mu))
 print dG_G0
+"""
+# ........................................................................
+# ------------------------------------------------------------------------ 
+
+# ************************************************************************
+# Initialize charge distribution for pH range.
+# ........................................................................
+if __name__ == '__main__': 
+    for pHi in range(1, 15): 
+        response  = ''
+        response += "%i: " % pHi
+        rho = Rho(target) 
+        rho.load_pdb()
+        rho.unique_residue_ids()
+        rho.cluster_residues()
+        rho.set_terminals()
+        rho.set_RQ()
+        rho.set_av_RQ()
+        rho.set_pqr(target, rho.av_RQ, pHi, open(bio_lib.pdb_base_path + target + '-reo.pka', 'r'))
+        # ------------------------------ 
+        bio_lib.write_pqr(target, pHi, rho.pqr)
+        # ------------------------------ 
+        response += "pqr=%s;\n" % rho.pqr
+        #print response
+# ........................................................................
+# ------------------------------------------------------------------------ 

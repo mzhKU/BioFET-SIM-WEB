@@ -29,7 +29,7 @@ class Rho:
     # ********************************************************************
     # Instantaniation
     def __init__(self, target):
-        self.pdb  = open(target + '-reo.pdb', 'r').readlines()
+        self.pdb  = open(bio_lib.pdb_base_path + target + '-reo.pdb', 'r').readlines()
         # For every atom in the data, the residue name, index and chain
         # is stored in the 'self.identifiers' attribute.
         self.identifiers = []
@@ -123,9 +123,14 @@ class Rho:
             res_ind = dat[2]
             res_chn = dat[3]
             self.identifiers.append([res_nam, res_ind, res_chn]) 
-            x_i     = dat[4]
-            y_i     = dat[5]
-            z_i     = dat[6]
+            #x_i     = dat[4]
+            #y_i     = dat[5]
+            #z_i     = dat[6]
+            # Adjusted coordinates returned from PDB are not strictly formatted.
+            if len(pdb[l_i]) > 10:
+                x_i     = pdb[l_i][31:].split()[0]
+                y_i     = pdb[l_i][31:].split()[1]
+                z_i     = pdb[l_i][31:].split()[3]
             c_i = " ".join([res_atm, x_i, y_i, z_i])
             self.res_atm_xyz.append(c_i) 
 
@@ -257,6 +262,7 @@ class Rho:
     # ....................................................................  
 # ------------------------------------------------------------------------
 
+"""
 # ************************************************************************
 # LAUNCH
 # ........................................................................
@@ -299,3 +305,4 @@ if __name__ == '__main__':
     for pqr_i in rho.pqr.split('\n')[:10]:
         print pqr_i
 # ------------------------------------------------------------------------
+"""
