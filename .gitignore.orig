@@ -1,0 +1,18 @@
+*.pyc
+
+jmol_dir/
+backup_*
+<<<<<<< HEAD
+*.swp
+
+bfs_pdb/*
+bfs_res/*
+
+bfs_res/
+=======
+bfs_pdb/*
+
+*.swp
+
+bfs_res/*
+>>>>>>> dev_pH
