@@ -13,3 +13,8 @@ function roundit(Num, Places) {
    }
    else return Math.round(Num);
 }
+
+function zeroFill(number)
+{
+    return String('00000' + number).slice(-5);
+}

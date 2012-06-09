@@ -7,6 +7,7 @@ import cgitb
 #cgitb.enable()
 form = cgi.FieldStorage()
 target = form['target'].value 
+pH     = float(form['pH'].value)
 
 from subprocess import Popen, PIPE 
 
@@ -46,3 +47,4 @@ def get_pKas(pka_dat):
 
 if __name__ == "__main__":
     calc_pKas(target)
+    print "pHPad=%05.2f" % pH

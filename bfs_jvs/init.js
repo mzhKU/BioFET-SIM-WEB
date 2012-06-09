@@ -12,6 +12,7 @@ $('document').ready(function()
         var pdb_base_path = './bfs_pdb/';
         var res_base_path = './bfs_res/';
         var ajax_loader   = "<img src='./bfs_jvs/ajax-loader.gif' alt='Loading...'>";
+        var pHPad;
 
         // Fill in target name and pH. Q_tot only after PROPKA job finished.
         //$('#targetLab').attr('value', target);
@@ -63,9 +64,10 @@ $('document').ready(function()
             console.log("pKa calculation request sent, waiting for response...");
         } 
 
-        function rho()
+        function rho(resp)
         { 
             status_update('Charge distribution...');
+            pHPad = resp.split('=')[1];
             $.get(cgi_base_path + 'bio_rho.cgi', formData, build_interface);
             console.log("Charge distribution calculation request sent, waiting for response...");
         } 
@@ -82,19 +84,19 @@ $('document').ready(function()
             // Q_tot evaluation.
             console.log(resp);
             var q_tot = resp.split(';')[0].split('=')[1];
-            console.log(q_tot);
-            //$('#Q_tot').html(q_tot);
             $('#pHLab').html("Q<sub>tot</sub>at pH " + pH + ": " + q_tot);
-
 
             // Charge distribution evaluation.
             var pqr = resp.split(';')[1].split('=')[1];
+            console.log(pqr)
             $('#pqr').attr("value", pqr);
 
             //var useSignedApplet = true;
             status_update('Building interface...');
             // Charge distribution.
-            jmolScriptWait('load pqr::' + pdb_base_path + '%s-reo.pqr'.replace('%s', target));
+            jmolScriptWait('load pqr::'+pdb_base_path
+                                       +'%s-reo.pqr'.replace('%s', target+'-'+pHPad.split('\n')[0]));
+            //jmolScriptWait('load pqr::' + pdb_base_path + '%s-reo.pqr'.replace('%s', target+'-'+pHPad));
             jmolScriptWait('select 1.1');
             jmolScriptWait('set propertycolorscheme "rwb"');
             jmolScriptWait('color property partialcharge'); 
@@ -115,6 +117,7 @@ $('document').ready(function()
             // Report Jmol setup finished.
             cr();
         }
+
 
         // Status update.
         function status_update(step) 
@@ -147,4 +150,5 @@ $('document').ready(function()
         } 
         return false; // Prevent default submit behavior.
     }); // end submit
+    $('#target').focus();
 });//end ready

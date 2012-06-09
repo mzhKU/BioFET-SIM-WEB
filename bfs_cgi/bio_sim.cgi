@@ -58,6 +58,7 @@ form              = cgi.FieldStorage()
 target            = form['targetLab'].value 
 # Stored in input type hidden
 pqr               = form['pqr'].value
+print "PQR", pqr
 #av_RQ             = form['av_RQ'].value
 av_RQ             = copy.deepcopy(pqr)
 abs_axis          = form['abs'].value 
