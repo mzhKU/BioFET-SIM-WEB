@@ -13,6 +13,7 @@ from bio_rho import Rho
 import bio_com
 import bio_lib
 import copy
+from numpy import arange
 
 # ************************************************************************
 # READ FORM DATA AND EXTERNAL CALCULATION SETUP
@@ -23,7 +24,6 @@ target  = form['targetLab'].value
 tmp_pdb = form['tmp_pdb'].value
 tmp_pqr = form['tmp_pqr'].value
 tmp_pdb = bio_lib.reformat_coordinates(tmp_pdb, tmp_pqr)
-print tmp_pdb
 # Should BioFET-SIM single or multiple charge model be used.
 charge_model      = form['model'].value
 # Handling the "Number of Proteins on NW" checkbox.
@@ -71,31 +71,29 @@ bfs_file_name      = form['fileName'].value
 # ************************************************************************
 # BioFET-SIM Start
 # ........................................................................
-"""
 # Starting BioFET-SIM calculation.
 from bio_mod import SimMulti
-from bio_mod import SimSingl
-
+from bio_mod import SimSingl 
 # Initializing the simulation. The simulation calls the charge
 # distribution when the model starts the calculation.
-sim = SimMulti(target, av_RQ, pqr, params)
-sim.set_rho() 
-# Configuring protein population on NW.
-if not form.getvalue('num_prot_box'):
-    # Compute number of proteins based on orientation.
-    # <<EDIT>>
-    # 29.05.2012: sim.av_RQ -> sim.pqr
-    #num_prot = bio_lib.get_num_prot(sim.av_RQ, sim.param['nw_len'], sim.param['nw_rad']) 
-    num_prot = bio_lib.get_num_prot(sim.rho, sim.param['nw_len'], sim.param['nw_rad']) 
-else:
-    # Use constant number of proteins.
-    num_prot = int(form['num_prot_inp'].value) 
-# Results data container and setting label, base value and percentage range of results graph.
-dG_G0 = round(bio_com.compute(sim.rho, nw_len, nw_rad, lay_ox, L_d, L_tf, lay_bf,
-                      eps_1, eps_2, eps_3, n_0, nw_type, num_prot), 8)
-G0    = round(bio_lib.G0(nw_len, nw_rad, n_0, mu))
-print dG_G0
-"""
+def get_pH_resp(rho):
+    sim = SimMulti(target, rho.pqr, rho.pqr, params)
+    sim.set_rho() 
+    # Configuring protein population on NW.
+    if not form.getvalue('num_prot_box'):
+        # Compute number of proteins based on orientation.
+        # <<EDIT>>
+        # 29.05.2012: sim.av_RQ -> sim.pqr
+        #num_prot = bio_lib.get_num_prot(sim.av_RQ, sim.param['nw_len'], sim.param['nw_rad']) 
+        num_prot = bio_lib.get_num_prot(sim.rho, sim.param['nw_len'], sim.param['nw_rad']) 
+    else:
+        # Use constant number of proteins.
+        num_prot = int(form['num_prot_inp'].value) 
+    # Results data container and setting label, base value and percentage range of results graph.
+    dG_G0 = round(bio_com.compute(sim.rho, nw_len, nw_rad, lay_ox, L_d, L_tf, lay_bf,
+                          eps_1, eps_2, eps_3, n_0, nw_type, num_prot), 8)
+    G0    = round(bio_lib.G0(nw_len, nw_rad, n_0, mu))
+    return dG_G0
 # ........................................................................
 # ------------------------------------------------------------------------ 
 
@@ -103,10 +101,9 @@ print dG_G0
 # Initialize charge distribution for pH range.
 # ........................................................................
 if __name__ == '__main__': 
-    for pHi in range(1, 15): 
-        response  = ''
-        response += "%i: " % pHi
-        rho = Rho(target) 
+    pH_resp = []
+    for pHi in arange(1, 15, 0.2):
+        rho = Rho(target, tmp_pdb)
         rho.load_pdb()
         rho.unique_residue_ids()
         rho.cluster_residues()
@@ -115,9 +112,7 @@ if __name__ == '__main__':
         rho.set_av_RQ()
         rho.set_pqr(target, rho.av_RQ, pHi, open(bio_lib.pdb_base_path + target + '-reo.pka', 'r'))
         # ------------------------------ 
-        bio_lib.write_pqr(target, pHi, rho.pqr)
+        print pHi, get_pH_resp(rho)
         # ------------------------------ 
-        response += "pqr=%s;\n" % rho.pqr
-        #print response
 # ........................................................................
 # ------------------------------------------------------------------------ 

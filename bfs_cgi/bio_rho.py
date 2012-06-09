@@ -28,8 +28,9 @@ class Rho:
 
     # ********************************************************************
     # Instantaniation
-    def __init__(self, target):
-        self.pdb  = open(bio_lib.pdb_base_path + target + '-reo.pdb', 'r').readlines()
+    def __init__(self, target, tmp_pdb):
+        #self.pdb  = open(bio_lib.pdb_base_path + target + '-reo.pdb', 'r').readlines()
+        self.pdb = tmp_pdb.split('\r\n')
         # For every atom in the data, the residue name, index and chain
         # is stored in the 'self.identifiers' attribute.
         self.identifiers = []
