@@ -18,9 +18,12 @@ import copy
 # READ FORM DATA AND EXTERNAL CALCULATION SETUP
 # ........................................................................
 # Obtaining properties from the HTML form.
-form              = cgi.FieldStorage()
-target            = form['targetLab'].value 
-tmp_pdb           = form['tmp_pdb'].value
+form    = cgi.FieldStorage()
+target  = form['targetLab'].value 
+tmp_pdb = form['tmp_pdb'].value
+tmp_pqr = form['tmp_pqr'].value
+tmp_pdb = bio_lib.reformat_coordinates(tmp_pdb, tmp_pqr)
+print tmp_pdb
 # Should BioFET-SIM single or multiple charge model be used.
 charge_model      = form['model'].value
 # Handling the "Number of Proteins on NW" checkbox.

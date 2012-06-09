@@ -380,6 +380,25 @@ def get_labels(line):
     res_z   = line[46:54].strip()
     return [res_atm, res_nam, res_ind, res_chn, res_x, res_y, res_z]
 
+def reformat_coordinates(tmp_pdb, tmp_pqr):
+    # Insert moved coordiantes, return PDB formatted string.
+    # Note: moved coordinates come from tmp_pqr, tmp_pdb is used
+    #       for residue identifiers, which are required for correct q_i
+    #       calculation.
+    c   = ''
+    cnt = 0
+    pqr = tmp_pqr.split('\n')
+    for i in tmp_pdb.split('\n'):
+        if len(i.split()) != 0:
+            if i.split()[0] == 'ATOM': 
+                c += i[:30] + '%8.3f%8.3f%8.3f' % (float(pqr[cnt].split()[0]),
+                                                   float(pqr[cnt].split()[1]),
+                                                   float(pqr[cnt].split()[2])) + i[54:] + '\n'
+                cnt += 1
+            else:
+                c += i + '\n'
+    return c
+
 def calc_pKas(target): 
     # <<PATH>>
     #pkap = Popen(['/usr/local/bin/python3',

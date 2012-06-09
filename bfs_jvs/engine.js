@@ -64,24 +64,22 @@ $(document).ready(function()
     $('#pHresp').click(function()
     {
         // Jmol selectors
-        var target        = $('#target').val();
-        var atomInfo      = jmolGetPropertyAsArray("atomInfo", "all");
-        var fileInfo      = jmolGetPropertyAsArray("fileContents", pdb_base_path+target+"-reo.pdb").split(" | ");
-        var bfsForm       = $('#form_bfs').serialize();
-        var pdb           = '';
+        var target   = $('#target').val();
+        //var atomInfo = jmolGetPropertyAsArray("atomInfo", "all");
+        //var atomInfo = jmolGetPropertyAsArray("atomInfo", "2.1");
+        var atomInfo = jmolGetPropertyAsArray("atomInfo", "all"); 
+        var fileInfo = jmolGetPropertyAsArray("fileContents",
+                                               pdb_base_path+target+"-reo.pdb").split(" | ");
+        var bfsForm  = $('#form_bfs').serialize();
+        var pdb      = '';
+        var pqr      = '';
         for(var i=0; i<fileInfo.length-1; i++)
         {
-            var pdbi=''
-            pdbi += fileInfo[i].slice(0, 31) + '';
-            pdbi += atomInfo[i].x.toPrecision(3) + ' '; 
-            pdbi += atomInfo[i].y.toPrecision(3) + ' '; 
-            pdbi += atomInfo[i].z.toPrecision(3) + ' '; 
-            pdbi += fileInfo[i].slice(55)+'\n';
-            //console.log(pdbi);
-            pdb+=pdbi;
+            pdb += fileInfo[i] + '\n';
+            pqr += atomInfo[i].x + ' ' + atomInfo[i].y + ' ' + atomInfo[i].z + '\n';
         }
-        console.log(pdb);
         $('#tmp_pdb').attr('value', pdb);
+        $('#tmp_pqr').attr('value', pqr);
         $.post(cgi_base_path + 'bio_run.cgi', bfsForm, cr);
     }); // End pH response click event.
 
