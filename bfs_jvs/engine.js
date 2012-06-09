@@ -36,16 +36,15 @@ $(document).ready(function()
         var pH            = $('#pHLab').val();
         var d             = new Date();
 
-        var data = getJmolCoordinates();
-        console.log(data);
-        $('#pqr').attr("value", data); 
+        // Setting the coordinates of the charges.
+        var data = getJmolCoordinates(); 
+        $('#pqr').attr('value', data); 
 
         // Select again PQR and PDB data
         jmolScript("select 1.1 or 2.1"); 
 
         // Serialize BFS parameter form data.
         var bfsForm = $("#form_bfs").serialize();
-        //bfsForm += '&timestamp=' + d.getTime();
         $('#timestamp').attr('value', d.getTime());
 
         // Ajax BFS call.

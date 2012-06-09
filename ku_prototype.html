@@ -7,7 +7,7 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
         <script type="text/javascript" src="./jmol_dir/jmol.js"></script>
         <script type="text/javascript" src="./bfs_jvs/init.js"></script> 
-        <script type="text/javascript" src="./bfs_jvs/round.js"></script>
+        <script type="text/javascript" src="./bfs_jvs/num_lib.js"></script>
         <script type="text/javascript" src="./bfs_jvs/engine.js"></script> 
     </head>
 <body>
@@ -17,7 +17,7 @@
                 <tr>
                     <td style="width:650px">
                         <label for="target">PDB Identifier:</label>
-                        <input value="kk8add" type="text" size="6" name="target" id="target">
+                        <input value="aha" type="text" size="6" name="target" id="target">
                         <label for="pH">pH Value:</label>
                         <input value="7.4" type="text" size="6" name="pH" id="pH">
                         <input type="submit" value="Initialize">
@@ -129,8 +129,12 @@
             </tr> 
             <tr>
                 <td><label for="nw_type">NW Type:</label></td>
-                <td><input class="val" type="text" id="nw_type" name="nw_type" value="P"></td>
-                <td></td>
+                <!--<td><input class="val" type="text" id="nw_type" name="nw_type" value="P"></td>-->
+
+                <td><input type="radio" name="nw_type" id="p_type" value="P" checked="true">
+                    <label for="p_type">p-type</label></td>
+                <td><input type="radio" name="nw_type" id="n_type" value="N">
+                    <label for="n_type">n-type</label></td>
                 <td></td>
                 <td></td>
             </tr> 
