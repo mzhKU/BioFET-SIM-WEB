@@ -47,7 +47,7 @@ $(document).ready(function()
         // Serialize BFS parameter form data and submit AJAX call.
         var bfsForm = $("#form_bfs").serialize();
         $('#timestamp').attr('value', d.getTime()); 
-        $.post(cgi_base_path + 'bio_sim.cgi', bfsForm, cr);
+        $.post(cgi_base_path + 'bio_sim.cgi', bfsForm, reload_plot);
         
         function reload_plot()
         { 

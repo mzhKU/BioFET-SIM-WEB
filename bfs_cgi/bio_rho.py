@@ -101,9 +101,49 @@ class Rho:
             self.av_RQ.append(bio_lib.av_trm(trm))
 
     def set_pqr(self, target, av_RQ, pH, pka_dat):
-        """Generating the PQR file for the Jmol input.
-        """
-        self.pqr = bio_lib.set_pqr(target, av_RQ, pH, pka_dat)
+        """PQR file to load in Jmol.
+        'target':   Structure label to identify the pKa file.
+        'av_RQ[0]':  "['LYS 2 A', 3.484, 3.366, 1.893]"
+        'av_RQ[-1]': "['ASP 13 A OXT', 40.159,  16.562, -0.142]"
+        In PDB/PQR format data, terminal is labeled 'OXT', in PROPKA
+        it is labeled 'C-'.
+        FIX:
+        - Parse N+ in pKa file.
+        - Parse for LIG.
+        """ 
+        pqr = ""
+        # Get pKa values for which coordinates are available.
+        # Match the label to fit the PROPKA summary label style.
+        # If matched, append.
+        pKas = bio_lib.get_pKas(pka_dat)
+        cnt = 0 
+        # Define a generic label for the charge carrier site,
+        # residue or terminus: 'q_i_lbl'.
+        for av_rq_i in av_RQ:
+            print av_rq_i
+            # Amino acid charges. The label is 3 units long.
+            # The termini labels are 4 units long.
+            if len(av_rq_i[0].split()) == 3:
+                q_i_lbl = " ".join(av_rq_i[0].split())
+            # Termini charges, adapting to PROPKA terminus format.
+            else:
+                if av_rq_i[0].split()[-1] == 'N': 
+                    q_i_lbl = 'N+' + ' ' + " ".join(av_rq_i[0].split()[1:3]) 
+                else:
+                    q_i_lbl = 'C-' + ' ' + " ".join(av_rq_i[0].split()[1:3]) 
+            for pka_i in pKas:
+                pka_i_lbl = " ".join(pka_i[:3])
+                if pka_i_lbl == q_i_lbl:
+                    pqr += 'ATOM %7d' % int(av_rq_i[0].split()[1]) + '   C ' + av_rq_i[0].split()[0] + ' ' + av_rq_i[0].split()[2] + '%16.3f' % av_rq_i[1] + '%8.3f' % av_rq_i[2] + '%8.3f' % av_rq_i[3]
+                    q_i = bio_lib.get_q_i(pka_i_lbl.split()[0], float(pka_i[3]), pH)
+                    # Prevent empty line at the end of the PQR file.
+                    if cnt < len(av_RQ)-1:
+                        pqr += "%6.3f".rjust(6) % q_i + ' 1.0\n'
+                        cnt += 1
+                    else:
+                        # Strictly cannot append '\n' character.
+                        pqr += "%6.3f".rjust(6) % q_i + ' 1.0'
+        return pqr
     # ....................................................................  
 
     # ********************************************************************
@@ -131,7 +171,7 @@ class Rho:
             if len(pdb[l_i]) > 10:
                 x_i     = pdb[l_i][31:].split()[0]
                 y_i     = pdb[l_i][31:].split()[1]
-                z_i     = pdb[l_i][31:].split()[3]
+                z_i     = pdb[l_i][31:].split()[2]
             c_i = " ".join([res_atm, x_i, y_i, z_i])
             self.res_atm_xyz.append(c_i) 
 
