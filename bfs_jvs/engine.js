@@ -65,21 +65,21 @@ $(document).ready(function()
     {
         // Jmol selectors
         var target   = $('#target').val();
-        //var atomInfo = jmolGetPropertyAsArray("atomInfo", "all");
-        //var atomInfo = jmolGetPropertyAsArray("atomInfo", "2.1");
+        var num_of_charges = jmolGetPropertyAsArray("atomInfo", "1.1").length
         var atomInfo = jmolGetPropertyAsArray("atomInfo", "all"); 
         var fileInfo = jmolGetPropertyAsArray("fileContents",
                                                pdb_base_path+target+"-reo.pdb").split(" | ");
         var bfsForm  = $('#form_bfs').serialize();
         var pdb      = '';
         var pqr      = '';
-        for(var i=0; i<fileInfo.length-1; i++)
+        for(var i=0; i<fileInfo.length; i++)
         {
-            pdb += fileInfo[i] + '\n';
+            pdb += fileInfo[i] + '\n'; 
             pqr += atomInfo[i].x + ' ' + atomInfo[i].y + ' ' + atomInfo[i].z + '\n';
         }
         $('#tmp_pdb').attr('value', pdb);
         $('#tmp_pqr').attr('value', pqr);
+        $('#num_of_charges').attr('value', num_of_charges);
         $.post(cgi_base_path + 'bio_run.cgi', bfsForm, cr);
     }); // End pH response click event.
 
