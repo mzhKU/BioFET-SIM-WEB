@@ -30,7 +30,7 @@ class Rho:
     # Instantaniation
     def __init__(self, target, tmp_pdb):
         #self.pdb  = open(bio_lib.pdb_base_path + target + '-reo.pdb', 'r').readlines()
-        self.pdb = tmp_pdb.split('\r\n')
+        self.pdb = tmp_pdb.split('\n')
         # For every atom in the data, the residue name, index and chain
         # is stored in the 'self.identifiers' attribute.
         self.identifiers = []
@@ -199,14 +199,24 @@ class Rho:
         res_id_cnt = 0
         n_terminals = []
         for res_id in self.res_ids:
+            # Check if 'res_id[0]' is an amino acid.
             if res_id[0] in self.aa:
-                chn_id_i = res_id[0]
-                if res_id_cnt > 0:
+                # Append first 'N' to 'n_terminals'.'.
+                if res_id_cnt == 0:
+                        n_terminals.append(" ".join(res_id[0:3]) + " " + res_id[3])
+                # Only append 'N' to 'n_terminals', when chain ID changes.
+                else:
+                    # Avoid apparent chain IDs.
+                    #if res_id_cnt > 0:
+                    # Check if the chain ID ('A', 'B', ...) changed.
+                    # If no change: no append to 'n_terminals'.
+                    #print res_id[2], self.res_ids[res_id_cnt-1][2]
                     if res_id[2] == self.res_ids[res_id_cnt-1][2]:
                         pass
+                    # If chain ID change, append first 'N' to 'n_terminals'.
                     else:
                         n_terminals.append(" ".join(res_id[0:3]) + " " + res_id[3])
-            res_id_cnt += 1
+                res_id_cnt += 1
         return n_terminals
 
     def get_n_chains(self):

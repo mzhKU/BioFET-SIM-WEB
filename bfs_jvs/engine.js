@@ -9,7 +9,7 @@ $(document).ready(function()
     function getJmolCoordinates()
     {
         jmolScript("select 1.1"); 
-        // Jmol selectors
+        // Jmol selectors, 'atomInfo' for coordinates, 'fileInfo' for charges.
         var atomsInfo = jmolGetPropertyAsArray("atomInfo", "all"); 
         var fileInfo  = jmolGetPropertyAsArray("fileContents").split(" | "); 
         // Charge is provided starting from index 55, truncate
@@ -47,7 +47,7 @@ $(document).ready(function()
         // Serialize BFS parameter form data and submit AJAX call.
         var bfsForm = $("#form_bfs").serialize();
         $('#timestamp').attr('value', d.getTime()); 
-        $.post(cgi_base_path + 'bio_sim.cgi', bfsForm, reload_plot);
+        $.post(cgi_base_path + 'bio_sim.cgi', bfsForm, cr);
         
         function reload_plot()
         { 
@@ -65,36 +65,23 @@ $(document).ready(function()
     {
         // Jmol selectors
         var target   = $('#target').val();
-        var num_of_charges = jmolGetPropertyAsArray("atomInfo", "1.1").length
-        var atomInfo = jmolGetPropertyAsArray("atomInfo", "all"); 
-        var fileInfo = jmolGetPropertyAsArray("fileContents",
-                                               pdb_base_path+target+"-reo.pdb").split(" | ");
+        var atomInfo = jmolGetPropertyAsArray("atomInfo", "2.1"); 
         var bfsForm  = $('#form_bfs').serialize();
-        var pdb      = '';
         var pqr      = '';
-        for(var i=0; i<fileInfo.length; i++)
+        for(var i=0; i<atomInfo.length; i++)
         {
-            pdb += fileInfo[i] + '\n'; 
-            pqr += atomInfo[i].x + ' ' + atomInfo[i].y + ' ' + atomInfo[i].z + '\n';
+            // Prevent empty last line.
+            if(i<atomInfo.length-1)
+            {
+                pqr += atomInfo[i].x + ' ' + atomInfo[i].y + ' ' + atomInfo[i].z + '\n';
+            } else {
+                pqr += atomInfo[i].x + ' ' + atomInfo[i].y + ' ' + atomInfo[i].z;
+            } 
         }
-        $('#tmp_pdb').attr('value', pdb);
+        // 'tmp_pqr' are coordinates after move.
         $('#tmp_pqr').attr('value', pqr);
-        $('#num_of_charges').attr('value', num_of_charges);
         $.post(cgi_base_path + 'bio_run.cgi', bfsForm, cr);
     }); // End pH response click event.
-
-    function pH_response()
-    { 
-        for (var i=0; i<15; i++)
-        {
-            $.post(cgi_base_path + 'bio_sim.cgi', bfsForm, pH_plot);
-        }
-    } // End pH response.
-
-    function pH_plot(result)
-    {
-        console.log(result);
-    }
 
     // Check HTTP response.
     function cr(resp) { console.log(resp); }

@@ -21,11 +21,8 @@ from numpy import arange
 # Obtaining properties from the HTML form.
 form    = cgi.FieldStorage()
 target  = form['targetLab'].value 
-tmp_pdb = form['tmp_pdb'].value
 tmp_pqr = form['tmp_pqr'].value
-num_q_i = int(form['num_of_charges'].value)
-tmp_pdb = bio_lib.reformat_coordinates(tmp_pdb, tmp_pqr, num_q_i)
-"""
+pdb_new = bio_lib.rewrite_pdb(target, tmp_pqr)
 # Should BioFET-SIM single or multiple charge model be used.
 charge_model      = form['model'].value
 # Handling the "Number of Proteins on NW" checkbox.
@@ -95,27 +92,24 @@ def get_pH_resp(ph, rho):
     dG_G0 = round(bio_com.compute(sim.rho, nw_len, nw_rad, lay_ox, L_d, L_tf, lay_bf,
                           eps_1, eps_2, eps_3, n_0, nw_type, num_prot), 8)
     G0    = round(bio_lib.G0(nw_len, nw_rad, n_0, mu))
+    return dG_G0
 # ........................................................................
 # ------------------------------------------------------------------------ 
-"""
 
 # ************************************************************************
 # Initialize charge distribution for pH range.
 # ........................................................................
 if __name__ == '__main__': 
     pH_resp = []
-    for pHi in [7.4]:
-        pass
-        #rho = Rho(target, tmp_pdb)
-        #rho.load_pdb()
-        #rho.unique_residue_ids()
-        #rho.cluster_residues()
-        #rho.set_terminals()
-        #rho.set_RQ()
-        #rho.set_av_RQ()
-        #rho.set_pqr(target, rho.av_RQ, pHi, open(bio_lib.pdb_base_path + target + '-reo.pka', 'r'))
-        # ------------------------------ 
-        #get_pH_resp(pHi, rho)
-        # ------------------------------ 
+    rho = Rho(target, pdb_new)
+    rho.load_pdb()
+    rho.unique_residue_ids()
+    rho.cluster_residues()
+    rho.set_terminals()
+    rho.set_RQ()
+    rho.set_av_RQ()
+    print rho.av_RQ
+    rho.set_pqr(target, rho.av_RQ, 7.4, open(bio_lib.pdb_base_path + target + '-reo.pka', 'r'))
+    #print get_pH_resp(7.4, rho)
 # ........................................................................
 # ------------------------------------------------------------------------ 
