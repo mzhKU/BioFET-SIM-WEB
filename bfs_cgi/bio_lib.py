@@ -746,6 +746,26 @@ def prepare_Jmol(target):
     js.write(jmolScript)
     js.close()
 
+def prepare_pH_response_plot(target, pH_resp): #, mode):
+    plot = ''
+    for i in range(14):
+        plot += str(i+1) + ' %4.2f'%pH_resp[i] + '\n'
+    res_val = open(results_path + target + '-pH-reo.dat', 'w')
+    res_val.write(plot)
+    res_val.close()
+    gnus  = "set terminal svg\n"
+    gnus += "set output \'" + results_path + "%s-pH-reo.svg\'\n" % target
+    gnus += 'set style line 1 lt 1 lw 2 pt 7 ps 1\n'
+    gnus += "unset title\n"
+    gnus += "set nokey\n"
+    gnus += "set grid\n"
+    gnus += "set xlabel 'pH'"
+    gnus += "set ylabel 'Sensitivity(pH)'\n" 
+    gnus += "plot \'" + results_path + "%s-pH-reo.dat\' u ($1):($2) w lp ls 1\n" % target
+    gnus += "set output ''\n"
+    gnup = Popen([gnuplot_exe], stdin=PIPE, stdout=open(results_path + '%s-pH-reo.svg' % target, 'w'), stderr=PIPE, shell=False)
+    gnup.communicate(gnus)
+
 def prepare_results(target, results, x_val, x_lbl, num_prot, dG_G0, G0, bfs_file_name, t): #, mode):
     num_prot_s = "%2.0f"%num_prot
     sub = dict(target=target, num_prot=num_prot_s,
@@ -763,68 +783,19 @@ def prepare_results(target, results, x_val, x_lbl, num_prot, dG_G0, G0, bfs_file
     res_val.write(plot)
     res_val.close()
     gnus  = "set terminal svg\n"
-    #gnus  = 'set terminal png\n'
-    #gnus  = 'set terminal png font Times-Roman\n'
-    #gnus  = 'set terminal postscript eps enhanced color "Times-Roman" 22\n'
-    #gnus += "set output \'./bfs_res/%s-reo.eps\'\n" % target
-    #gnus += "set output \'" + results_path + "%s-reo-%s.svg\'\n" % (target, t)
     gnus += "set output \'" + results_path + "%s-reo.svg\'\n" % target
-    #gnus += "set output \'" + results_path + "%s-reo.eps\'\n" % target
-    #gnus += "set output \'" + results_path + "%s-reo.png\'\n" % target
-    #gnus += "set output \'" + results_path + "%s-reo.png\'\n" % target
     gnus += 'set style line 1 lt 1 lw 6 pt 7 ps 1\n'
-    # JPG does not display in the browser.
-    #gnus  = 'set terminal jpg\n'
     gnus += "unset title\n"
     gnus += "set nokey\n"
     gnus += "set grid\n"
-    #gnus += "set output \'./%s-reo.svg\'\n" % target
-    #gnus += "set output \'./%s-reo.png\'\n" % target
-    #gnus += "set output \'./%s-reo.jpg\'\n" % target
     gnus += "set xlabel \'%s\'\n" % labels[x_lbl]
     gnus += "set ylabel 'Sensitivity'\n" 
-    #gnus += "set size 0.4, 0.4\n"
     gnus += "plot \'" + results_path + "%s-reo.dat\' u ($1):($2) w p ls 1\n" % target
     gnus += "set output ''\n"
-    #gnu_scr = open('%s-reo.gnu' % target, 'w')
-    #gnu_scr.write(gnus)
-    #gnu_scr.close()
-    # <<PATH>>
-    #gnup = Popen(['/usr/local/bin/gnuplot'],
-    #               stdin=PIPE, stdout=open('%s-reo.svg' % target, 'w'),
-    #               stderr=PIPE, shell=False)
-    #        #stdin=open('./gnuplot_script.gnu', 'r'),
-    #gnu_out = open('./%s-reo.png' % target, 'w')
-    #gnup = Popen([gnuplot_exe],
-    #              stdin=PIPE, stdout=open(results_path + '%s-reo.eps' % target, 'w'),
-    #              stderr=PIPE, shell=False)
-    #gnup = Popen([gnuplot_exe],
-    #              stdin=PIPE, stdout=open(results_path + '%s-reo.png' % target, 'w'),
-    #              stderr=PIPE, shell=False)
-    #gnup = Popen([gnuplot_exe],
-    #              stdin=PIPE, stdout=open(results_path + '%s-reo-%s.svg' % (target, t), 'w'),
-    #              stderr=PIPE, shell=False)
     gnup = Popen([gnuplot_exe],
                   stdin=PIPE, stdout=open(results_path + '%s-reo.svg' % target, 'w'),
                   stderr=PIPE, shell=False)
     gnup.communicate(gnus)
-    #gnu_out.close()
-    #os.system(convert_exe + ' -resample 200x200 -density 200x200 ./bfs_res/%s-reo.eps ./bfs_res/%s-reo.png' % (target, target))
-    #convert_cmd = convert_exe + ' -resample 200x200 -density 200x200 ' + results_path + '%s-reo.eps '%target + results_path + '%s-reo.png'%target
-    #print convert_cmd
-    #os.system(convert_exe + ' -resample 200x200 -density 200x200 ' + results_path + '%s-reo.eps '%target + results_path + '%s-reo.png'%target)
-    # <<EDIT>>
-    # 29.05.2012: Results page template no longer required.
-    #page_res = open('page_result.html', 'r')
-    #page_val = page_res.read()
-    #page_res.close()
-    #page_txt = open(target + 'res.txt', 'w')
-    #page_txt.write("# " + target + "BioFET-SIM Calculation\n")
-    #for xy in results:
-    #    page_txt.write(xy + '\n')
-    #page_txt.close()
-    #page_template = Template(page_val)
-    #return page_template.safe_substitute(sub) 
 # ........................................................................
 # ------------------------------------------------------------------------ 
 

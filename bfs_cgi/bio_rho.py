@@ -120,7 +120,6 @@ class Rho:
         # Define a generic label for the charge carrier site,
         # residue or terminus: 'q_i_lbl'.
         for av_rq_i in av_RQ:
-            print av_rq_i
             # Amino acid charges. The label is 3 units long.
             # The termini labels are 4 units long.
             if len(av_rq_i[0].split()) == 3:

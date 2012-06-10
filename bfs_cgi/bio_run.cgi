@@ -129,11 +129,8 @@ class SimMulti:
 # Initializing the simulation. The simulation calls the charge
 # distribution when the model starts the calculation.
 def get_pH_resp(ph, dist):
-    print "dist"
-    print dist
     sim = SimMulti(target, copy.deepcopy(dist), dist, params)
     sim.set_rho() 
-    print sim.rho
     # Configuring protein population on NW.
     if not form.getvalue('num_prot_box'):
         # Compute number of proteins based on orientation.
@@ -156,15 +153,19 @@ def get_pH_resp(ph, dist):
 # Initialize charge distribution for pH range.
 # ........................................................................
 if __name__ == '__main__': 
-    pH_resp = []
-    rho = Rho(target, pdb_new)
-    rho.load_pdb()
-    rho.unique_residue_ids()
-    rho.cluster_residues()
-    rho.set_terminals()
-    rho.set_RQ()
-    rho.set_av_RQ()
-    dist = rho.set_pqr(target, rho.av_RQ, 7.4, open(bio_lib.pdb_base_path + target + '-reo.pka', 'r'))
-    print get_pH_resp(7.4, dist)
+    pH_resp  = []
+    pH_range = range(1,15)
+    for pHi in pH_range:
+        rho = Rho(target, pdb_new)
+        rho.load_pdb()
+        rho.unique_residue_ids()
+        rho.cluster_residues()
+        rho.set_terminals()
+        rho.set_RQ()
+        rho.set_av_RQ()
+        dist = rho.set_pqr(target, rho.av_RQ, pHi, open(bio_lib.pdb_base_path + target + '-reo.pka', 'r'))
+        pH_resp.append(get_pH_resp(pHi, dist))
+    print len(pH_resp)
+    bio_lib.prepare_pH_response_plot(target, pH_resp)
 # ........................................................................
 # ------------------------------------------------------------------------ 

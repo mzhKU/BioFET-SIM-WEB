@@ -61,7 +61,8 @@ $(document).ready(function()
     /* -------------------------------------------------------
        pH response.
        ------------------------------------------------------- */
-    $('#pHresp').click(function()
+    //$('#pHresp').click(function()
+    $('#pHresp').live('click', function()
     {
         // Jmol selectors
         var target   = $('#target').val();
@@ -80,7 +81,14 @@ $(document).ready(function()
         }
         // 'tmp_pqr' are coordinates after move.
         $('#tmp_pqr').attr('value', pqr);
-        $.post(cgi_base_path + 'bio_run.cgi', bfsForm, cr);
+        $.post(cgi_base_path + 'bio_run.cgi', bfsForm, plot_pH_resp);
+        
+        function plot_pH_resp()
+        {
+            var d = new Date();
+            $("#resPlot").attr("src", res_base_path + target + "-pH-reo.svg?" + d.getTime());
+        }
+
     }); // End pH response click event.
 
     // Check HTTP response.
