@@ -759,7 +759,7 @@ def prepare_pH_response_plot(target, pH_resp): #, mode):
     gnus += "unset title\n"
     gnus += "set nokey\n"
     gnus += "set grid\n"
-    gnus += "set xlabel 'pH'"
+    gnus += "set xlabel 'pH'\n"
     gnus += "set ylabel 'Sensitivity(pH)'\n" 
     gnus += "plot \'" + results_path + "%s-pH-reo.dat\' u ($1):($2) w lp ls 1\n" % target
     gnus += "set output ''\n"
