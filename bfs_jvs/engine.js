@@ -9,7 +9,7 @@ $(document).ready(function()
     function getJmolCoordinates()
     {
         jmolScript("select 1.1"); 
-        // Jmol selectors
+        // Jmol selectors, 'atomInfo' for coordinates, 'fileInfo' for charges.
         var atomsInfo = jmolGetPropertyAsArray("atomInfo", "all"); 
         var fileInfo  = jmolGetPropertyAsArray("fileContents").split(" | "); 
         // Charge is provided starting from index 55, truncate
@@ -62,42 +62,35 @@ $(document).ready(function()
     /* -------------------------------------------------------
        pH response.
        ------------------------------------------------------- */
-    $('#pHresp').click(function()
+    //$('#pHresp').click(function()
+    $('#pHresp').live('click', function()
     {
         // Jmol selectors
-        var target        = $('#target').val();
-        var atomInfo      = jmolGetPropertyAsArray("atomInfo", "all");
-        var fileInfo      = jmolGetPropertyAsArray("fileContents", pdb_base_path+target+"-reo.pdb").split(" | ");
-        var bfsForm       = $('#form_bfs').serialize();
-        var pdb           = '';
-        for(var i=0; i<fileInfo.length-1; i++)
+        var target   = $('#target').val();
+        var atomInfo = jmolGetPropertyAsArray("atomInfo", "2.1"); 
+        var bfsForm  = $('#form_bfs').serialize();
+        var pqr      = '';
+        for(var i=0; i<atomInfo.length; i++)
         {
-            var pdbi=''
-            pdbi += fileInfo[i].slice(0, 31) + '';
-            pdbi += atomInfo[i].x.toPrecision(3) + ' '; 
-            pdbi += atomInfo[i].y.toPrecision(3) + ' '; 
-            pdbi += atomInfo[i].z.toPrecision(3) + ' '; 
-            pdbi += fileInfo[i].slice(55)+'\n';
-            //console.log(pdbi);
-            pdb+=pdbi;
+            // Prevent empty last line.
+            if(i<atomInfo.length-1)
+            {
+                pqr += atomInfo[i].x + ' ' + atomInfo[i].y + ' ' + atomInfo[i].z + '\n';
+            } else {
+                pqr += atomInfo[i].x + ' ' + atomInfo[i].y + ' ' + atomInfo[i].z;
+            } 
         }
-        console.log(pdb);
-        $('#tmp_pdb').attr('value', pdb);
-        $.post(cgi_base_path + 'bio_run.cgi', bfsForm, cr);
+        // 'tmp_pqr' are coordinates after move.
+        $('#tmp_pqr').attr('value', pqr);
+        $.post(cgi_base_path + 'bio_run.cgi', bfsForm, plot_pH_resp);
+        
+        function plot_pH_resp()
+        {
+            var d = new Date();
+            $("#resPlot").attr("src", res_base_path + target + "-pH-reo.svg?" + d.getTime());
+        }
+
     }); // End pH response click event.
-
-    function pH_response()
-    { 
-        for (var i=0; i<15; i++)
-        {
-            $.post(cgi_base_path + 'bio_sim.cgi', bfsForm, pH_plot);
-        }
-    } // End pH response.
-
-    function pH_plot(result)
-    {
-        console.log(result);
-    }
 
     // Check HTTP response.
     function cr(resp) { console.log(resp); }

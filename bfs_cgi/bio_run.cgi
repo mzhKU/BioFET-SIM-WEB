@@ -13,23 +13,23 @@ from bio_rho import Rho
 import bio_com
 import bio_lib
 import copy
+from numpy import arange
 
 # ************************************************************************
 # READ FORM DATA AND EXTERNAL CALCULATION SETUP
 # ........................................................................
 # Obtaining properties from the HTML form.
-form              = cgi.FieldStorage()
-target            = form['targetLab'].value 
-tmp_pdb           = form['tmp_pdb'].value
+form    = cgi.FieldStorage()
+target  = form['targetLab'].value 
+tmp_pqr = form['tmp_pqr'].value
+pdb_new = bio_lib.rewrite_pdb(target, tmp_pqr)
 # Should BioFET-SIM single or multiple charge model be used.
 charge_model      = form['model'].value
-# Handling the "Number of Proteins on NW" checkbox.
+# Handling the "Number of Proteins on NW" checkbox. Use default value if checked.
 if form.getvalue('num_prot_box'):
-    # Use default value if checked.
     calc_num_prot = "no"
 else:
     calc_num_prot = "yes"
-# PARAMETERS
 # NW properties
 params = {}
 params['nw_len' ]  = float(form['nw_len' ].value)
@@ -66,33 +66,86 @@ bfs_file_name      = form['fileName'].value
 # ------------------------------------------------------------------------ 
 
 # ************************************************************************
+# CLASS: SimMulti
+# - Represents the simulation of the multiple charge model.
+# ........................................................................
+class SimMulti:
+    """
+    FIX:
+    - Append float instead of string to 'rho'.
+    - Refactor 'res_ids' and 'coords'.
+    """ 
+    # ********************************************************************
+    # Initializing simulation.
+    def __init__(self, target, av_RQ, pqr, param):
+        #def __init__(self, target, av_RQ, pqr):
+        """It appears, Jmol transfers data with unusual line delimiters,
+        therefore the special split arguments.
+        """
+        # Reoriented charge distribution coming from Jmol.
+        self.target    = target 
+        self.av_RQ     = av_RQ.split('\n')
+        self.param     = param
+        self.pqr       = pqr.split('\n')
+        self.rho       = []
+        self.rho_pqr   = ''
+
+    def set_rho(self):
+        """Combining the Jmol adjusted geometry with the charge
+        from the PROPKA match.
+        For historic reasons, the BFS compute unit requires the
+        'm' property (number of charges in biomolecule).
+        """
+        # Convenience abbreviations.
+        av_RQ = self.av_RQ 
+        pqr   = self.pqr
+        rho = self.rho
+        cnt = 0
+        # Prepare data for BFS calculation (in list format).
+        for av_rq_i in av_RQ:
+            # Avoiding empty lines.
+            if len(av_rq_i) != 0:
+                # Avoiding 'MODEL'/'ENDMDL' in the Jmol out stream.
+                if av_rq_i.split()[0] == 'ATOM': 
+                    r_i = av_rq_i[32:54] + pqr[cnt][54:61]
+                    rho.append(r_i.split())
+                    cnt += 1
+        self.m = len(rho)
+    
+    def get_x_range(self, x_val, percentage_range):
+        """Generating the range for which to plot the sensitivity.
+        """
+        ini = x_val*(1.0-percentage_range/100.0)
+        fin = x_val*(1.0+percentage_range/100.0)
+        dif = (fin-ini)/100.0
+        return numpy.arange(ini, fin+dif, dif)
+    # ....................................................................
+# ------------------------------------------------------------------------ 
+
+# ************************************************************************
 # BioFET-SIM Start
 # ........................................................................
-"""
 # Starting BioFET-SIM calculation.
-from bio_mod import SimMulti
-from bio_mod import SimSingl
-
 # Initializing the simulation. The simulation calls the charge
 # distribution when the model starts the calculation.
-sim = SimMulti(target, av_RQ, pqr, params)
-sim.set_rho() 
-# Configuring protein population on NW.
-if not form.getvalue('num_prot_box'):
-    # Compute number of proteins based on orientation.
-    # <<EDIT>>
-    # 29.05.2012: sim.av_RQ -> sim.pqr
-    #num_prot = bio_lib.get_num_prot(sim.av_RQ, sim.param['nw_len'], sim.param['nw_rad']) 
-    num_prot = bio_lib.get_num_prot(sim.rho, sim.param['nw_len'], sim.param['nw_rad']) 
-else:
-    # Use constant number of proteins.
-    num_prot = int(form['num_prot_inp'].value) 
-# Results data container and setting label, base value and percentage range of results graph.
-dG_G0 = round(bio_com.compute(sim.rho, nw_len, nw_rad, lay_ox, L_d, L_tf, lay_bf,
-                      eps_1, eps_2, eps_3, n_0, nw_type, num_prot), 8)
-G0    = round(bio_lib.G0(nw_len, nw_rad, n_0, mu))
-print dG_G0
-"""
+def get_pH_resp(ph, dist):
+    sim = SimMulti(target, copy.deepcopy(dist), dist, params)
+    sim.set_rho() 
+    # Configuring protein population on NW.
+    if not form.getvalue('num_prot_box'):
+        # Compute number of proteins based on orientation.
+        # <<EDIT>>
+        # 29.05.2012: sim.av_RQ -> sim.pqr
+        #num_prot = bio_lib.get_num_prot(sim.av_RQ, sim.param['nw_len'], sim.param['nw_rad']) 
+        num_prot = bio_lib.get_num_prot(sim.rho, sim.param['nw_len'], sim.param['nw_rad']) 
+    else:
+        # Use constant number of proteins.
+        num_prot = int(form['num_prot_inp'].value) 
+    # Results data container and setting label, base value and percentage range of results graph.
+    dG_G0 = round(bio_com.compute(sim.rho, nw_len, nw_rad, lay_ox, L_d, L_tf, lay_bf,
+                          eps_1, eps_2, eps_3, n_0, nw_type, num_prot), 8)
+    G0    = round(bio_lib.G0(nw_len, nw_rad, n_0, mu))
+    return dG_G0
 # ........................................................................
 # ------------------------------------------------------------------------ 
 
@@ -100,21 +153,19 @@ print dG_G0
 # Initialize charge distribution for pH range.
 # ........................................................................
 if __name__ == '__main__': 
-    for pHi in range(1, 15): 
-        response  = ''
-        response += "%i: " % pHi
-        rho = Rho(target) 
+    pH_resp  = []
+    pH_range = range(1,15)
+    for pHi in pH_range:
+        rho = Rho(target, pdb_new)
         rho.load_pdb()
         rho.unique_residue_ids()
         rho.cluster_residues()
         rho.set_terminals()
         rho.set_RQ()
         rho.set_av_RQ()
-        rho.set_pqr(target, rho.av_RQ, pHi, open(bio_lib.pdb_base_path + target + '-reo.pka', 'r'))
-        # ------------------------------ 
-        bio_lib.write_pqr(target, pHi, rho.pqr)
-        # ------------------------------ 
-        response += "pqr=%s;\n" % rho.pqr
-        #print response
+        dist = rho.set_pqr(target, rho.av_RQ, pHi, open(bio_lib.pdb_base_path + target + '-reo.pka', 'r'))
+        pH_resp.append(get_pH_resp(pHi, dist))
+    print len(pH_resp)
+    bio_lib.prepare_pH_response_plot(target, pH_resp)
 # ........................................................................
 # ------------------------------------------------------------------------ 
