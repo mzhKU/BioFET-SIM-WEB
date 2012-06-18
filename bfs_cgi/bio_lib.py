@@ -1,4 +1,4 @@
-#!/Library/Frameworks/Python.framework/Versions/Current/bin/python
+#!/usr/bin/python
 
 print "Content-type: text/plain\n"
 
@@ -8,8 +8,9 @@ print "Content-type: text/plain\n"
 
 import os
 import sys
-os.environ['PYTHONPATH'] = '/Library/Frameworks/Python.framework/Versions/7.2/lib/python2.7/site-packages'
-sys.path.append('/Library/Frameworks/Python.framework/Versions/7.2/lib/python2.7/site-packages/')
+#os.environ['PYTHONPATH'] = '/Library/Frameworks/Python.framework/Versions/7.2/lib/python2.7/site-packages'
+#sys.path.append('/Library/Frameworks/Python.framework/Versions/7.2/lib/python2.7/site-packages/')
+os.environ['PYTHONPATH'] = '/usr/bin/python'
 
 from scipy import log, sqrt, exp, pi, power
 from scipy.special import i0, i1, k0, k1
@@ -65,19 +66,30 @@ el_mass = 9.10938215e-31  # Electron mass at rest.
 # ************************************************************************
 # SECTION: GLOBAL VARIABLES IN APPLICATION SCOPE.
 # ........................................................................  
-# Directories include trailing forward slash:
-vmd_base_path = '/opt/vmd_package/Contents/vmd/'
-pdb_base_path = '/Users/mzhKU_work/Sites/ku_prototype/bfs_pdb/'
-results_path  = '/Users/mzhKU_work/Sites/ku_prototype/bfs_res/'
+
+# KU machine: Directories
+#vmd_base_path = '/opt/vmd_package/Contents/vmd/'
+#pdb_base_path = '/Users/mzhKU_work/Sites/ku_prototype/bfs_pdb/'
+#results_path  = '/Users/mzhKU_work/Sites/ku_prototype/bfs_res/'
 #jmol_path     = '/Users/mzhKU_work/Sites/ku_prototype/bfs_spt/'
-# Applications:
-vmd_cmd_path              = '/Users/mzhKU_work/software/vmd_package/Contents/vmd/vmd_MACOSXX86'
-external_python_base_path = '/Library/Frameworks/Python.framework/Versions/Current/bin/python'
-pdb2pqr_base_path         = '/opt/pdb2pqr/pdb2pqr.py'
+
+# KU machine: Applications
+#vmd_cmd_path              = '/Users/mzhKU_work/software/vmd_package/Contents/vmd/vmd_MACOSXX86'
+#external_python_base_path = '/Library/Frameworks/Python.framework/Versions/Current/bin/python'
+#propka_path               = '/Users/mzhKU_work/software/propka3/propka.py'
+#pdb2pqr_base_path         = '/opt/pdb2pqr/pdb2pqr.py'
+
+# PROPKA: Directories
+vmd_base_path = '/var/www/vmd/vmd_bin/vmd'
+pdb_base_path = '/home/mzhpropka/public_html/BioFET-SIM-WEB/bfs_pdb/'
+results_path  = '/home/mzhpropka/public_html/BioFET-SIM-WEB/bfs_res/'
+# PROPKA: Applications
+vmd_cmd_path              = '/var/www/vmd/vmd_bin/vmd'
+pdb2pqr_base_path         = '/home/mzhpropka/software/pdb2pqr/pdb2pqr.py'
 python3_path              = '/usr/local/bin/python3'
-propka_path               = '/Users/mzhKU_work/software/propka3/propka.py'
-gnuplot_exe               = '/usr/local/bin/gnuplot'
-convert_exe               = '/usr/local/bin/convert'
+propka_path               = '/opt/propka30/propka.py'
+gnuplot_exe               = '/usr/bin/gnuplot'
+convert_exe               = '/usr/bin/convert'
 # ------------------------------------------------------------------------ 
 
 # ************************************************************************
@@ -753,8 +765,22 @@ def prepare_pH_response_plot(target, pH_resp): #, mode):
     res_val = open(results_path + target + '-pH-reo.dat', 'w')
     res_val.write(plot)
     res_val.close()
-    gnus  = "set terminal svg\n"
-    gnus += "set output \'" + results_path + "%s-pH-reo.svg\'\n" % target
+    # KU machine.
+    #gnus  = "set terminal svg\n"
+    #gnus += "set output \'" + results_path + "%s-pH-reo.svg\'\n" % target
+    #gnus += 'set style line 1 lt 1 lw 2 pt 7 ps 1\n'
+    #gnus += "unset title\n"
+    #gnus += "set nokey\n"
+    #gnus += "set grid\n"
+    #gnus += "set xlabel 'pH'\n"
+    #gnus += "set ylabel 'Sensitivity(pH)'\n" 
+    #gnus += "plot \'" + results_path + "%s-pH-reo.dat\' u ($1):($2) w lp ls 1\n" % target
+    #gnus += "set output ''\n"
+    #gnup = Popen([gnuplot_exe], stdin=PIPE, stdout=open(results_path + '%s-pH-reo.svg' % target, 'w'), stderr=PIPE, shell=False)
+
+    # PROPKA
+    gnus  = 'set terminal postscript eps enhanced color "Times-Roman" 22\n'
+    gnus += "set output \'" + results_path + "%s-pH-reo.eps\'\n" % target
     gnus += 'set style line 1 lt 1 lw 2 pt 7 ps 1\n'
     gnus += "unset title\n"
     gnus += "set nokey\n"
@@ -763,8 +789,11 @@ def prepare_pH_response_plot(target, pH_resp): #, mode):
     gnus += "set ylabel 'Sensitivity(pH)'\n" 
     gnus += "plot \'" + results_path + "%s-pH-reo.dat\' u ($1):($2) w lp ls 1\n" % target
     gnus += "set output ''\n"
-    gnup = Popen([gnuplot_exe], stdin=PIPE, stdout=open(results_path + '%s-pH-reo.svg' % target, 'w'), stderr=PIPE, shell=False)
+    gnup = Popen([gnuplot_exe], stdin=PIPE, stdout=open(results_path + '%s-pH-reo.eps' % target, 'w'), stderr=PIPE, shell=False)
     gnup.communicate(gnus)
+    os.system(convert_exe + ' -resample 200x200 -density 200x200 '\
+              + results_path + '%s-pH-reo.eps '% target\
+              + results_path + '%s-pH-reo.png' % target)
 
 def prepare_results(target, results, x_val, x_lbl, num_prot, dG_G0, G0, bfs_file_name, t): #, mode):
     num_prot_s = "%2.0f"%num_prot
@@ -782,8 +811,16 @@ def prepare_results(target, results, x_val, x_lbl, num_prot, dG_G0, G0, bfs_file
     res_val = open(results_path + target + '-reo.dat', 'w')
     res_val.write(plot)
     res_val.close()
-    gnus  = "set terminal svg\n"
-    gnus += "set output \'" + results_path + "%s-reo.svg\'\n" % target
+    # KU machine
+    #gnus  = "set terminal svg\n"
+    #gnus += "set output \'" + results_path + "%s-reo.svg\'\n" % target
+    #gnup = Popen([gnuplot_exe],
+    #              stdin=PIPE, stdout=open(results_path + '%s-reo.svg' % target, 'w'),
+    #              stderr=PIPE, shell=False)
+
+    # PROPKA
+    gnus  = 'set terminal postscript eps enhanced color "Times-Roman" 22\n'
+    gnus += "set output \'" + results_path + "%s-reo.eps\'\n" % target
     gnus += 'set style line 1 lt 1 lw 6 pt 7 ps 1\n'
     gnus += "unset title\n"
     gnus += "set nokey\n"
@@ -793,9 +830,12 @@ def prepare_results(target, results, x_val, x_lbl, num_prot, dG_G0, G0, bfs_file
     gnus += "plot \'" + results_path + "%s-reo.dat\' u ($1):($2) w p ls 1\n" % target
     gnus += "set output ''\n"
     gnup = Popen([gnuplot_exe],
-                  stdin=PIPE, stdout=open(results_path + '%s-reo.svg' % target, 'w'),
-                  stderr=PIPE, shell=False)
+                   stdin=PIPE, stdout=open(results_path + '%s-reo.eps' % target, 'w'),
+                   stderr=PIPE, shell=False)
     gnup.communicate(gnus)
+    os.system(convert_exe + ' -resample 200x200 -density 200x200 '\
+              + results_path + '%s-reo.eps '% target\
+              + results_path + '%s-reo.png' % target)
 # ........................................................................
 # ------------------------------------------------------------------------ 
 

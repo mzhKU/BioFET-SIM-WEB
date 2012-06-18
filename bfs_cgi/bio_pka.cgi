@@ -1,10 +1,10 @@
-#!/Library/Frameworks/Python.framework/Versions/Current/bin/python
+#!/usr/bin/python
 
 print "Content-type: text/plain\n"
 
 import cgi
 import cgitb
-#cgitb.enable()
+cgitb.enable()
 form = cgi.FieldStorage()
 target = form['target'].value 
 pH     = float(form['pH'].value)

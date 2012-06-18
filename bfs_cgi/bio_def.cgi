@@ -1,4 +1,4 @@
-#!/Library/Frameworks/Python.framework/Versions/Current/bin/python
+#!/usr/bin/python
 
 print "Content-type: text/plain\n" 
 #print "Unable to handle request. Please enable JavaScript for your browser."

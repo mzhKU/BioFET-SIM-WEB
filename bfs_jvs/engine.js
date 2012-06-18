@@ -52,7 +52,11 @@ $(document).ready(function()
         
         function reload_plot()
         { 
-            $("#resPlot").attr("src", res_base_path + target + "-reo.svg?" + d.getTime());
+            // KU machine
+            //$("#resPlot").attr("src", res_base_path + target + "-reo.svg?" + d.getTime());
+
+            // PROPKA
+            $("#resPlot").attr("src", res_base_path + target + "-reo.png?" + d.getTime());
         } 
 
         // Prevent default form submit.
@@ -87,7 +91,12 @@ $(document).ready(function()
         function plot_pH_resp()
         {
             var d = new Date();
-            $("#resPlot").attr("src", res_base_path + target + "-pH-reo.svg?" + d.getTime());
+            // KU machine
+            //$("#resPlot").attr("src", res_base_path + target + "-pH-reo.svg?" + d.getTime());
+
+            // PROPKA
+            $("#resPlot").attr("src", res_base_path + target + "-pH-reo.png?" + d.getTime());
+            
         }
 
     }); // End pH response click event.

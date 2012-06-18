@@ -1,4 +1,4 @@
-#!/Library/Frameworks/Python.framework/Versions/Current/bin/python
+#!/usr/bin/python
 
 print "Content-type: text/html\n"
 
@@ -13,7 +13,6 @@ pH     = float(form['pH'].value)
 from copy import deepcopy
 import bio_lib
 import string
-import json
 # ..........................................................................
 
 # ************************************************************************

@@ -1,4 +1,4 @@
-#!/Library/Frameworks/Python.framework/Versions/Current/bin/python
+#!/usr/bin/python
 
 # ************************************************************************
 # BioFET-SIM CGI Entry point.
