@@ -11,7 +11,6 @@ target = form['target'].value
 import os.path
 from subprocess import Popen, PIPE
 import string
-
 # ***********************************************************************
 # Global application scope variables.
 import bio_lib

@@ -80,12 +80,13 @@ el_mass = 9.10938215e-31  # Electron mass at rest.
 #pdb2pqr_base_path         = '/opt/pdb2pqr/pdb2pqr.py'
 
 # PROPKA: Directories
-vmd_base_path = '/var/www/vmd/vmd_bin/vmd'
-pdb_base_path = '/home/mzhpropka/public_html/BioFET-SIM-WEB/bfs_pdb/'
-results_path  = '/home/mzhpropka/public_html/BioFET-SIM-WEB/bfs_res/'
+vmd_base_path = '/var/www/vmd/bin_vmd/vmd'
+pdb_base_path = '/var/www/propka/biofet-sim/bfs_pdb/'
+results_path  = '/var/www/propka/biofet-sim/bfs_res/'
 # PROPKA: Applications
-vmd_cmd_path              = '/var/www/vmd/vmd_bin/vmd'
-pdb2pqr_base_path         = '/home/mzhpropka/software/pdb2pqr/pdb2pqr.py'
+external_python_base_path = '/usr/bin/python'
+vmd_cmd_path              = '/var/www/vmd/bin_vmd/vmd'
+pdb2pqr_base_path         = '/opt/pdb2pqr/pdb2pqr.py'
 python3_path              = '/usr/local/bin/python3'
 propka_path               = '/opt/propka30/propka.py'
 gnuplot_exe               = '/usr/bin/gnuplot'

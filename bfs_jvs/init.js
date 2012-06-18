@@ -15,11 +15,9 @@ $('document').ready(function()
         var pHPad;
 
         // Fill in target name and pH. Q_tot only after PROPKA job finished.
-        //$('#targetLab').attr('value', target);
         $('#targetLab').html("Structure: " + target);
         $('#targetLabHid').attr('value', target);
         $('#pHLab').html("Q<sub>tot</sub>at pH " + pH + ": 0.0");
-        //$('#pHLab').attr("value", pH);
 
         //BFS Input comment section.
         var comment  = "# BioFET-SIM Calculation\n"
@@ -33,8 +31,12 @@ $('document').ready(function()
         status_update('Downloading...');
         $.get(cgi_base_path + 'bio_dwn.cgi', formData, rechain);
         $("#resPlot").attr("src", res_base_path + "result_default.svg");
-        //$.get(cgi_base_path + 'bio_def.cgi', formData, cr);
         console.log("Download request sent, waiting for response...");
+
+        function def()
+        {
+            $.get(cgi_base_path + 'bio_def.cgi', formData, cr);
+        }
 
         function rechain()
         { 
@@ -82,38 +84,32 @@ $('document').ready(function()
             */ 
 
             // Q_tot evaluation.
-            console.log(resp);
             var q_tot = resp.split(';')[0].split('=')[1];
             $('#pHLab').html("Q<sub>tot</sub>at pH " + pH + ": " + q_tot);
 
             // Charge distribution evaluation.
             var pqr = resp.split(';')[1].split('=')[1];
-            console.log(pqr)
-            $('#pqr').attr("value", pqr);
+            $('#pqr').attr("value", pqr); 
 
-            //var useSignedApplet = true;
-            status_update('Building interface...');
             // Charge distribution.
-            jmolScriptWait('load pqr::'+pdb_base_path
-                                       +'%s-reo.pqr'.replace('%s', target+'-'+pHPad.split('\n')[0]));
-            //jmolScriptWait('load pqr::' + pdb_base_path + '%s-reo.pqr'.replace('%s', target+'-'+pHPad));
-            jmolScriptWait('select 1.1');
-            jmolScriptWait('set propertycolorscheme "rwb"');
-            jmolScriptWait('color property partialcharge'); 
-            jmolScriptWait('spacefill 100%');
+            jmolScript('load pqr::' + pdb_base_path + '%s-reo.pqr'.replace('%s', target+'-'+pHPad.split('\n')[0]));
+            jmolScript('select 1.1');
+            jmolScript('set propertycolorscheme "rwb"');
+            jmolScript('color property partialcharge'); 
+            jmolScript('spacefill 100%');
             // Protein representation.
-            jmolScriptWait('load APPEND ' + pdb_base_path + '%s-reo.pdb'.replace('%s', target));
-            jmolScriptWait('select 2.1');
-            jmolScriptWait('ribbons only');
+            jmolScript('load APPEND ' + pdb_base_path + '%s-reo.pdb'.replace('%s', target));
+            jmolScript('select 2.1');
+            jmolScript('ribbons only');
             // NW representation.
-            jmolScriptWait('load APPEND ' + pdb_base_path + 'nw_%s.xyz'.replace('%s', target));
-            jmolScriptWait('select 3.1');
-            jmolScriptWait('spacefill 20%');
+            jmolScript('load APPEND ' + pdb_base_path + 'nw_%s.xyz'.replace('%s', target));
+            jmolScript('select 3.1');
+            jmolScript('spacefill 20%');
             // Display configuration. 
-            jmolScriptWait('select 1.1 or 2.1');
-            jmolScriptWait('set allowRotateSelected');
-            jmolScriptWait('set dragSelected');
-            jmolScriptWait('frame *');
+            jmolScript('select 1.1 or 2.1');
+            jmolScript('set allowRotateSelected');
+            jmolScript('set dragSelected');
+            jmolScript('frame *');
             // Report Jmol setup finished.
             cr();
         }

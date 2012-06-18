@@ -28,8 +28,7 @@ import bio_lib
 # ***********************************************************************
 # Main application.
 def download_pdb(target):
-    #print 'bio_lib.pdb_base_path:', bio_lib.pdb_base_path + target + '.pdb'
-    #print 'os.getcwd():', os.getcwd()
+    print 'bio_lib.pdb_base_path:', bio_lib.pdb_base_path + target + '.pdb'
     if not os.path.exists(bio_lib.pdb_base_path + target + '.pdb'):
         address='http://www.pdb.org/pdb/files/%s.pdb1' % target
         dat = urllib.urlopen(address)
