@@ -14,20 +14,32 @@
         <form method="get" action="./bfs_cgi/bio_def.cgi" id="setup">
             <table>
                 <tr>
-                    <td style="width:650px">
-                        <label for="target">PDB Identifier:</label>
-                        <input value="aha" type="text" size="6" name="target" id="target">
-                        <label for="pH">pH Value:</label>
-                        <input value="7.4" type="text" size="6" name="pH" id="pH">
-                        <input type="submit" value="Initialize">
+                    <td style="width:350px"><label for="target">PDB Identifier:</label></td>
+                    <td style="width:150px"><input value="aha" type="text" size="6" name="target" id="target"></td>
+                    <td style="width:200px"><label for="pH">pH Value:</label></td>
+                    <td style="width:100px"><input value="7.4" type="text" size="6" name="pH" id="pH"></td>
+                    <td style="width:100px"><input type="submit" value="Initialize"></td>
                     </td>
                     <td style="width:250px"><div style="visibility:visible" id="status">Ready.</div></td>
                     <td style="width:50px"><div style="visibility:hidden" id="loader">
                             <img src='./bfs_jvs/ajax-loader.gif' alt='Loading...'>
                         </div>
                     </td>
-                    <td><input type="hidden" name="state" value="download"></td>
+                    <td style="width:50px"><input type="hidden" name="state" value="download"></td>
                 </tr>
+                <tr>
+                    <td style="width:350px"><label for="target">Upload custom PDB:</label></td>
+                    <td style="width:150px"><input value="Select" type="file" size="6" name="filename" id="target"></td>
+                    <td style="width:200px"><label for="pH">pH Value:</label></td>
+                    <td style="width:200px"><input value="7.4" type="text" size="6" name="pH" id="pH"></td>
+                    <td style="width:100px"><input type="submit" value="Upload"></td>
+                    </td>
+                    <td style="width:250px"><div style="visibility:visible" id="status">Ready.</div></td>
+                    <td style="width:50px"><div style="visibility:hidden" id="loader">
+                            <img src='./bfs_jvs/ajax-loader.gif' alt='Loading...'>
+                        </div>
+                    </td>
+                    <td><input type="hidden" name="state" value="upload"></td>
             </table>
         </form>
     </div>
