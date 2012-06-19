@@ -8,52 +8,63 @@
         <script type="text/javascript" src="./bfs_jvs/init.js"></script> 
         <script type="text/javascript" src="./bfs_jvs/num_lib.js"></script>
         <script type="text/javascript" src="./bfs_jvs/engine.js"></script> 
+        <script type="text/javascript">
+        $(function() { 
+        $('#fileupload').submit(function() { 
+            var filename = $('input[type=file]').val().split('\\').pop();
+            if (filename == "") {
+                alert("You must select a file to upload.");
+                return false;
+                }
+                return true;
+            }); 
+        });
+        </script>
     </head>
 <body>
-    <div id="setPDB" style="display:block">
         <form method="get" action="./bfs_cgi/bio_def.cgi" id="setup">
-            <table>
-                <tr>
-                    <td style="width:650px">
-                        <label for="target">PDB Identifier:</label>
-                        <input value="aha" type="text" size="6" name="target" id="target">
-                        <label for="pH">pH Value:</label>
-                        <input value="7.4" type="text" size="6" name="pH" id="pH">
-                        <input type="submit" value="Initialize">
-                    </td>
-                    <td style="width:250px"><div style="visibility:visible" id="status">Ready.</div></td>
-                    <td style="width:50px"><div style="visibility:hidden" id="loader">
-                            <img src='./bfs_jvs/ajax-loader.gif' alt='Loading...'>
-                        </div>
-                    </td>
-                    <td><input type="hidden" name="state" value="download"></td>
-                </tr>
-            </table>
+            <label for="target">PDB Identifier:</label>
+            <input value="aha" type="text" size="6" name="target" id="target">
+            <label for="pH">pH Value:</label>
+            <input value="7.4" type="text" size="6" name="pH" id="pH">
+            <input type="submit" value="Initialize">
+            <div style="visibility:visible" id="status">Ready.</div>
+            <div style="visibility:hidden" id="loader"><img src='./bfs_jvs/ajax-loader.gif' alt='Loading...'></div>
+            <input type="hidden" name="state" value="download">
         </form>
+    <div id="setPDB" style="display:block">
     </div>
+        <form id="fileupload" enctype="multipart/form-data" action="./bfs_cgi/bio_upl.cgi" method="post" target="uploadTrg">
+            <label for="target">Upload:</label>
+            <input type="file" name="thefile"/>
+            <iframe id="uploadTrg" name="uploadTrg" height="0" width="0" frameborder="0" scrolling="yes"></iframe>
+            <input type="submit" value="Upload" id="submitBtn"/>
+        </form>
 
-    <table>
-        <tr>
-            <td><h2>BioFET-SIM</h2></td>
-        </tr>
-        <tr>
-            <td>
-            <script type="text/javascript">
-                jmolInitialize("./jmol_dir", true);
-                jmolSetCallback("UseCommandThread", "true");
-                jmolApplet([400,300]);
-            </script>
-            </td>
-            <td>
-                <img id="resPlot" src="./bfs_res/result_default.svg" style="width:400px;height=300px">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div id="imn"></div>
-            </td> 
-        </tr> 
-    </table>
+    <h2>BioFET-SIM</h2>
+        <table>
+            <tr>
+            </tr>
+            <tr>
+                <td>
+                <script type="text/javascript">
+                    jmolInitialize("./jmol_dir", true);
+                    jmolSetCallback("UseCommandThread", "true");
+                    jmolApplet([400,300]);
+                </script>
+                </td>
+                <td>
+                    <img id="resPlot" src="./bfs_res/result_default.svg" style="width:400px;height=300px">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="imn"></div>
+                </td> 
+            </tr> 
+        </table>
+    <div>
+    </div>
     <script type="text/javascript" src="./bfs_jvs/interface.js"></script>
 
     <!--BFS Parameter definitions-->
