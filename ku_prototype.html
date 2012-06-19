@@ -22,6 +22,14 @@
         </script>
     </head>
 <body>
+    <h2>BioFET-SIM</h2>
+        <form id="fileupload" enctype="multipart/form-data" action="./bfs_cgi/bio_upl.cgi" method="post" target="uploadTrg">
+            <label for="target">Upload:</label>
+            <input type="file" name="thefile"/>
+            <iframe id="uploadTrg" name="uploadTrg" height="0" width="0" frameborder="0" scrolling="yes"></iframe>
+            <input type="submit" value="Upload" id="submitBtn"/>
+        </form>
+        <br />
         <form method="get" action="./bfs_cgi/bio_def.cgi" id="setup">
             <label for="target">PDB Identifier:</label>
             <input value="aha" type="text" size="6" name="target" id="target">
@@ -32,16 +40,6 @@
             <div style="visibility:hidden" id="loader"><img src='./bfs_jvs/ajax-loader.gif' alt='Loading...'></div>
             <input type="hidden" name="state" value="download">
         </form>
-    <div id="setPDB" style="display:block">
-    </div>
-        <form id="fileupload" enctype="multipart/form-data" action="./bfs_cgi/bio_upl.cgi" method="post" target="uploadTrg">
-            <label for="target">Upload:</label>
-            <input type="file" name="thefile"/>
-            <iframe id="uploadTrg" name="uploadTrg" height="0" width="0" frameborder="0" scrolling="yes"></iframe>
-            <input type="submit" value="Upload" id="submitBtn"/>
-        </form>
-
-    <h2>BioFET-SIM</h2>
         <table>
             <tr>
             </tr>

@@ -104,7 +104,7 @@ n_0                = float(form['n_0'    ].value)
 nw_type            =       form['nw_type'].value 
 comment            = form['comment'].value
 bfs_file_name      = form['fileName'].value
-timestamp          = form['timestamp'].value
+#timestamp          = form['timestamp'].value
 # ........................................................................
 # ------------------------------------------------------------------------ 
 
@@ -181,7 +181,7 @@ if charge_model == 'multi':
             #sim.set_rho()
             results.append("%4.4f %4.4f\n" % (x, compute(sim.rho, nw_len, nw_rad, lay_ox, x,
                                     L_tf, lay_bf, eps_1, eps_2, eps_3, n_0, nw_type, num_prot))) 
-    bio_lib.prepare_results(target, results, x_val, x_lbl, num_prot, dG_G0, G0, bfs_file_name, timestamp)
+    bio_lib.prepare_results(target, results, x_val, x_lbl, num_prot, dG_G0, G0, bfs_file_name)#, timestamp)
 
 # ************************
 # Single charge simulation.
