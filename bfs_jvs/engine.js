@@ -103,6 +103,4 @@ $(document).ready(function()
     }
 
     $('#pHresp').click(pHresp);
-
-
 }); // End ready
