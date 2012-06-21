@@ -23,13 +23,11 @@
     </head>
 <body>
     <h2>BioFET-SIM</h2>
-    <div style="display:block">
         <form id="uploadform" method="post" enctype="multipart/form-data" action="upload.php">
             Upload a file: <input type="file" name="images[]" id="images" />
             <button type="submit" id="btn">Upload Files!</button>
         </form>
     <br />
-    <div id="setPDB" style="display:block">
         <form method="get" action="./bfs_cgi/bio_def.cgi" id="setup">
             <label for="target">PDB Identifier:</label>
             <input value="" type="text" size="24" name="target" id="target">
@@ -57,6 +55,7 @@
         </tr>
         <tr>
             <td>
+                <div id="inst">Use Ctrl-left (Ctrl-right on Linux) and drag the structure to adjust the orientation.</div>
                 <div id="imn"></div>
             </td> 
         </tr> 
@@ -66,7 +65,7 @@
     <!--BFS Parameter definitions-->
     <form id="form_bfs" action="./bfs_cgi/bio_sim.cgi">
     <fieldset> 
-            <table style="align:left">
+            <table>
                 <tr>
                     <td id="targetLab">Structure: </td>
                     <input type="hidden" id="targetLabHid" name="targetLab" value="">
@@ -86,7 +85,6 @@
                     <td><input type="button" id="pHresp" value="pH Response"></td>
                 </tr>
             </table>
-        <div class="setup">
         <table>
             <tr>
                 <td class="prop_title"><strong>NW Properties</strong></td>

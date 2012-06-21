@@ -6,7 +6,7 @@ body {
     background: white;
     color:  black;
     width:  auto;
-    margin-left:  10%;
+    margin-left:  2%;
     margin-right:  10%;
 }
 
@@ -33,7 +33,7 @@ hr {
 
 /* Table */
 table {
-    width:  80%;
+    width:  88%;
     margin:  0pt; 
 }
 td, th {
@@ -139,4 +139,10 @@ margin: 0px 0px 0px 0px;
 }
 .menu li {
 display: inline;
+}
+
+#inst {
+    color:Grey;
+    font-size:80%;
+    font-style:italic;
 }
