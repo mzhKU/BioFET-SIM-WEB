@@ -97,9 +97,7 @@ $(document).ready(function()
 
             // PROPKA
             $("#resPlot").attr("src", res_base_path + target + "-pH-reo.png?" + d.getTime());
-            
         }
-
     }); // End pH response click event.
 
     // Check HTTP response.
