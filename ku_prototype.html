@@ -23,21 +23,23 @@
     </head>
 <body>
     <h2>BioFET-SIM</h2>
-        <form id="fileupload" enctype="multipart/form-data" action="./bfs_cgi/bio_upl.cgi" method="post" target="uploadTrg">
-            <label for="target">Upload:</label>
-            <input type="file" name="thefile"/>
-            <iframe id="uploadTrg" name="uploadTrg" height="0" width="0" frameborder="0" scrolling="yes"></iframe>
-            <input type="submit" value="Upload" id="submitBtn"/>
+    <div style="display:block">
+        <form id="uploadform" method="post" enctype="multipart/form-data" action="upload.php">
+            Upload a file: <input type="file" name="images[]" id="images" />
+            <button type="submit" id="btn">Upload Files!</button>
         </form>
-        <br />
+    <br />
+    <div id="setPDB" style="display:block">
         <form method="get" action="./bfs_cgi/bio_def.cgi" id="setup">
             <label for="target">PDB Identifier:</label>
-            <input value="" type="text" size="6" name="target" id="target">
+            <input value="" type="text" size="24" name="target" id="target">
             <label for="pH">pH Value:</label>
-            <input value="" type="text" size="6" name="pH" id="pH">
+            <input value="7.4" type="text" size="6" name="pH" id="pH">
             <input type="submit" value="Initialize">
             <div style="visibility:visible" id="status">Ready.</div>
-            <div style="visibility:hidden" id="loader"><img src='./bfs_jvs/ajax-loader.gif' alt='Loading...'></div>
+            <div style="visibility:hidden" id="loader">
+            <img src='./bfs_jvs/ajax-loader.gif' alt='Loading...'>
+            </div>
             <input type="hidden" name="state" value="download">
         </form>
         <table>
@@ -63,6 +65,25 @@
         </table>
     <div>
     </div>
+    <table>
+        <tr>
+            <td>
+            <script type="text/javascript">
+                jmolInitialize("./jmol_dir", true);
+                jmolSetCallback("UseCommandThread", "true");
+                jmolApplet([400,300]);
+            </script>
+            </td>
+            <td>
+                <img id="resPlot" src="./bfs_res/result_default.svg" style="width:400px;height=300px">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div id="imn"></div>
+            </td> 
+        </tr> 
+    </table>
     <script type="text/javascript" src="./bfs_jvs/interface.js"></script>
 
     <!--BFS Parameter definitions-->
@@ -218,15 +239,25 @@
             </tr>
             <tr>
                 <td><label for="fileName">BioFET-SIM input file name:</label></td>
-                <td><input class="val" type="text" id="fileName" name="fileName" value="1AVD.bfs"></td>
+                <td><input class="val" type="text" id="fileName" name="fileName" value=""></td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
                 <td><label for="comment">Add comment to BFS input file:</label></td>
-                <td colspan="4"><textarea name="comment" rows="5" style="width:300px" id="comment">
+                <td><textarea name="comment" rows="5" style="width:300px" id="comment">
                                 </textarea>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr> 
+            <tr>
+                <td colspan="6">Download <a id="bfsInput" href="">BioFET-SIM input</a> file (right-click: Save as..).</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>
         </table>
         <input type="hidden" id="pqr" value="$pqr" name="pqr">
