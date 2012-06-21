@@ -142,8 +142,8 @@ if charge_model == 'multi':
     x_max = float(form[x_lbl+'_x_max'].value)
 
     # Prepare BFS command line version input file.
-    bio_lib.generate_bfs_input(target, params, sim.rho, num_prot,
-                                      comment, len(sim.rho), './bfs_res/' + bfs_file_name)
+    #bio_lib.generate_bfs_input(target, params, sim.rho, num_prot,
+    #                                  comment, len(sim.rho), './bfs_res/' + bfs_file_name)
 
     dG_G0 = round(compute(sim.rho, nw_len, nw_rad, lay_ox, L_d, L_tf, lay_bf,
                           eps_1, eps_2, eps_3, n_0, nw_type, num_prot), 8)
@@ -217,7 +217,7 @@ if charge_model == 'singl':
     #                           comment, len(sim.rho), file_name)
     #bio_lib.generate_bfs_input(target, params, sim.rho, x_lbl, num_prot,
     #                           comment, len(sim.rho), file_name)
-    bio_lib.generate_bfs_input(target, params, sim.rho, num_prot, comment, len(sim.rho), bfs_file_name)
+    #bio_lib.generate_bfs_input(target, params, sim.rho, num_prot, comment, len(sim.rho), bfs_file_name)
 
     # Dependence on NW length.
     if x_lbl == 'nw_len':

@@ -49,6 +49,7 @@ $(document).ready(function()
         $('#timestamp').attr('value', d.getTime()); 
         // Ajax BFS call.
         $.post(cgi_base_path + 'bio_sim.cgi', bfsForm, reload_plot);
+        $.post(cgi_base_path + 'bio_inp.cgi', bfsForm, cr);
         
         function reload_plot()
         { 

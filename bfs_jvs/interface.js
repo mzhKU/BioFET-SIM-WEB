@@ -33,6 +33,7 @@ function fadeBox(c) {
 
 /* Get coordinates of rotated charge distribution. */
 /* Compute stuff. */
+/* Out of use.
 function onClickWrite() {
     jmolScript('select 1.1');
     document.getElementById("av_RQ").value = jmolEvaluate('write("PDB")');
@@ -49,11 +50,4 @@ function showCoordinates(applet, atms) {
     jmolScript("select 1.1");
     document.getElementById("writeHere").value =jmolEvaluate('write("PDB")');
 }
-
-$('document').ready(function()
-{
-    $('#fileName').change(function()
-    {
-        $('#bfsInput').attr('href', $('#fileName'.attr('value')));
-    }); // end change.
-}); // end ready.
+*/ 

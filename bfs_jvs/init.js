@@ -18,10 +18,12 @@ $('document').ready(function()
         $('#targetLab').html("Structure: " + target);
         $('#targetLabHid').attr('value', target);
         $('#pHLab').html("Q<sub>tot</sub>at pH " + pH + ": 0.0");
+        $('#fileName').attr('value', target+".bfs");
+        $('#bfsInput').attr('href', pdb_base_path + target + ".bfs");
 
         //BFS Input comment section.
         var comment  = "# BioFET-SIM Calculation\n"
-            comment += "# Date of calculation:\n"
+            //comment += "# Date of calculation:\n"
             comment += "# Calculation target: " + target + "\n"
             comment += "# pH: " + pH + "\n"
             comment += "# Description: "

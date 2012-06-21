@@ -11,7 +11,7 @@
     </head>
 <body>
     <h2>BioFET-SIM</h2>
-    <div>
+    <div style="display:block">
         <form id="uploadform" method="post" enctype="multipart/form-data" action="upload.php">
             Upload a file: <input type="file" name="images[]" id="images" />
             <button type="submit" id="btn">Upload Files!</button>
@@ -206,7 +206,7 @@
             </tr>
             <tr>
                 <td><label for="fileName">BioFET-SIM input file name:</label></td>
-                <td><input class="val" type="text" id="fileName" name="fileName" value="1AVD.bfs"></td>
+                <td><input class="val" type="text" id="fileName" name="fileName" value=""></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -215,7 +215,16 @@
                 <td><label for="comment">Add comment to BFS input file:</label></td>
                 <td><textarea name="comment" rows="5" style="width:300px" id="comment">
                                 </textarea>
-                <td colspan="6">Download <a id="bfsInput" href="">BioFET-SIM input</a> file.</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr> 
+            <tr>
+                <td colspan="6">Download <a id="bfsInput" href="">BioFET-SIM input</a> file (right-click: Save as..).</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>
         </table>
         <input type="hidden" id="pqr" value="$pqr" name="pqr">

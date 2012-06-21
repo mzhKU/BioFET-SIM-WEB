@@ -361,7 +361,7 @@ def save_uploaded_file(form):
 #                       comment, num_qi, file_name):
 def generate_bfs_input(target, params, rho, num_prot, comment, num_qi, file_name):
     import pickle
-    f = open(file_name, 'wb')
+    f = open(pdb_base_path + file_name, 'wb')
     data = {}
     data['target']   = target
     data['rho']      = rho
