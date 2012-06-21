@@ -67,9 +67,21 @@ $(document).ready(function()
     /* -------------------------------------------------------
        pH response.
        ------------------------------------------------------- */
-    //$('#pHresp').click(function()
-    $('#pHresp').live('click', function()
+    // Check HTTP response.
+    function cr(resp) { console.log(resp); }
+
+    function pHresp()
     {
+        function plot_pH_resp()
+        {
+            var d = new Date();
+            // KU machine
+            //$("#resPlot").attr("src", res_base_path + target + "-pH-reo.svg?" + d.getTime());
+
+            // PROPKA
+            $("#resPlot").attr("src", res_base_path + target + "-pH-reo.png?" + d.getTime());
+        }
+
         // Jmol selectors
         var target   = $('#target').val();
         var atomInfo = jmolGetPropertyAsArray("atomInfo", "2.1"); 
@@ -87,20 +99,10 @@ $(document).ready(function()
         }
         // 'tmp_pqr' are coordinates after move.
         $('#tmp_pqr').attr('value', pqr);
-        $.post(cgi_base_path + 'bio_run.cgi', bfsForm, plot_pH_resp);
-        
-        function plot_pH_resp()
-        {
-            var d = new Date();
-            // KU machine
-            //$("#resPlot").attr("src", res_base_path + target + "-pH-reo.svg?" + d.getTime());
+        $.post(cgi_base_path + 'bio_run.cgi', bfsForm, plot_pH_resp); 
+    }
 
-            // PROPKA
-            $("#resPlot").attr("src", res_base_path + target + "-pH-reo.png?" + d.getTime());
-        }
-    }); // End pH response click event.
+    $('#pHresp').click(pHresp);
 
-    // Check HTTP response.
-    function cr(resp) { console.log(resp); }
 
 }); // End ready
