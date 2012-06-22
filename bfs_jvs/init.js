@@ -18,10 +18,12 @@ $('document').ready(function()
         $('#targetLab').html("Structure: " + target);
         $('#targetLabHid').attr('value', target);
         $('#pHLab').html("Q<sub>tot</sub>at pH " + pH + ": 0.0");
+        $('#fileName').attr('value', target+".bfs");
+        $('#bfsInput').attr('href', pdb_base_path + target + ".bfs");
 
         //BFS Input comment section.
         var comment  = "# BioFET-SIM Calculation\n"
-            comment += "# Date of calculation:\n"
+            //comment += "# Date of calculation:\n"
             comment += "# Calculation target: " + target + "\n"
             comment += "# pH: " + pH + "\n"
             comment += "# Description: "
@@ -88,8 +90,8 @@ $('document').ready(function()
             $('#pHLab').html("Q<sub>tot</sub>at pH " + pH + ": " + q_tot);
 
             // Charge distribution evaluation.
-            var pqr = resp.split(';')[1].split('=')[1];
-            $('#pqr').attr("value", pqr); 
+            //var pqr = resp.split(';')[1].split('=')[1];
+            //$('#pqr').attr("value", pqr); 
 
             // Charge distribution.
             jmolScript('load pqr::' + pdb_base_path + '%s-reo.pqr'.replace('%s', target+'-'+pHPad.split('\n')[0]));
@@ -113,7 +115,6 @@ $('document').ready(function()
             // Report Jmol setup finished.
             cr();
         }
-
 
         // Status update.
         function status_update(step) 
@@ -140,7 +141,7 @@ $('document').ready(function()
                 console.log(back[0]);
                 */
                 $('#loader').css({"visibility":"hidden"});
-                $('#status').html("Done.<br />");
+                //$('#status').html("Done.<br />");
                 console.log("Response done.");
             }
         } 

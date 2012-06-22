@@ -361,7 +361,7 @@ def save_uploaded_file(form):
 #                       comment, num_qi, file_name):
 def generate_bfs_input(target, params, rho, num_prot, comment, num_qi, file_name):
     import pickle
-    f = open(file_name, 'wb')
+    f = open(pdb_base_path + file_name, 'wb')
     data = {}
     data['target']   = target
     data['rho']      = rho
@@ -796,7 +796,7 @@ def prepare_pH_response_plot(target, pH_resp): #, mode):
               + results_path + '%s-pH-reo.eps '% target\
               + results_path + '%s-pH-reo.png' % target)
 
-def prepare_results(target, results, x_val, x_lbl, num_prot, dG_G0, G0, bfs_file_name, t): #, mode):
+def prepare_results(target, results, x_val, x_lbl, num_prot, dG_G0, G0, bfs_file_name): #, t): #, mode):
     num_prot_s = "%2.0f"%num_prot
     sub = dict(target=target, num_prot=num_prot_s,
                x_val=x_val, x_lbl=x_lbl,

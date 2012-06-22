@@ -104,7 +104,7 @@ n_0                = float(form['n_0'    ].value)
 nw_type            =       form['nw_type'].value 
 comment            = form['comment'].value
 bfs_file_name      = form['fileName'].value
-timestamp          = form['timestamp'].value
+#timestamp          = form['timestamp'].value
 # ........................................................................
 # ------------------------------------------------------------------------ 
 
@@ -124,7 +124,6 @@ if charge_model == 'multi':
     # distribution when the model starts the calculation.
     sim = SimMulti(target, av_RQ, pqr, params)
     sim.set_rho() 
-    print sim.rho[0]
     # Configuring protein population on NW.
     if not form.getvalue('num_prot_box'):
         # Compute number of proteins based on orientation.
@@ -141,6 +140,10 @@ if charge_model == 'multi':
     x_val = float(params[x_lbl])
     x_min = float(form[x_lbl+'_x_min'].value)
     x_max = float(form[x_lbl+'_x_max'].value)
+
+    # Prepare BFS command line version input file.
+    #bio_lib.generate_bfs_input(target, params, sim.rho, num_prot,
+    #                                  comment, len(sim.rho), './bfs_res/' + bfs_file_name)
 
     dG_G0 = round(compute(sim.rho, nw_len, nw_rad, lay_ox, L_d, L_tf, lay_bf,
                           eps_1, eps_2, eps_3, n_0, nw_type, num_prot), 8)
@@ -181,7 +184,7 @@ if charge_model == 'multi':
             #sim.set_rho()
             results.append("%4.4f %4.4f\n" % (x, compute(sim.rho, nw_len, nw_rad, lay_ox, x,
                                     L_tf, lay_bf, eps_1, eps_2, eps_3, n_0, nw_type, num_prot))) 
-    bio_lib.prepare_results(target, results, x_val, x_lbl, num_prot, dG_G0, G0, bfs_file_name, timestamp)
+    bio_lib.prepare_results(target, results, x_val, x_lbl, num_prot, dG_G0, G0, bfs_file_name)#, timestamp)
 
 # ************************
 # Single charge simulation.
@@ -214,7 +217,7 @@ if charge_model == 'singl':
     #                           comment, len(sim.rho), file_name)
     #bio_lib.generate_bfs_input(target, params, sim.rho, x_lbl, num_prot,
     #                           comment, len(sim.rho), file_name)
-    bio_lib.generate_bfs_input(target, params, sim.rho, num_prot, comment, len(sim.rho), bfs_file_name)
+    #bio_lib.generate_bfs_input(target, params, sim.rho, num_prot, comment, len(sim.rho), bfs_file_name)
 
     # Dependence on NW length.
     if x_lbl == 'nw_len':
