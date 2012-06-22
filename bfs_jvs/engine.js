@@ -3,8 +3,12 @@ $(document).ready(function()
     var res_base_path = './bfs_res/';
     var cgi_base_path = './bfs_cgi/';
     var pdb_base_path = './bfs_pdb/';
+
+    // Check HTTP response.
+    function cr(resp) { console.log(resp); }
+
     /* ------------------------------------------------------- */
-    /* Get Jmol coordinates
+    /* Get Jmol coordinates                                    */
     /* ------------------------------------------------------- */
     function getJmolCoordinates()
     {
@@ -27,9 +31,9 @@ $(document).ready(function()
         return data;
     }
 
-    /* -------------------------------------------------------
-       Form submission.
-       ------------------------------------------------------- */
+    /* ------------------------------------------------------- */
+    /* Form submission.                                        */
+    /* ------------------------------------------------------- */
     $("#form_bfs").submit(function()
     {
         // Submit event parameters.
@@ -64,12 +68,9 @@ $(document).ready(function()
         return false; 
     }); // End submit 
 
-    /* -------------------------------------------------------
-       pH response.
-       ------------------------------------------------------- */
-    // Check HTTP response.
-    function cr(resp) { console.log(resp); }
-
+    /* ------------------------------------------------------- */
+    /* pH response.                                            */
+    /* ------------------------------------------------------- */
     function pHresp()
     {
         function plot_pH_resp()
