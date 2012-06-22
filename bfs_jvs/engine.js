@@ -3,9 +3,18 @@ $(document).ready(function()
     var res_base_path = './bfs_res/';
     var cgi_base_path = './bfs_cgi/';
     var pdb_base_path = './bfs_pdb/';
+    var ajax_loader   = "<img src='./bfs_jvs/ajax-loader.gif' alt='Loading...'>";
 
     // Check HTTP response.
     function cr(resp) { console.log(resp); }
+
+    // Status update.
+    function status_update(step) 
+    {
+        $('#loader').css({"visibility":"visible"});
+        $('#status').html(step);
+        console.log("Started: " + step);
+    } 
 
     /* ------------------------------------------------------- */
     /* Get Jmol coordinates                                    */
@@ -77,6 +86,7 @@ $(document).ready(function()
     /* ------------------------------------------------------- */
     function pHresp()
     {
+        status_update('pH response calculation...');
         function plot_pH_resp()
         {
             var d = new Date();
@@ -85,6 +95,7 @@ $(document).ready(function()
 
             // PROPKA
             $("#resPlot").attr("src", res_base_path + target + "-pH-reo.png?" + d.getTime());
+            $('#loader').css({"visibility":"hidden"});
         }
 
         // Jmol selectors
@@ -100,11 +111,16 @@ $(document).ready(function()
                 pqr += atomInfo[i].x + ' ' + atomInfo[i].y + ' ' + atomInfo[i].z + '\n';
             } else {
                 pqr += atomInfo[i].x + ' ' + atomInfo[i].y + ' ' + atomInfo[i].z;
-            } 
+            }
         }
         // 'tmp_pqr' are coordinates after move.
-        $('#tmp_pqr').attr('value', pqr);
+        //$('#tmp_pqr').attr('value', pqr);
+        //$('#tmp_pqr').val(pqr);
+        form_bfs += '&tmp_pqr=' + pqr;
         $.post(cgi_base_path + 'bio_run.cgi', form_bfs, plot_pH_resp); 
+
+        $('#loader').css({"visibility":"visible"});
+        $('#status').html("Ready.");
     }
 
     $('#pHresp').click(pHresp);

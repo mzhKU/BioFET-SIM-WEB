@@ -116,7 +116,6 @@ $('document').ready(function()
             cr();
         }
 
-
         // Status update.
         function status_update(step) 
         {
@@ -142,7 +141,7 @@ $('document').ready(function()
                 console.log(back[0]);
                 */
                 $('#loader').css({"visibility":"hidden"});
-                $('#status').html("Done.<br />");
+                //$('#status').html("Done.<br />");
                 console.log("Response done.");
             }
         } 
