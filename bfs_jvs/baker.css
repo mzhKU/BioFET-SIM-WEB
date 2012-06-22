@@ -141,8 +141,12 @@ margin: 0px 0px 0px 0px;
 display: inline;
 }
 
-#inst {
+.inst {
     color:Grey;
     font-size:80%;
     font-style:italic;
+}
+.cite {
+    color:Grey;
+    font-size:80%;
 }

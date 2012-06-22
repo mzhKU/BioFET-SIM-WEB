@@ -2,6 +2,7 @@
 
 <html>
     <head>
+        <title>BioFET-SIM Online</title>
         <link rel="stylesheet" href="./bfs_jvs/baker.css" type="text/css">
         <script type="text/javascript" src="./jmol_dir/jmol.js"></script>
         <script type="text/javascript" src="./bfs_jvs/jq.js"></script>
@@ -32,7 +33,7 @@
             <label for="target">PDB Identifier:</label>
             <input value="" type="text" size="24" name="target" id="target">
             <label for="pH">pH Value:</label>
-            <input value="" type="text" size="6" name="pH" id="pH">
+            <input value="7.4" type="text" size="6" name="pH" id="pH">
             <input type="submit" value="Initialize">
             <div style="visibility:visible" id="status">Ready.</div>
             <div style="visibility:hidden" id="loader">
@@ -57,7 +58,7 @@
         </tr>
         <tr>
             <td>
-                <div id="inst">Use Ctrl-left (Ctrl-right on Linux) and drag the structure to adjust the orientation.</div>
+                <div class="inst">Use Ctrl-left (Ctrl-right on Linux) and drag the structure to adjust the orientation.</div>
                 <!--
                 <div id="imn"></div>
                 -->
@@ -243,5 +244,35 @@
         <input type="hidden" value="$16.59" name="Q_tot"> 
         <input type="hidden" value="" id="tmp_pqr" name="tmp_pqr">
         </form>
+    <br /> 
+    <hr> 
+    <div class="cite">
+    Original <a href="http://www.biofetsim.org/biofet-sim-1.0-interface.cgi">BioFET-SIM Interface 1.0</a>
+    <p>Please cite these references in publications:</p>
+    De Vico et al., <a href="http://dx.doi.org/10.1039/C0NR00442A"><I>Nanoscale</I></a>, 2011, 3, 706-717, DOI:10.1039/C0NR00442A.<br /> 
+    De Vico et al., <a href="http://pubs.rsc.org/en/Content/ArticleLanding/2011/NR/c1nr10316d"><I>Nanoscale</I></a>, 2011, 3, 3635-3640, DOI:10.1039/C1NR10316D.<br /> 
+    Hediger et al., <a href="http://arxiv.org/abs/1204.6140">arxiv.org</a>, <I>submitted to PLoS ONE</I>.<br />
+    <p>Any error reports are welcomed at: biofetsim at gmail dot com</p>
+    <p>Instruction <a href="http://www.youtube.com/watch?v=sk3OWHZ2cPQ&feature=player_embedded" target="_blank">video</a> available.</p>
+
+    <P CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in; widows: 0; orphans: 0">
+    The BioFET method is developed by the<br>
+    <font COLOR="#0000ff"><U><A HREF="http://propka.ki.ku.dk/~jhjensen">Jensen
+    Research Group</A></U></font><br> 
+    Department of Chemistry<br> 
+    University of Copenhagen</P>
+
+    <p align=center>
+    <!-- Site Meter -->
+    <script type="text/javascript" src="http://s47.sitemeter.com/js/counter.js?site=s47biofet-sim">
+    </script>
+    <noscript>
+    <a href="http://s47.sitemeter.com/stats.asp?site=s47biofet-sim" target="_top">
+    <img src="http://s47.sitemeter.com/meter.asp?site=s47biofet-sim" alt="Site Meter" border="0"></a>
+    </noscript>
+    <!-- Copyright (c)2009 Site Meter -->
+    </p>
+    </div>
+
 </body>
 </html>
