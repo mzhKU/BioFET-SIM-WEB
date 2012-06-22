@@ -90,8 +90,8 @@ $('document').ready(function()
             $('#pHLab').html("Q<sub>tot</sub>at pH " + pH + ": " + q_tot);
 
             // Charge distribution evaluation.
-            var pqr = resp.split(';')[1].split('=')[1];
-            $('#pqr').attr("value", pqr); 
+            //var pqr = resp.split(';')[1].split('=')[1];
+            //$('#pqr').attr("value", pqr); 
 
             // Charge distribution.
             jmolScript('load pqr::' + pdb_base_path + '%s-reo.pqr'.replace('%s', target+'-'+pHPad.split('\n')[0]));

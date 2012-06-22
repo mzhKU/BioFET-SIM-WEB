@@ -43,17 +43,21 @@ $(document).ready(function()
 
         // Setting the coordinates of the charges.
         var data = getJmolCoordinates(); 
-        $('#pqr').attr('value', data); 
+        //$('#pqr').attr('value', data); 
+        $('#pqr').val(data);
 
         // Select movable atoms.
         jmolScript("select 1.1 or 2.1"); 
 
         // Serialize BFS parameter form data and submit AJAX call.
-        var bfsForm = $("#form_bfs").serialize();
-        $('#timestamp').attr('value', d.getTime()); 
+        var form_bfs = $("#form_bfs").serialize();
+
+        // Required for identification of new figures.
+        $('#timestamp').val(d.getTime()); 
+
         // Ajax BFS call.
-        $.post(cgi_base_path + 'bio_sim.cgi', bfsForm, reload_plot);
-        $.post(cgi_base_path + 'bio_inp.cgi', bfsForm, cr);
+        $.post(cgi_base_path + 'bio_sim.cgi', form_bfs, reload_plot);
+        $.post(cgi_base_path + 'bio_inp.cgi', form_bfs, cr);
         
         function reload_plot()
         { 
@@ -86,7 +90,7 @@ $(document).ready(function()
         // Jmol selectors
         var target   = $('#target').val();
         var atomInfo = jmolGetPropertyAsArray("atomInfo", "2.1"); 
-        var bfsForm  = $('#form_bfs').serialize();
+        var form_bfs  = $('#form_bfs').serialize();
         var pqr      = '';
         for(var i=0; i<atomInfo.length; i++)
         {
@@ -100,7 +104,7 @@ $(document).ready(function()
         }
         // 'tmp_pqr' are coordinates after move.
         $('#tmp_pqr').attr('value', pqr);
-        $.post(cgi_base_path + 'bio_run.cgi', bfsForm, plot_pH_resp); 
+        $.post(cgi_base_path + 'bio_run.cgi', form_bfs, plot_pH_resp); 
     }
 
     $('#pHresp').click(pHresp);
