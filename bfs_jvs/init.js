@@ -32,7 +32,7 @@ $('document').ready(function()
         // Initialize BFS interface.
         status_update('Downloading...');
         $.get(cgi_base_path + 'bio_dwn.cgi', formData, rechain);
-        $("#resPlot").attr("src", res_base_path + "result_default.svg");
+        $("#resPlot").attr("src", res_base_path + "result_default.png");
         console.log("Download request sent, waiting for response...");
 
         function def()
