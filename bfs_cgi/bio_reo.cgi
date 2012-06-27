@@ -21,6 +21,28 @@ import os
 import bio_lib
 # .......................................................................  
 
+
+# ***********************************************************************
+# Evaluate initialization form controls.
+# ......................................
+overwrite = form.getvalue('overwrite')
+uploaded  = form.getvalue('uploaded')
+if overwrite == None:
+    overwrite = False
+else:
+    overwrite = True
+
+if uploaded == None:
+    uploaded = False
+else:
+    uploaded = True 
+# ......................................
+# -----------------------------------------------------------------------
+
+
+# ***********************************************************************
+# Reorient structure.
+# ......................................
 class Reo:
     """Helper class.
     Carries out reorientation of molecular structure.
@@ -30,14 +52,12 @@ class Reo:
         # Define a 'VMD' environment to avoid path.
         self.target  = target
         self.reo     = bio_lib.pdb_base_path + self.target + '-reo.pdb'
-        #self.vmd_cmd = bio_lib.vmd_base_path + 'vmd_MACOSXX86' 
         self.vmd_cmd = bio_lib.vmd_cmd_path
 
     def get_com(self): 
         """Calling VMD and returning the output directly."""
         #+ 'lappend /var/www/vmd/lib_vmd/scripts/la1.0\n'\
         #+ 'lappend /var/www/vmd/lib_vmd/scripts/orient\n'
-        #vmd_src = 'puts "HERE"\n'
         vmd_src = 'mol load pdb %s-fix.pdb\n' % (bio_lib.pdb_base_path + self.target)\
                 + 'set HOME ' + bio_lib.vmd_base_path + '\n'\
                 + 'molinfo 0 get center\n'\
@@ -57,7 +77,6 @@ class Reo:
         Reorientation using Orient and la.1.0 plugins in VMD."""
         # <<PATH>>
         if not os.path.exists(bio_lib.pdb_base_path + target + '-reo.pdb'):
-            print "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
             for line in self.get_com().split('\n'):
                 print line
                 if len(line) > 0 and line[0] == '{':
@@ -73,12 +92,38 @@ class Reo:
 # --------------------------------------------------------------------------
 
 # **************************************************************************
+# Form control logic.
+# ..........................................................................
+def check_availability_and_fix(target):
+    # Use upload.
+    if uploaded:
+        # Force overwrite.
+        if overwrite:
+            reo = Reo(target)
+            reo.translate_com(target)
+            reo_out = reo.translate_com(target)
+        # Does not exist.
+        if not os.path.exists(bio_lib.pdb_base_path + target + '-reo.pdb'):
+            reo = Reo(target)
+            reo.translate_com(target)
+            reo_out = reo.translate_com(target)
+    # Download.
+    else:
+        # Use existing.
+        if os.path.exists(bio_lib.pdb_base_path + target + '-reo.pdb'):
+            print "Structure available." 
+        # Fixed structure not available.
+        else:
+            reo = Reo(target)
+            reo.translate_com(target)
+            reo_out = reo.translate_com(target)
+# ..........................................................................
+# --------------------------------------------------------------------------
+
+
+# **************************************************************************
 # DIRECT LAUNCH
 # ..........................................................................
 if __name__ == '__main__':
-    reo = Reo(target)
-    reo.translate_com(target)
-    reo_out = reo.translate_com(target)
-    #print "<pre>"
-    #print "</pre>"
+    bio_lib.availability_closure('-reo.pdb')(target, uploaded, overwrite, 
 # --------------------------------------------------------------------------

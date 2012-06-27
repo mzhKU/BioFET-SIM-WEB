@@ -682,6 +682,35 @@ def rechain(target):
                 atm_tot+=1 
         rec.close()
 
+def availability_closure(state):
+    """
+        'state': '-rec', '-fix', '-reo'
+    """
+    def check_availability_and_apply(target, uploaded, overwrite, func):
+        # Use upload.
+        if uploaded:
+            print "Uploaded"
+            # Force overwrite.
+            if overwrite:
+                print "Overwriting"
+                func(target)
+            # Does not exist.
+            if not os.path.exists(pdb_base_path + target + state): 
+                print "Not found, fixing."
+                func(target)
+            # Use existing.
+            #else:
+            #    print "Using available structure."
+        # Download.
+        else:
+            # Use existing.
+            if os.path.exists(pdb_base_path + target + state):
+                print "Structure available."
+            # Structure not available.
+            else:
+                func(target)
+    return check_availability_and_apply
+
 def get_nw_surface(z_dim, target):
     offset = -z_dim/2.0
     #print "<pre>bio_lib.get_nw_surface.offset: %4.2f</pre>" % offset

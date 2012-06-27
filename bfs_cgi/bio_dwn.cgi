@@ -57,7 +57,12 @@ import bio_lib
 def download_pdb(target):
     # Use upload.
     if uploaded:
-        print "Using uploaded structure."
+        # Force overwrite.
+        if overwrite:
+            print "Using uploaded structure and overwriting previous version."
+        # No overwrite.
+        else:
+            print "Using uploaded structure without overwriting."
     # Download.
     else:
         # Use existing.
