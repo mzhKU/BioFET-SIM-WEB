@@ -50,7 +50,7 @@ $('document').ready(function()
         function fix()
         {
             status_update('Fixing...');
-            $.get(cgi_base_path + 'bio_fix.cgi', formData, cr);
+            $.get(cgi_base_path + 'bio_fix.cgi', formData, reo);
             console.log("PDB fix request sent, waiting for response...");
         }
 
