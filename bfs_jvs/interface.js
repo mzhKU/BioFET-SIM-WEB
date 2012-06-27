@@ -31,6 +31,23 @@ function fadeBox(c) {
     }
 }
 
+$(document).ready(function()
+{
+    $('#uploaded').click(function()
+    {
+        var thisCheck = $(this);
+        if (thisCheck.is(':checked'))
+        {
+            $('#overwriteLab').attr('style', 'visibility:visible');
+            $('#overwrite').attr('style', 'visibility:visible');
+        } else {
+            $('#overwrite').attr('checked', false);
+            $('#overwriteLab').attr('style', 'visibility:hidden');
+            $('#overwrite').attr('style', 'visibility:hidden');
+        } 
+    }); // end click
+}); // end ready
+
 /* Get coordinates of rotated charge distribution. */
 /* Compute stuff. */
 /* Out of use.

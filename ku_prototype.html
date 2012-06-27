@@ -10,6 +10,7 @@
         <script type="text/javascript" src="./bfs_jvs/num_lib.js"></script>
         <script type="text/javascript" src="./bfs_jvs/engine.js"></script> 
         <script type="text/javascript">
+        /*
         $(function() { 
         $('#fileupload').submit(function() { 
             var filename = $('input[type=file]').val().split('\\').pop();
@@ -20,16 +21,23 @@
                 return true;
             }); 
         });
+        */
         </script>
     </head>
 <body>
     <h2>BioFET-SIM</h2>
         <form id="uploadform" method="post" enctype="multipart/form-data" action="upload.php">
             Upload a file: <input type="file" name="images[]" id="images" />
-            <button type="submit" id="btn">Upload Files!</button>
+            <button type="submit" id="btn">Upload Files</button>
         </form>
     <br />
         <form method="get" action="./bfs_cgi/bio_def.cgi" id="setup">
+            <p>
+            <label for="uploaded">Use uploaded:</label>
+            <input type="checkbox" value="uploaded" id="uploaded" name="uploaded">
+            <label style="visibility:hidden" for="overwrite" id="overwriteLab">Overwrite existing?</label>
+            <input style="visibility:hidden" type="checkbox" value="overwrite" id="overwrite" name="overwrite">
+            </p>
             <label for="target">PDB Identifier:</label>
             <input value="" type="text" size="24" name="target" id="target">
             <label for="pH">pH Value:</label>
@@ -263,7 +271,6 @@
             University of Copenhagen</P>
 
             <p align=center>
-            -->
             <!-- Copyright (c)2009 Site Meter -->
             <!-- Site Meter -->
             <script type="text/javascript" src="http://s47.sitemeter.com/js/counter.js?site=s47biofet-sim">
