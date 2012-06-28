@@ -30,6 +30,7 @@ if form.getvalue('num_prot_box'):
     calc_num_prot = "no"
 else:
     calc_num_prot = "yes"
+button_clicked = form['action'].value 
 # NW properties
 params = {}
 params['nw_len' ]  = float(form['nw_len' ].value)
@@ -128,15 +129,12 @@ class SimMulti:
 # Starting BioFET-SIM calculation.
 # Initializing the simulation. The simulation calls the charge
 # distribution when the model starts the calculation.
-def get_pH_resp(ph, dist):
+def get_resp(ph, dist):
     sim = SimMulti(target, copy.deepcopy(dist), dist, params)
     sim.set_rho() 
-    # Configuring protein population on NW.
+    # Number of proteins on wire.
     if not form.getvalue('num_prot_box'):
         # Compute number of proteins based on orientation.
-        # <<EDIT>>
-        # 29.05.2012: sim.av_RQ -> sim.pqr
-        #num_prot = bio_lib.get_num_prot(sim.av_RQ, sim.param['nw_len'], sim.param['nw_rad']) 
         num_prot = bio_lib.get_num_prot(sim.rho, sim.param['nw_len'], sim.param['nw_rad']) 
     else:
         # Use constant number of proteins.
@@ -153,19 +151,45 @@ def get_pH_resp(ph, dist):
 # Initialize charge distribution for pH range.
 # ........................................................................
 if __name__ == '__main__': 
-    pH_resp  = []
-    pH_range = range(1,15)
-    for pHi in pH_range:
-        rho = Rho(target, pdb_new)
-        rho.load_pdb()
-        rho.unique_residue_ids()
-        rho.cluster_residues()
-        rho.set_terminals()
-        rho.set_RQ()
-        rho.set_av_RQ()
-        dist = rho.set_pqr(target, rho.av_RQ, pHi, open(bio_lib.pdb_base_path + target + '-reo.pka', 'r'))
-        pH_resp.append(get_pH_resp(pHi, dist))
-    print len(pH_resp)
-    bio_lib.prepare_pH_response_plot(target, pH_resp)
+    # Initialization of simulation object.
+    # Simulation calls charge distribution when model starts calculation.
+    sim = SimMulti(target, copy.deepcopy(pdb_new), pdb_new, params)
+    sim.set_rho() 
+    # Configuration of protein population on NW.
+    if not form.getvalue('num_prot_box'):
+        # Compute number of proteins based on orientation.
+        num_prot = bio_lib.get_num_prot(sim.rho, sim.param['nw_len'], sim.param['nw_rad']) 
+    else:
+        # Use constant number of proteins.
+        num_prot = int(form['num_prot_inp'].value) 
+    # Results data container and setting label, base value and percentage range of results graph.
+    results=[] 
+    x_lbl = form['abs'].value
+    x_val = float(params[x_lbl])
+    x_min = float(form[x_lbl+'_x_min'].value)
+    x_max = float(form[x_lbl+'_x_max'].value)
+
+    # Initialize charge distribution after move.
+    rho = Rho(target, pdb_new)
+    rho.load_pdb()
+    rho.unique_residue_ids()
+    rho.cluster_residues()
+    rho.set_terminals()
+    rho.set_RQ()
+    rho.set_av_RQ()
+
+    # BFS response or pH response.
+    if button_clicked == 'BioFET-SIM':
+        pH = float(form['pH'].value)
+        dist = rho.set_pqr(target, rho.av_RQ, pH, open(bio_lib.pdb_base_path+target+'-reo.pka','r'))
+        print get_resp(pH, dist)
+    else: 
+        pH_resp  = []
+        pH_range = range(1,15)
+        for pHi in pH_range:
+            dist = rho.set_pqr(target,rho.av_RQ,pHi,open(bio_lib.pdb_base_path+target+'-reo.pka','r'))
+            pH_resp.append(get_resp(pHi, dist))
+        print len(pH_resp)
+        bio_lib.prepare_pH_response_plot(target, pH_resp)
 # ........................................................................
 # ------------------------------------------------------------------------ 
