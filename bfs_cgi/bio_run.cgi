@@ -23,8 +23,9 @@ form    = cgi.FieldStorage()
 target  = form['targetLab'].value 
 tmp_pqr = form['tmp_pqr'].value
 pdb_new = bio_lib.rewrite_pdb(target, tmp_pqr)
+abs_axis = form['abs'].value
 # Should BioFET-SIM single or multiple charge model be used.
-charge_model      = form['model'].value
+charge_model = form['model'].value
 # Handling the "Number of Proteins on NW" checkbox. Use default value if checked.
 if form.getvalue('num_prot_box'):
     calc_num_prot = "no"
@@ -112,14 +113,6 @@ class SimMulti:
                     rho.append(r_i.split())
                     cnt += 1
         self.m = len(rho)
-    
-    def get_x_range(self, x_val, percentage_range):
-        """Generating the range for which to plot the sensitivity.
-        """
-        ini = x_val*(1.0-percentage_range/100.0)
-        fin = x_val*(1.0+percentage_range/100.0)
-        dif = (fin-ini)/100.0
-        return numpy.arange(ini, fin+dif, dif)
     # ....................................................................
 # ------------------------------------------------------------------------ 
 
@@ -140,9 +133,14 @@ def get_resp(ph, dist):
         # Use constant number of proteins.
         num_prot = int(form['num_prot_inp'].value) 
     # Results data container and setting label, base value and percentage range of results graph.
+    results = []
+    x_val = float(params[abs_axis])
+    x_min = float(form[abs_axis+'_x_min'].value)
+    x_max = float(form[abs_axis+'_x_max'].value)
+
     dG_G0 = round(bio_com.compute(sim.rho, nw_len, nw_rad, lay_ox, L_d, L_tf, lay_bf,
                           eps_1, eps_2, eps_3, n_0, nw_type, num_prot), 8)
-    G0    = round(bio_lib.G0(nw_len, nw_rad, n_0, mu))
+    G0    = round(bio_lib.G0(nw_len, nw_rad, n_0, mu)) 
     return dG_G0
 # ........................................................................
 # ------------------------------------------------------------------------ 
@@ -162,13 +160,6 @@ if __name__ == '__main__':
     else:
         # Use constant number of proteins.
         num_prot = int(form['num_prot_inp'].value) 
-    # Results data container and setting label, base value and percentage range of results graph.
-    results=[] 
-    x_lbl = form['abs'].value
-    x_val = float(params[x_lbl])
-    x_min = float(form[x_lbl+'_x_min'].value)
-    x_max = float(form[x_lbl+'_x_max'].value)
-
     # Initialize charge distribution after move.
     rho = Rho(target, pdb_new)
     rho.load_pdb()
@@ -180,9 +171,21 @@ if __name__ == '__main__':
 
     # BFS response or pH response.
     if button_clicked == 'BioFET-SIM':
+        # Results data container and setting label, base value and percentage range of results graph.
+        results=[] 
+        x_lbl = form['abs'].value
+        x_val = float(params[x_lbl])
+        x_min = float(form[x_lbl+'_x_min'].value)
+        x_max = float(form[x_lbl+'_x_max'].value) 
         pH = float(form['pH'].value)
-        dist = rho.set_pqr(target, rho.av_RQ, pH, open(bio_lib.pdb_base_path+target+'-reo.pka','r'))
-        print get_resp(pH, dist)
+        dist = rho.set_pqr(target, rho.av_RQ, pH, open(bio_lib.pdb_base_path+target+'-reo.pka','r')) 
+        # Variable dependent function generation.
+        #fu = bio_lib.get_compute_function(x_lbl)
+        print bio_com.compute(sim.rho, nw_len, nw_rad, lay_ox, L_d, L_tf, lay_bf, eps_1, eps_2, eps_3, n_0, nw_type, num_prot)
+        if x_lbl == 'L_asdfa':
+            for x in arange(x_min, x_max, (x_max-x_min)/100.0):
+                results.append("%4.4f %4.4f\n" % (x, bio_com.compute(sim.rho, nw_len, nw_rad, lay_ox, x, L_tf, lay_bf, eps_1, eps_2, eps_3, n_0, nw_type, num_prot))) 
+        #bio_lib.prepare_results(target, results, x_val, x_lbl, num_prot, dG_G0, G0, bfs_file_name)#, timestamp)
     else: 
         pH_resp  = []
         pH_range = range(1,15)

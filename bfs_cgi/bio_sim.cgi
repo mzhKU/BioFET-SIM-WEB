@@ -149,8 +149,7 @@ if charge_model == 'multi':
 
     dG_G0 = round(compute(sim.rho, nw_len, nw_rad, lay_ox, L_d, L_tf, lay_bf,
                           eps_1, eps_2, eps_3, n_0, nw_type, num_prot), 8)
-    G0    = round(bio_lib.G0(nw_len, nw_rad, n_0, mu))
-
+    G0    = round(bio_lib.G0(nw_len, nw_rad, n_0, mu)) 
     print dG_G0
 
     # Dependence on NW length.

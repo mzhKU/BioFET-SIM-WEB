@@ -18,6 +18,7 @@ from subprocess import Popen, PIPE
 from string import Template
 import itertools
 import datetime
+import bio_com
 import os.path
 #import bio_tst
 import string
@@ -682,31 +683,25 @@ def rechain(target):
                 atm_tot+=1 
         rec.close()
 
+"""
+def get_compute_function(var):
+    if var == 'L_d':
+        def func(sim.rho, nw_len, nw_rad, lay_ox, x, L_tf, lay_bf, eps_1, eps_2, eps_3, n_0, nw_type, num_prot):
+            return bio_com.compute(sim.rho, nw_len, nw_rad, lay_ox, x, L_tf, lay_bf, eps_1, eps_2, eps_3, n_0, nw_type, num_prot)
+    return func 
+"""
+
 def availability_closure(state):
-    """
-        'state': '-rec', '-fix', '-reo'
-    """
+    """'state': '-rec', '-fix', '-reo'"""
     def check_availability_and_apply(target, uploaded, overwrite, func):
-        # Use upload.
         if uploaded:
-            print "Uploaded"
-            # Force overwrite.
             if overwrite:
-                print "Overwriting"
                 func(target)
-            # Processed files do not exist.
             if not os.path.exists(pdb_base_path + target + state): 
-                print "Not found processed file for state " + state + ", fixing."
                 func(target)
-            # Use existing.
-            #else:
-            #    print "Using available structure."
-        # Download.
         else:
-            # Use existing.
             if os.path.exists(pdb_base_path + target + state):
                 print "Structure available."
-            # Structure not available.
             else:
                 func(target)
     return check_availability_and_apply
