@@ -19,6 +19,7 @@ $(document).ready(function()
     /* ------------------------------------------------------- */
     /* Get Jmol coordinates                                    */
     /* ------------------------------------------------------- */
+    /*
     function getJmolCoordinates()
     {
         jmolScript("select 1.1"); 
@@ -35,14 +36,16 @@ $(document).ready(function()
             data += atomsInfo[i].z.toPrecision(5) + ' ';
             data += fileInfo[i].slice(55) + '\n';
         } 
-        /* Select movable atoms. */
+        // Select movable atoms.
         jmolScript("select 1.1 or 2.1"); 
         return data;
     }
+    */
 
     /* ------------------------------------------------------- */
     /* Form submission.                                        */
     /* ------------------------------------------------------- */
+    /*
     $("#form_bfs").submit(function()
     {
         // Submit event parameters.
@@ -101,21 +104,19 @@ $(document).ready(function()
         // Prevent default form submit.
         return false; 
     }); // End submit 
+    */
 
     /* ------------------------------------------------------- */
-    /* pH response.                                            */
+    /* BioFET-SIM signal.                                      */
     /* ------------------------------------------------------- */
-    function pHresp()
+    /*
+    function bfs_signal()
     {
-        status_update('pH response calculation...');
-        function plot_pH_resp()
+        status_update('BioFET-SIM signal calculation...');
+        function plot_bfs_resp()
         {
             var d = new Date();
-            // KU machine
-            //$("#resPlot").attr("src", res_base_path + target + "-pH-reo.svg?" + d.getTime());
-
-            // PROPKA
-            $("#resPlot").attr("src", res_base_path + target + "-pH-reo.png?" + d.getTime());
+            $("#resPlot").attr("src", res_base_path + target + "-reo.png?" + d.getTime());
             $('#loader').css({"visibility":"hidden"});
         }
 
@@ -138,11 +139,76 @@ $(document).ready(function()
         //$('#tmp_pqr').attr('value', pqr);
         //$('#tmp_pqr').val(pqr);
         form_bfs += '&tmp_pqr=' + pqr;
-        $.post(cgi_base_path + 'bio_run.cgi', form_bfs, plot_pH_resp); 
+        // Get clicked button id.
+        form_bfs += '&action=' + $(this).val();
+        console.log(form_bfs);
+        //$.post(cgi_base_path + 'bio_sim.cgi', form_bfs, cr);
+        $.post(cgi_base_path + 'bio_run.cgi', form_bfs, cr);
 
         $('#loader').css({"visibility":"visible"});
         $('#status').html("Ready.");
+    } 
+    $('#bfs_signal').click(bfs_signal);
+    */
+
+    /* ------------------------------------------------------- */
+    /* Response.                                               */
+    /* ------------------------------------------------------- */
+    function resp()
+    {
+
+        function plot_pH_resp()
+        {
+            var d = new Date();
+            $("#resPlot").attr("src", res_base_path + target + "-pH-reo.png?" + d.getTime());
+        }
+
+        function plot_bfs_resp()
+        {
+            var d = new Date();
+            $("#resPlot").attr("src", res_base_path + target + "-reo.png?" + d.getTime());
+        }
+
+        // Jmol selectors
+        var target   = $('#target').val();
+        var atomInfo = jmolGetPropertyAsArray("atomInfo", "2.1"); 
+        var form_bfs  = $('#form_bfs').serialize();
+        var pqr      = '';
+        for(var i=0; i<atomInfo.length; i++)
+        {
+            // Prevent empty last line.
+            if(i<atomInfo.length-1)
+            {
+                pqr += atomInfo[i].x + ' ' + atomInfo[i].y + ' ' + atomInfo[i].z + '\n';
+            } else {
+                pqr += atomInfo[i].x + ' ' + atomInfo[i].y + ' ' + atomInfo[i].z;
+            }
+        }
+
+        /* 
+        'tmp_pqr':  Coordinates of charges after move.
+        'atomInfo': Does not provide access to charges.
+                    Charges are added to BioFET-SIM input on server side.
+        */
+        form_bfs += '&tmp_pqr=' + pqr;
+
+        // Get clicked button id.
+        form_bfs += '&action=' + $(this).val(); 
+        form_bfs += '&pH=' + $('#pH').val();
+        if ($(this).val() == 'BioFET-SIM')
+        {
+            console.log("BFS");
+            $('#loader').css({"visibility":"visible"});
+            $.post(cgi_base_path + 'bio_run.cgi', form_bfs, cr);
+        } else {
+            $('#loader').css({"visibility":"visible"});
+            $.post(cgi_base_path + 'bio_run.cgi', form_bfs, plot_pH_resp);
+        }
+
+        $('#status').html("Ready.");
+        $('#loader').css({"visibility":"hidden"});
     }
 
-    $('#pHresp').click(pHresp);
+    $('#pHresp').click(resp);
+    $('#bfs_signal').click(resp);
 }); // End ready
