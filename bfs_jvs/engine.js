@@ -50,24 +50,6 @@ $(document).ready(function()
         var pH            = $('#pHLab').val();
         var d             = new Date();
 
-        // Setting the coordinates of the charges.
-        var data = getJmolCoordinates(); 
-        //$('#pqr').attr('value', data); 
-        $('#pqr').val(data);
-
-        // Select movable atoms.
-        jmolScript("select 1.1 or 2.1"); 
-
-        // Serialize BFS parameter form data and submit AJAX call.
-        var form_bfs = $("#form_bfs").serialize();
-
-        // Required for identification of new figures.
-        $('#timestamp').val(d.getTime()); 
-
-        // Ajax BFS call.
-        $.post(cgi_base_path + 'bio_sim.cgi', form_bfs, reload_plot);
-        $.post(cgi_base_path + 'bio_inp.cgi', form_bfs, cr);
-        
         function reload_plot()
         { 
             // KU machine
@@ -77,6 +59,45 @@ $(document).ready(function()
             $("#resPlot").attr("src", res_base_path + target + "-reo.png?" + d.getTime());
         } 
 
+        // Setting the coordinates of the charges.
+        //var data = getJmolCoordinates(); 
+        //$('#pqr').attr('value', data); 
+        //$('#pqr').val(data);
+
+        // Select movable atoms.
+        //jmolScript("select 1.1 or 2.1"); 
+
+        // Serialize BFS parameter form data and submit AJAX call.
+        // Jmol selectors
+        var target   = $('#target').val();
+        var atomInfo = jmolGetPropertyAsArray("atomInfo", "2.1"); 
+        var form_bfs = $("#form_bfs").serialize();
+
+        // Set coordinates.
+        var pqr      = '';
+        for(var i=0; i<atomInfo.length; i++)
+        {
+            // Prevent empty last line.
+            if(i<atomInfo.length-1)
+            {
+                pqr += atomInfo[i].x + ' ' + atomInfo[i].y + ' ' + atomInfo[i].z + '\n';
+            } else {
+                pqr += atomInfo[i].x + ' ' + atomInfo[i].y + ' ' + atomInfo[i].z;
+            }
+        }
+        // 'tmp_pqr' are coordinates after move.
+        //$('#tmp_pqr').attr('value', pqr);
+        //$('#tmp_pqr').val(pqr);
+        console.log(pqr);
+        form_bfs += '&tmp_pqr=' + pqr;
+
+        // Required for identification of new figures.
+        //$('#timestamp').val(d.getTime()); 
+
+        // Ajax BFS call.
+        $.post(cgi_base_path + 'bio_sim.cgi', form_bfs, reload_plot);
+        $.post(cgi_base_path + 'bio_inp.cgi', form_bfs, cr);
+        
         // Prevent default form submit.
         return false; 
     }); // End submit 

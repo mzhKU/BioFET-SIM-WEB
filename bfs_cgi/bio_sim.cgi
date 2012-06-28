@@ -57,7 +57,8 @@ import time
 form              = cgi.FieldStorage()
 target            = form['targetLab'].value 
 # Stored in input type hidden
-pqr               = form['pqr'].value
+#pqr               = form['pqr'].value
+pqr               = form['tmp_pqr'].value
 av_RQ             = copy.deepcopy(pqr)
 abs_axis          = form['abs'].value 
 # Should BioFET-SIM single or multiple charge model be used.
