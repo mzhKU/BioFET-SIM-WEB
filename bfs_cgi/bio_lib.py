@@ -694,9 +694,9 @@ def availability_closure(state):
             if overwrite:
                 print "Overwriting"
                 func(target)
-            # Does not exist.
+            # Processed files do not exist.
             if not os.path.exists(pdb_base_path + target + state): 
-                print "Not found, fixing."
+                print "Not found processed file for state " + state + ", fixing."
                 func(target)
             # Use existing.
             #else:

@@ -94,17 +94,17 @@ $('document').ready(function()
             //$('#pqr').attr("value", pqr); 
 
             // Charge distribution.
-            jmolScript('load pqr::' + pdb_base_path + '%s-reo.pqr'.replace('%s', target+'-'+pHPad.split('\n')[0]));
+            jmolScript('load pqr::'+pdb_base_path+'%s-reo.pqr'.replace('%s', target+'-'+pHPad.split('\n')[0]));
             jmolScript('select 1.1');
             jmolScript('set propertycolorscheme "rwb"');
             jmolScript('color property partialcharge'); 
             jmolScript('spacefill 100%');
             // Protein representation.
-            jmolScript('load APPEND ' + pdb_base_path + '%s-reo.pdb'.replace('%s', target));
+            jmolScript('load APPEND '+pdb_base_path+'%s-reo.pdb'.replace('%s', target));
             jmolScript('select 2.1');
             jmolScript('ribbons only');
             // NW representation.
-            jmolScript('load APPEND ' + pdb_base_path + 'nw_%s.xyz'.replace('%s', target));
+            jmolScript('load APPEND '+pdb_base_path+'nw_%s.xyz'.replace('%s', target));
             jmolScript('select 3.1');
             jmolScript('spacefill 20%');
             // Display configuration. 
