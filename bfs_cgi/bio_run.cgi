@@ -24,12 +24,13 @@ import sys
 # - Number of proteins
 # ........................................................................
 form              = cgi.FieldStorage()
-target            = form['targetLab'].value 
-tmp_pdb           = form['tmp_pdb'].value
+target            =       form['targetLab'].value 
+tmp_pdb           =       form['tmp_pdb'].value
 pdb_new           = bio_lib.rewrite_pdb(target, tmp_pdb)
-abs_axis          = form['abs'].value
-charge_model      = form['model'].value
-button_clicked    = form['action'].value 
+button_clicked    =       form['action'].value 
+charge_model      =       form['model'].value
+x_lbl             =       form['abs'].value
+x_val             = float(form[x_lbl].value)
 pH                = float(form['pH'].value)
 if form.getvalue('overwrite_num_prot'):
     calc_num_prot = "no"
@@ -103,9 +104,21 @@ if __name__ == '__main__':
     else:
         num_prot = int(form['num_prot_inp'].value) 
 
-    # BFS response or pH response.
+    # BFS response.
     if button_clicked == 'BioFET-SIM':
-        print "BioFET-SIM"
+        bfs_resp = ""
+        rho.set_pqr(target, pH)
+        sim.set_bfs_inp(rho.pqr)
+        G0, dG_G0 = get_resp(sim)
+        x_min = float(form[x_lbl+'_x_min'].value)
+        x_max = float(form[x_lbl+'_x_max'].value)
+        if x_lbl == 'L_d':
+            for x in arange(x_min, x_max, (x_max-x_min)/100.0): 
+                dG_G0 = round(bio_com.compute(sim.bfs_inp, nw_len, nw_rad, lay_ox, x, L_tf, lay_bf,
+                                      eps_1, eps_2, eps_3, n_0, nw_type, num_prot), 8)
+                bfs_resp += "%4.5f %4.5f\n" % (x, dG_G0)
+        bio_lib.prepare_results(target, bfs_resp, x_val, x_lbl, num_prot, dG_G0, G0, bfs_file_name)
+    # pH response.
     else: 
         pH_resp  = ""
         pH_range = range(1, 15)
