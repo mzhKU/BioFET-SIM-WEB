@@ -12,58 +12,27 @@ class SimMulti:
     # Initializing simulation.
     #def __init__(self, target, av_RQ, pqr, param):
     def __init__(self):
+        self.bfs_inp = []
         #def __init__(self, target, av_RQ, pqr):
-        """It appears, Jmol transfers data with unusual line delimiters,
-        therefore the special split arguments.
-        """
         # Reoriented charge distribution coming from Jmol.
         #self.target    = target 
         #self.av_RQ     = av_RQ.split('\r\n')
         #self.params     = params
         #self.pqr       = pqr.split('\r\n')
         #self.dist      = dist.split('\r\n')
-        self.rho       = []
         #self.rho_pqr   = ''
 
-    def set_rho(self, dist):
-        """Combining the Jmol adjusted geometry with the charge
-        from the PROPKA match.
-        For historic reasons, the BFS compute unit requires the
-        'm' property (number of charges in biomolecule).
+    def set_bfs_inp(self, pqr):
+        """Combining the Jmol adjusted geometry with the charge from the PROPKA match.
+        BFS compute unit requires the 'm' property (number of charges in biomolecule).
         """
-        # Convenience abbreviations.
-        #av_RQ = self.av_RQ 
-        #pqr   = self.pqr
-        #rho = self.rho
-        #cnt = 0
         # Prepare data for BFS calculation (in list format).
-        #for av_rq_i in av_RQ:
-        #    # Avoiding empty lines.
-        #    if len(av_rq_i) != 0:
-        #        # Avoiding 'MODEL'/'ENDMDL' in the Jmol out stream.
-        #        if av_rq_i.split()[0] == 'ATOM': 
-        #            r_i = av_rq_i[32:54] + pqr[cnt][54:61]
-        #            rho.append(r_i.split())
-        #            cnt += 1
-        #self.m = len(rho)
-
-        # Prepare data for BFS calculation (in list format).
-        for dist_i in dist.split('\r\n'):
-            # Avoid empty lines.
-            if len(dist_i) != 0:
-                # Avoid 'MODEL'/'ENDMDL' tags.
-                if dist_i.split()[0] == 'ATOM':
-                    r_i = dist_i[32:61]
-                    self.rho.append(r_i.split()) 
-        self.m = len(self.rho)
-        
-    def get_x_range(self, x_val, percentage_range):
-        """Generating the range for which to plot the sensitivity.
-        """
-        ini = x_val*(1.0-percentage_range/100.0)
-        fin = x_val*(1.0+percentage_range/100.0)
-        dif = (fin-ini)/100.0
-        return numpy.arange(ini, fin+dif, dif)
+        # Avoid empty lines, 'MODEL' and 'ENDMDL' tags.
+        for pqr_i in pqr.split('\r\n'):
+            if len(pqr_i) != 0:
+                if pqr_i.split()[0] == 'ATOM':
+                    self.bfs_inp.append(pqr_i[32:61].split())
+        self.m = len(self.bfs_inp)
     # ....................................................................
 # ------------------------------------------------------------------------ 
 

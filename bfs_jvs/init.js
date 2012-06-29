@@ -17,7 +17,7 @@ $('document').ready(function()
         // Fill in target name and pH. Q_tot only after PROPKA job finished.
         $('#targetLab').html("Structure: " + target);
         $('#targetLabHid').attr('value', target);
-        $('#pHLab').html("Q<sub>tot</sub>at pH " + pH + ": 0.0");
+        $('#QLab').html("Q<sub>tot</sub>at pH " + pH + ": 0.0");
         $('#fileName').attr('value', target+".bfs");
         $('#bfsInput').attr('href', pdb_base_path + target + ".bfs");
 
@@ -84,10 +84,9 @@ $('document').ready(function()
                CGI side:
                var q_tot = jQuery.parseJSON(resp);
             */ 
-
             // Q_tot evaluation.
             var q_tot = resp.split(';')[0].split('=')[1];
-            $('#pHLab').html("Q<sub>tot</sub>at pH " + pH + ": " + q_tot);
+            $('#QLab').html("Q<sub>tot</sub>at pH " + pH + ": " + q_tot);
 
             // Charge distribution evaluation.
             //var pqr = resp.split(';')[1].split('=')[1];

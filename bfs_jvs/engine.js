@@ -21,31 +21,30 @@ $(document).ready(function()
     /* ------------------------------------------------------- */
     function resp()
     {
-        function plot_pH_resp()
+        function plot_resp()
         {
             var d = new Date();
-            $("#resPlot").attr("src", res_base_path + target + "-pH-reo.png?" + d.getTime());
-        }
-
-        function plot_bfs_resp()
-        {
-            var d = new Date();
-            $("#resPlot").attr("src", res_base_path + target + "-reo.png?" + d.getTime());
+            if($(this).val() == 'BioFET-SIM')
+            {
+                $("#resPlot").attr("src", res_base_path + target + "-reo.png?" + d.getTime());
+            } else {
+                $("#resPlot").attr("src", res_base_path + target + "-pH-reo.png?" + d.getTime());
+            }
         }
 
         // Jmol selectors
         var target   = $('#target').val();
         var atomInfo = jmolGetPropertyAsArray("atomInfo", "2.1"); 
         var form_bfs = $('#form_bfs').serialize();
-        var pqr      = '';
+        var pdb      = '';
         for(var i=0; i<atomInfo.length; i++)
         {
             // Prevent empty last line.
             if(i<atomInfo.length-1)
             {
-                pqr += atomInfo[i].x + ' ' + atomInfo[i].y + ' ' + atomInfo[i].z + '\n';
+                pdb += atomInfo[i].x + ' ' + atomInfo[i].y + ' ' + atomInfo[i].z + '\n';
             } else {
-                pqr += atomInfo[i].x + ' ' + atomInfo[i].y + ' ' + atomInfo[i].z;
+                pdb += atomInfo[i].x + ' ' + atomInfo[i].y + ' ' + atomInfo[i].z;
             }
         }
 
@@ -55,15 +54,10 @@ $(document).ready(function()
                     Charges are added to BioFET-SIM input on server side.
         */
         // Get clicked button id and build up form.
-        form_bfs += '&tmp_pqr=' + pqr; 
+        form_bfs += '&tmp_pdb=' + pdb; 
         form_bfs += '&action=' + $(this).val(); 
         form_bfs += '&pH=' + $('#pH').val();
-        if ($(this).val() == 'BioFET-SIM')
-        {
-            $.post(cgi_base_path + 'bio_run.cgi', form_bfs, cr);
-        } else {
-            $.post(cgi_base_path + 'bio_run.cgi', form_bfs, cr);
-        } 
+        $.post(cgi_base_path + 'bio_run.cgi', form_bfs, cr);
     } 
     $('#pHresp').click(resp);
     $('#bfs_signal').click(resp);

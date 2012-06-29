@@ -394,20 +394,20 @@ def get_labels(line):
     res_z   = line[46:54].strip()
     return [res_atm, res_nam, res_ind, res_chn, res_x, res_y, res_z]
 
-def rewrite_pdb(target, tmp_pqr):
+def rewrite_pdb(target, tmp_pdb):
     # Rewrite PDB file with the coordinates after the move.
     # Use original PDB file as template for residue info details.
-    orig = open(pdb_base_path + target + '-reo.pdb', 'r').readlines()
-    new  = ''
-    cnt  = 0 
-    tmp_pqr = tmp_pqr.split('\n')
+    orig    = open(pdb_base_path + target + '-reo.pdb', 'r').readlines()
+    tmp_pdb = tmp_pdb.split('\n')
+    pdb_new = ''
+    cnt     = 0 
     for l in orig:
         if l[:4] == 'ATOM':
-            new += l[:30] + '%8.3f%8.3f%8.3f'% (float(tmp_pqr[cnt].split()[0]),
-                                                float(tmp_pqr[cnt].split()[1]),
-                                                float(tmp_pqr[cnt].split()[2])) + l[54:]
+            pdb_new += l[:30] + '%8.3f%8.3f%8.3f'% (float(tmp_pdb[cnt].split()[0]),
+                                                    float(tmp_pdb[cnt].split()[1]),
+                                                    float(tmp_pdb[cnt].split()[2])) + l[54:]
             cnt+=1 
-    return new
+    return pdb_new
 
 def calc_pKas(target): 
     # <<PATH>>

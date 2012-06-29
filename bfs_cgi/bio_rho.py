@@ -78,11 +78,10 @@ class Rho:
         RQ       = self.RQ       # list of q_i coordinates
         for res_id in self.res_ids:
             if res_id[0] in ion_res:
-                # Atoms to average.
-                av_atms = []
-                # Omitting the residue id at the 0 position in the
+                # Atoms to average. Omitting the residue id at the 0 position in the
                 # 'res'-list, therefore 'res_id[3:]'.
                 # 'atm.split()[0]' returns the atom type.
+                av_atms = []
                 for atm in res_id[3:]:
                     if atm.split()[0] in ion_atms[res_id[0]]:
                         av_atms.append(" ".join(res_id[:3]) + " " + atm.strip())
