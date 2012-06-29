@@ -19,17 +19,22 @@ $(document).ready(function()
     /* ------------------------------------------------------- */
     /* Response.                                               */
     /* ------------------------------------------------------- */
-    function resp()
+    function clickResp()
     {
-        function plot_resp()
+        function plot_resp(resp)
         {
+            cr(resp);
+            /*
             var d = new Date();
-            if($(this).val() == 'BioFET-SIM')
-            {
-                $("#resPlot").attr("src", res_base_path + target + "-reo.png?" + d.getTime());
-            } else {
-                $("#resPlot").attr("src", res_base_path + target + "-pH-reo.png?" + d.getTime());
-            }
+            console.log($(this).val());
+            //$("#resPlot").attr("src", res_base_path + target + "-pH-reo.png?" + d.getTime());
+            //if($(this).val() == 'BioFET-SIM')
+            //{
+            //    $("#resPlot").attr("src", res_base_path + target + "-reo.png?" + d.getTime());
+            //} else {
+            //    $("#resPlot").attr("src", res_base_path + target + "-pH-reo.png?" + d.getTime());
+            //}
+            */
         }
 
         // Jmol selectors
@@ -54,11 +59,12 @@ $(document).ready(function()
                     Charges are added to BioFET-SIM input on server side.
         */
         // Get clicked button id and build up form.
+        console.log($(this).val());
         form_bfs += '&tmp_pdb=' + pdb; 
         form_bfs += '&action=' + $(this).val(); 
         form_bfs += '&pH=' + $('#pH').val();
-        $.post(cgi_base_path + 'bio_run.cgi', form_bfs, cr);
+        $.post(cgi_base_path + 'bio_run.cgi', form_bfs, plot_Resp);
     } 
-    $('#pHresp').click(resp);
-    $('#bfs_signal').click(resp);
+    $('#pHresp').click(clickResp);
+    $('#bfs_signal').click(clickResp);
 }); // End ready

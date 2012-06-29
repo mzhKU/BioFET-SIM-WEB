@@ -10,25 +10,17 @@ class SimMulti:
     """ 
     # ********************************************************************
     # Initializing simulation.
-    #def __init__(self, target, av_RQ, pqr, param):
     def __init__(self):
-        self.bfs_inp = []
-        #def __init__(self, target, av_RQ, pqr):
-        # Reoriented charge distribution coming from Jmol.
-        #self.target    = target 
-        #self.av_RQ     = av_RQ.split('\r\n')
-        #self.params     = params
-        #self.pqr       = pqr.split('\r\n')
-        #self.dist      = dist.split('\r\n')
-        #self.rho_pqr   = ''
+        self.foo =  "bar"
 
     def set_bfs_inp(self, pqr):
         """Combining the Jmol adjusted geometry with the charge from the PROPKA match.
         BFS compute unit requires the 'm' property (number of charges in biomolecule).
         """
+        self.bfs_inp = []
         # Prepare data for BFS calculation (in list format).
         # Avoid empty lines, 'MODEL' and 'ENDMDL' tags.
-        for pqr_i in pqr.split('\r\n'):
+        for pqr_i in pqr.split('\n'):
             if len(pqr_i) != 0:
                 if pqr_i.split()[0] == 'ATOM':
                     self.bfs_inp.append(pqr_i[32:61].split())

@@ -47,6 +47,7 @@ class Rho:
         self.res_ids = []
         self.res_cnt = 0 
         self.atm_cnt = 0
+        self.pKas = bio_lib.get_pKas(open(bio_lib.pdb_base_path+target+'-reo.pka', 'r'))
         # Atoms to average coordinates.
         self.ion_atms = {'ASP':['OD1', 'OD2'],
                          'GLU':['OE1', 'OE2'],
@@ -62,6 +63,8 @@ class Rho:
         self.ion_res = self.ion_atms.keys()
         self.RQ      = [] # Atoms to average.
         self.av_RQ   = [] # Positions of the charges.
+        self.pqr = ""
+        self.q_tot = 0.0
         #self.chain   = Chain()
     # ....................................................................  
 
@@ -98,26 +101,24 @@ class Rho:
         for trm in self.n_terminals:
             self.av_RQ.append(bio_lib.av_trm(trm))
 
-    def set_pqr(self, target, av_RQ, pH, pka_dat):
+    def set_pqr(self, target, pH):
         """PQR file to load in Jmol.
-        'target':   Structure label to identify the pKa file.
+        'target':    Structure label to identify the pKa file.
         'av_RQ[0]':  "['LYS 2 A', 3.484, 3.366, 1.893]"
         'av_RQ[-1]': "['ASP 13 A OXT', 40.159,  16.562, -0.142]"
-        In PDB/PQR format data, terminal is labeled 'OXT', in PROPKA
-        it is labeled 'C-'.
+        In PDB/PQR format data, terminal is labeled 'OXT', in PROPKA it is labeled 'C-'.
         FIX:
         - Parse N+ in pKa file.
         - Parse for LIG.
         """ 
-        pqr = ""
         # Get pKa values for which coordinates are available.
         # Match the label to fit the PROPKA summary label style.
         # If matched, append.
-        pKas = bio_lib.get_pKas(pka_dat)
+        pqr = ""
         cnt = 0 
         # Define a generic label for the charge carrier site,
         # residue or terminus: 'q_i_lbl'.
-        for av_rq_i in av_RQ:
+        for av_rq_i in self.av_RQ:
             # Amino acid charges. The label is 3 units long.
             # The termini labels are 4 units long.
             if len(av_rq_i[0].split()) == 3:
@@ -128,13 +129,18 @@ class Rho:
                     q_i_lbl = 'N+' + ' ' + " ".join(av_rq_i[0].split()[1:3]) 
                 else:
                     q_i_lbl = 'C-' + ' ' + " ".join(av_rq_i[0].split()[1:3]) 
-            for pka_i in pKas:
+            for pka_i in self.pKas:
                 pka_i_lbl = " ".join(pka_i[:3])
                 if pka_i_lbl == q_i_lbl:
-                    pqr += 'ATOM %7d' % int(av_rq_i[0].split()[1]) + '   C ' + av_rq_i[0].split()[0] + ' ' + av_rq_i[0].split()[2] + '%16.3f' % av_rq_i[1] + '%8.3f' % av_rq_i[2] + '%8.3f' % av_rq_i[3]
+                    pqr += 'ATOM %7d' % int(av_rq_i[0].split()[1])\
+                            + '   C ' + av_rq_i[0].split()[0] + ' '\
+                            + av_rq_i[0].split()[2]\
+                            + '%16.3f' % av_rq_i[1]\
+                            + '%8.3f' % av_rq_i[2]\
+                            + '%8.3f' % av_rq_i[3]
                     q_i = bio_lib.get_q_i(pka_i_lbl.split()[0], float(pka_i[3]), pH)
                     # Prevent empty line at the end of the PQR file.
-                    if cnt < len(av_RQ)-1:
+                    if cnt < len(self.av_RQ)-1:
                         pqr += "%6.3f".rjust(6) % q_i + ' 1.0\n'
                         cnt += 1
                     else:
@@ -310,48 +316,3 @@ class Rho:
         self.res_cnt = res_cnt
     # ....................................................................  
 # ------------------------------------------------------------------------
-
-"""
-# ************************************************************************
-# LAUNCH
-# ........................................................................
-if __name__ == '__main__':
-    target = '1AVD'
-    pH     = 7.4
-
-    rho = Rho(target)
-    rho.load_pdb()
-
-    rho.unique_residue_ids()
-    for i in rho.res_ids:
-        print i
-    print
-
-    rho.cluster_residues()
-
-    rho.set_terminals()
-    print "rho.n_terminals, rho.c_terminals"
-    print rho.n_terminals
-    print rho.c_terminals 
-    print
-
-    rho.set_RQ()
-    rho.set_av_RQ()
-
-    print "rho.RQ"
-    for RQ_i in rho.RQ:
-        print RQ_i 
-    print 
-
-    print "rho.av_RQ"
-    for av_RQ_i in rho.av_RQ:
-        print av_RQ_i
-    print
-    
-    print "rho.set_pqr"
-    pka_dat = bio_lib.calc_pKas(target)
-    rho.set_pqr(target, rho.av_RQ, pH, pka_dat)
-    for pqr_i in rho.pqr.split('\n')[:10]:
-        print pqr_i
-# ------------------------------------------------------------------------
-"""

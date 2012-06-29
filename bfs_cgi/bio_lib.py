@@ -356,10 +356,6 @@ def save_uploaded_file(form):
     return target, pH
 
 # <BFS_CMD_INP>
-#def generate_bfs_input(target, params, rho, x_lbl, num_prot, x_min, x_max,
-#                       comment, num_qi, file_name):
-#def generate_bfs_input(target, params, rho, x_lbl, num_prot,
-#                       comment, num_qi, file_name):
 def generate_bfs_input(target, params, rho, num_prot, comment, num_qi, file_name):
     import pickle
     f = open(pdb_base_path + file_name, 'wb')
@@ -367,9 +363,6 @@ def generate_bfs_input(target, params, rho, num_prot, comment, num_qi, file_name
     data['target']   = target
     data['rho']      = rho
     data['num_prot'] = num_prot
-    #data['x_lbl']    = x_lbl
-    #data['x_min']    = x_min
-    #data['x_max']    = x_max
     data['num_qi']   = num_qi
     data['comment']  = comment
     for k in params.keys():
@@ -409,45 +402,6 @@ def rewrite_pdb(target, tmp_pdb):
             cnt+=1 
     return pdb_new
 
-def calc_pKas(target): 
-    # <<PATH>>
-    #pkap = Popen(['/usr/local/bin/python3',
-    #              '/Users/mzh/software/propka30/propka.py',
-    #              '%s-reo.pdb' % target], stdout=PIPE,
-    #              stderr=PIPE, shell=False)
-    # 11.04.2012: Base directory of process is script location.
-    os.chdir('./bfs_reo')
-    pkap = Popen(['/usr/local/bin/python3',
-                  #'/opt/propka30/propka.py',
-                  # <<PATH>>
-                  #'/home/mzhpropka/software/propka30/propka.py',
-                  '/opt/propka30/propka.py',
-                  #'--grid', '0.0 14.0 0.1',
-                  './%s-reo.pdb' % target], stdout=PIPE,
-                  stderr=PIPE, shell=False)
-    pka_dat = open('./' + target + '-reo.pka', 'w')
-    pka_dat.write(pkap.stdout.read())
-    pka_dat.close()
-    os.chdir('..')
-
-# Calculate Q_tot(pH)
-# 12.04.2012
-# - Discarded use
-def get_Q_tot(target, pH):
-    pka_dat = open(pdb_base_path + target + '-reo.pka', 'r')
-    pka_val = pka_dat.readlines() 
-    Q_tot_start_line = 0
-    for line in enumerate(pka_val):
-        if 'Protein charge of folded and unfolded' in line[1]:
-            Q_tot_start_line = line[0] + 2
-        break
-    for Q_tot_line in pka_val[Q_tot_start_line:]:
-        if Q_tot_line.split()[0] == 'The':
-            break
-        if "%2.1f" % float(Q_tot_line.split()[0]) == "%2.1f" % pH: 
-            Q_tot = Q_tot_line.split()[2]
-    return Q_tot
-
 def calc_Q_tot(pqr):
     Q_tot = 0.0
     for i in pqr.split('\n'):
@@ -472,64 +426,12 @@ def get_pKas(pka_dat):
             pka_tmp.append(pka_line.split())
     return pka_tmp
 
-def set_pqr(target, av_RQ, pH, pka_dat):
-    """PQR file to load in Jmol.
-    'target':   Structure label to identify the pKa file.
-    'av_RQ[0]':  "['LYS 2 A', 3.484, 3.366, 1.893]"
-    'av_RQ[-1]': "['ASP 13 A OXT', 40.159,  16.562, -0.142]"
-    In PDB/PQR format data, terminal is labeled 'OXT', in PROPKA
-    it is labeled 'C-'.
-    FIX:
-    - Parse N+ in pKa file.
-    - Parse for LIG.
-    """ 
-    pqr = ""
-    # Get pKa values for which coordinates are available.
-    # Match the label to fit the PROPKA summary label style.
-    # If matched, append.
-    pKas = get_pKas(pka_dat)
-    cnt = 0 
-    # Define a generic label for the charge carrier site,
-    # residue or terminus: 'q_i_lbl'.
-    for av_rq_i in av_RQ:
-        # Amino acid charges. The label is 3 units long.
-        # The termini labels are 4 units long.
-        if len(av_rq_i[0].split()) == 3:
-            q_i_lbl = " ".join(av_rq_i[0].split())
-        # Termini charges, adapting to PROPKA terminus format.
-        else:
-            if av_rq_i[0].split()[-1] == 'N': 
-                q_i_lbl = 'N+' + ' ' + " ".join(av_rq_i[0].split()[1:3]) 
-            else:
-                q_i_lbl = 'C-' + ' ' + " ".join(av_rq_i[0].split()[1:3]) 
-        for pka_i in pKas:
-            pka_i_lbl = " ".join(pka_i[:3])
-            if pka_i_lbl == q_i_lbl:
-                pqr += 'ATOM %7d' % int(av_rq_i[0].split()[1])\
-                     + '   C ' + av_rq_i[0].split()[0]\
-                     + ' ' + av_rq_i[0].split()[2]\
-                     + '%16.3f' % av_rq_i[1]\
-                     + '%8.3f' % av_rq_i[2]\
-                     + '%8.3f' % av_rq_i[3]
-                q_i = get_q_i(pka_i_lbl.split()[0], float(pka_i[3]), pH)
-                # Prevent empty line at the end of the PQR file.
-                if cnt < len(av_RQ)-1:
-                    pqr += "%6.3f".rjust(6) % q_i + ' 1.0\n'
-                    cnt += 1
-                else:
-                    # Strictly cannot append '\n' character.
-                    pqr += "%6.3f".rjust(6) % q_i + ' 1.0'
-    return pqr
-
 def get_q_i(res_nam, pKa, pH): 
-    """Calculate the charge of a residue depending on its pKa
-    and pH.
-    """
+    """Calculate the charge of a residue depending on its pKa and pH."""
+    # CYS residues forming disulfide bonds are neutral.
     q_i = 0.0
-    # CYS residues forming disulfide bond are neutral.
     if pKa == 99.99:
         return q_i
-    #exponent = numpy.power(10, pKa - pH)
     exponent = power(10, pKa - pH)
     q_i = exponent/(1.0 + exponent) 
     # Boolean algebra requires (...) when using 'OR' operator.
@@ -542,44 +444,24 @@ def write_pqr(target, pH, pqr):
     pqr_file.write(pqr)
     pqr_file.close() 
 
-# <<EDIT>>
-# 29.05.2012: sim.av_RQ -> sim.rho;
-#             Adjusted coordinate parsing to official PDB documentation description.
-#def get_num_prot(av_RQ, nw_len, nw_rad):
 def get_num_prot(rho, nw_len, nw_rad):
     """Compute the bounding box dimension parallel to the NW
     surface, i.e. the area of the x-, y-plane.
     'av_RQ' is formatted as PQR data, but provides only a
     default charge of '1.0'.
     """ 
-    X = []
-    Y = []
-    Z = []
-    #for atm in av_RQ:
-    #    if len(atm.split()) > 0:
-    #        if atm.split()[0] == 'ATOM':
-    #            #x = atm[30:38].strip()
-    #            #y = atm[38:46].strip()
-    #            #z = atm[46:54].strip()
-    #            x = atm[31:39].strip()
-    #            y = atm[39:47].strip()
-    #            z = atm[47:55].strip()
-    #            print x, y, z
-    #            X.append(float(x)*0.1)
-    #            Y.append(float(y)*0.1)
-    #            Z.append(float(z)*0.1) 
+    # 29.05.2012: sim.av_RQ -> sim.rho;
+    #             Adjusted coordinate parsing to official PDB documentation description.
+    X, Y, Z = [], [], []
     for atm in rho:
         x, y, z = atm[0], atm[1], atm[2]
         X.append(float(x)*0.1)
         Y.append(float(y)*0.1)
         Z.append(float(z)*0.1) 
     # Scan all residues.
-    x_min = min(X)
-    x_max = max(X)
-    y_min = min(Y)
-    y_max = max(Y)
-    z_min = min(Z)
-    z_max = max(Z) 
+    x_min, x_max = min(X), max(X)
+    y_min, y_max = min(Y), max(Y)
+    z_min, z_max = min(Z), max(Z)
     prot_xy = (x_max - x_min)*(y_max - y_min)
     nw_surface = 2*pi*nw_rad*nw_len
     n_bio_molecules = nw_surface/prot_xy 
@@ -783,11 +665,8 @@ def prepare_Jmol(target):
     js.close()
 
 def prepare_pH_response_plot(target, pH_resp): #, mode):
-    plot = ''
-    for i in range(14):
-        plot += str(i+1) + ' %4.2f'%pH_resp[i] + '\n'
     res_val = open(results_path + target + '-pH-reo.dat', 'w')
-    res_val.write(plot)
+    res_val.write(pH_resp)
     res_val.close()
     # KU machine.
     #gnus  = "set terminal svg\n"
@@ -801,7 +680,6 @@ def prepare_pH_response_plot(target, pH_resp): #, mode):
     #gnus += "plot \'" + results_path + "%s-pH-reo.dat\' u ($1):($2) w lp ls 1\n" % target
     #gnus += "set output ''\n"
     #gnup = Popen([gnuplot_exe], stdin=PIPE, stdout=open(results_path + '%s-pH-reo.svg' % target, 'w'), stderr=PIPE, shell=False)
-
     # PROPKA
     gnus  = 'set terminal postscript eps enhanced color "Times-Roman" 22\n'
     gnus += "set output \'" + results_path + "%s-pH-reo.eps\'\n" % target
@@ -810,7 +688,7 @@ def prepare_pH_response_plot(target, pH_resp): #, mode):
     gnus += "set nokey\n"
     gnus += "set grid\n"
     gnus += "set xlabel 'pH'\n"
-    gnus += "set ylabel 'Sensitivity(pH)'\n" 
+    gnus += "set ylabel 'Sensitivity'\n" 
     gnus += "plot \'" + results_path + "%s-pH-reo.dat\' u ($1):($2) w lp ls 1\n" % target
     gnus += "set output ''\n"
     gnup = Popen([gnuplot_exe], stdin=PIPE, stdout=open(results_path + '%s-pH-reo.eps' % target, 'w'), stderr=PIPE, shell=False)
@@ -819,7 +697,7 @@ def prepare_pH_response_plot(target, pH_resp): #, mode):
               + results_path + '%s-pH-reo.eps '% target\
               + results_path + '%s-pH-reo.png' % target)
 
-def prepare_results(target, results, x_val, x_lbl, num_prot, dG_G0, G0, bfs_file_name): #, t): #, mode):
+def prepare_results(target, results, x_val, x_lbl, num_prot, dG_G0, G0, bfs_file_name):
     num_prot_s = "%2.0f"%num_prot
     sub = dict(target=target, num_prot=num_prot_s,
                x_val=x_val, x_lbl=x_lbl,

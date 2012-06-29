@@ -30,10 +30,10 @@ if __name__ == '__main__':
     rho.set_terminals()
     rho.set_RQ()
     rho.set_av_RQ()
-    rho.set_pqr(target, rho.av_RQ, pH, open(bio_lib.pdb_base_path + target + '-reo.pka', 'r'))
+    rho.set_pqr(target, pH)
     # ------------------------------ 
-    Q_tot = bio_lib.calc_Q_tot(rho.pqr)
     # Exporting Q_tot to Javascript on client side.
+    Q_tot = bio_lib.calc_Q_tot(rho.pqr)
     response += "Q_tot=%4.2f;\n" % Q_tot
     # ------------------------------ 
     z_dim = bio_lib.get_box_dimensions(rho.pqr)[2]
@@ -41,6 +41,5 @@ if __name__ == '__main__':
     bio_lib.write_pqr(target,pH,rho.pqr)
     # ------------------------------ 
     # Exporting charge distribution to client side.
-    #response += "pqr=%s;\n" % rho.pqr
     print response
 # ------------------------------------------------------------------------
