@@ -83,10 +83,10 @@ def rechain(target):
         atm_tmp = 0
         # mdl:                        ['1', 0, 0, ..., 1, 1]
         # mdl_tmp:                    [     0, 0, ..., 1, 1]
-        # mdl_tmp[atm_cnt]:           0
+        # mdl_tmp[atm_cnt]:            0
         # codes:                      [(1, 'A'), (2, 'B'), (3, 'C'), ...]
-        # codes[mdl_tmp[atm_cnt]]:    (1, 'A')
-        # codes[mdl_tmp[atm_cnt]][1]: 'A' 
+        # codes[mdl_tmp[atm_cnt]]:     (1, 'A')
+        # codes[mdl_tmp[atm_cnt]][1]:      'A' 
         # NOTICE:
         # - 'atm_tot': Counts over all lines in the file.
         # - 'atm_tmp': Counts over all lines of a MODEL.

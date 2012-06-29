@@ -21,7 +21,6 @@ $(document).ready(function()
     /* ------------------------------------------------------- */
     function resp()
     {
-
         function plot_pH_resp()
         {
             var d = new Date();
@@ -55,21 +54,17 @@ $(document).ready(function()
         'atomInfo': Does not provide access to charges.
                     Charges are added to BioFET-SIM input on server side.
         */
-        form_bfs += '&tmp_pqr=' + pqr;
-
-        // Get clicked button id.
+        // Get clicked button id and build up form.
+        form_bfs += '&tmp_pqr=' + pqr; 
         form_bfs += '&action=' + $(this).val(); 
         form_bfs += '&pH=' + $('#pH').val();
         if ($(this).val() == 'BioFET-SIM')
         {
             $.post(cgi_base_path + 'bio_run.cgi', form_bfs, cr);
         } else {
-            $.post(cgi_base_path + 'bio_run.cgi', form_bfs, plot_pH_resp);
-        }
-
-        $('#status').html("Ready.");
-    }
-
+            $.post(cgi_base_path + 'bio_run.cgi', form_bfs, cr);
+        } 
+    } 
     $('#pHresp').click(resp);
     $('#bfs_signal').click(resp);
 }); // End ready

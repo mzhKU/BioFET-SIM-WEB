@@ -27,7 +27,7 @@ class Rho:
     """
 
     # ********************************************************************
-    # Instantaniation
+    # Instance.
     def __init__(self, target, tmp_pdb):
         #self.pdb  = open(bio_lib.pdb_base_path + target + '-reo.pdb', 'r').readlines()
         self.pdb = tmp_pdb.split('\n')
@@ -85,8 +85,7 @@ class Rho:
                 # 'atm.split()[0]' returns the atom type.
                 for atm in res_id[3:]:
                     if atm.split()[0] in ion_atms[res_id[0]]:
-                        av_atms.append(" ".join(res_id[:3])\
-                                     + " " + atm.strip())
+                        av_atms.append(" ".join(res_id[:3]) + " " + atm.strip())
                 RQ.append(av_atms) 
         self.RQ = RQ
     
@@ -142,6 +141,7 @@ class Rho:
                     else:
                         # Strictly cannot append '\n' character.
                         pqr += "%6.3f".rjust(6) % q_i + ' 1.0'
+        self.pqr = pqr
         return pqr
     # ....................................................................  
 

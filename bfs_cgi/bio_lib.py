@@ -451,24 +451,23 @@ def get_Q_tot(target, pH):
 def calc_Q_tot(pqr):
     Q_tot = 0.0
     for i in pqr.split('\n'):
-        Q_tot += round(float(i.split()[-2]), 2)
+        if len(i.split())>0:
+            Q_tot += round(float(i.split()[-2]), 2)
     return Q_tot
     
 # pKa values of the residues.
 def get_pKas(pka_dat):
-    """The PROPKA output is provided as a stdout file handle.
-    This avoids writing a pka file."""
-    pka_val = pka_dat.readlines()
     # Locate 'SUMMARY' of pKa values in PROPKA output.
+    pka_val = pka_dat.readlines()
     pka_start_line = 0
     for line in enumerate(pka_val):
         if len(line[1].split()) != 0 and line[1].split()[0] == 'SUMMARY':
             pka_start_line = line[0] + 2 
     # Populate pKa list of residues and terminals.
+    # Defining residue or terminal identifier 'id'.
+    # The 'summary' lines are 5 elements long.
     pka_tmp = []
     for pka_line in pka_val[pka_start_line:]:
-        # Defining residue or terminal identifier 'id'.
-        # The 'summary' lines are 5 elements long.
         if len(pka_line.split()) == 5:
             pka_tmp.append(pka_line.split())
     return pka_tmp
@@ -949,8 +948,9 @@ def show_rho(rho):
 # ........................................................................
 # TEST EXECUTE
 if __name__ == '__main__': 
+    print "bio_lib.py"
     #print calc_pKas('kk8add').read()
-    print calc_Q_tot('kk8add', 7.4)
+    #print get_pKas(open(pdb_base_path+'aha-reo.pka', 'r'))
     #nw_rad = 10.0
     #lay_ox = 2.0
     #L_d = 1000.0

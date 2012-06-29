@@ -17,7 +17,6 @@ def compute(rho, nw_len, nw_rad,
                  nw_type, num_prot): # , mode):
 
     # Computing sensitivity of wire.
-    print bio_lib.Gamma
     gamma = bio_lib.Gamma(nw_rad, lay_ox, L_d, L_tf, eps_1, eps_2, eps_3) 
     
     # Multiple Charge Model critical feature.
