@@ -112,17 +112,15 @@ class Rho:
         - Parse for LIG.
         """ 
         # Get pKa values for which coordinates are available.
-        # Match the label to fit the PROPKA summary label style.
-        # If matched, append.
+        # Match the label to fit the PROPKA summary label style. If matched, append.
         pqr = ""
         cnt = 0 
-        # Define a generic label for the charge carrier site,
-        # residue or terminus: 'q_i_lbl'.
+        # Define generic label for charge carrier position, residue or terminus: 'q_i_lbl'.
         for av_rq_i in self.av_RQ:
-            # Amino acid charges. The label is 3 units long.
-            # The termini labels are 4 units long.
+            # Amino acid charges. Label is 3 units long. Termini labels are 4 units long.
             if len(av_rq_i[0].split()) == 3:
-                q_i_lbl = " ".join(av_rq_i[0].split())
+                #q_i_lbl = " ".join(av_rq_i[0].split())
+                q_i_lbl = av_rq_i[0]
             # Termini charges, adapting to PROPKA terminus format.
             else:
                 if av_rq_i[0].split()[-1] == 'N': 
@@ -182,8 +180,7 @@ class Rho:
     def unique_residue_ids(self): 
         """Sets a list as
         [['LYS', '2', 'A'], ['LYS', '2', 'A'], ... ]
-        For every atom of the structure, its residue data 
-        is being set in the list.
+        For every atom of the structure, its residue data is being set in the list.
         """ 
         # Convenience abbreviations.
         identifiers = self.identifiers
@@ -315,4 +312,41 @@ class Rho:
         self.res_ids = res_ids
         self.res_cnt = res_cnt
     # ....................................................................  
+# ------------------------------------------------------------------------
+
+
+# ************************************************************************
+# LAUNCH
+# ........................................................................
+if __name__ == '__main__':
+    response = ''
+    target   = 'kk8add'
+    print target
+    pH       = 7.4
+    rho = Rho(target, open(bio_lib.pdb_base_path + target + '-reo.pdb', 'r').read())
+    rho.load_pdb()
+    rho.unique_residue_ids()
+    rho.cluster_residues()
+    for i in rho.res_ids:
+        print i
+    rho.set_terminals()
+    #print rho.res_ids[4]
+    print rho.n_terminals
+    print rho.c_terminals
+    rho.set_RQ()
+    rho.set_av_RQ()
+    #print rho.av_RQ
+    rho.set_pqr(target, pH)
+    print rho.pqr
+    # ------------------------------ 
+    # Exporting Q_tot to Javascript on client side.
+    #Q_tot = bio_lib.calc_Q_tot(rho.pqr)
+    #response += "Q_tot=%4.2f;\n" % Q_tot
+    # ------------------------------ 
+    #z_dim = bio_lib.get_box_dimensions(rho.pqr)[2]
+    #bio_lib.get_nw_surface(z_dim, target)
+    #bio_lib.write_pqr(target,pH,rho.pqr)
+    # ------------------------------ 
+    # Exporting charge distribution to client side.
+    #print response
 # ------------------------------------------------------------------------
