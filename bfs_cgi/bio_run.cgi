@@ -61,7 +61,7 @@ mu                = float(form['mu'      ].value)
 n_0               = float(form['n_0'     ].value)
 nw_type           =       form['nw_type' ].value 
 comment           =       form['comment' ].value
-#bfs_file_name     =       form['fileName'].value
+bfs_file_name     =       form['fileName'].value
 # ........................................................................
 # ------------------------------------------------------------------------ 
 
@@ -97,17 +97,16 @@ if __name__ == '__main__':
     # Instance of simulation object.
     sim = SimMulti()
 
-    # Configuration of protein population on NW.
-    if calc_num_prot == 'yes':
-        num_prot = bio_lib.get_num_prot(sim.bfs_inp, nw_len, nw_rad) 
-    else:
-        num_prot = int(form['num_prot_inp'].value) 
-
     # BFS response.
     if button_clicked == 'BioFET-SIM':
         bfs_resp = ""
         rho.set_pqr(target, pH)
         sim.set_bfs_inp(rho.pqr)
+        # Configuration of protein population on NW.
+        if calc_num_prot == 'yes':
+            num_prot = int(bio_lib.get_num_prot(sim.bfs_inp, nw_len, nw_rad))
+        else:
+            num_prot = int(form['num_prot_inp'].value) 
         G0, dG_G0 = get_resp(sim)
         x_min = float(form[x_lbl+'_x_min'].value)
         x_max = float(form[x_lbl+'_x_max'].value)
@@ -125,6 +124,11 @@ if __name__ == '__main__':
         for pHi in pH_range:
             rho.set_pqr(target, pHi)
             sim.set_bfs_inp(rho.pqr)
+            # Configuration of protein population on NW.
+            if calc_num_prot == 'yes':
+                num_prot = int(bio_lib.get_num_prot(sim.bfs_inp, nw_len, nw_rad))
+            else:
+                num_prot = int(form['num_prot_inp'].value) 
             rho.q_tot = bio_lib.calc_Q_tot(rho.pqr)
             pH_resp += "%4.2f %4.5f\n" % (pHi, get_resp(sim)[1])
         bio_lib.prepare_pH_response_plot(target, pH_resp)

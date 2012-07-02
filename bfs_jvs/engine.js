@@ -55,9 +55,10 @@ $(document).ready(function()
         form_bfs += '&action=' + action;
         form_bfs += '&pH=' + $('#pH').val();
         form_bfs += '&fileName=' + target + ".bfs";
+        form_bfs += '&targetLab=' + target;
 
         //BFS Input comment section, visual.
-        $('#fileName').val(target+".bfs");
+        //$('#fileName').val(target+".bfs");
         $('#bfsInput').attr('href', res_base_path + target + ".bfs"); 
         var comment  = "# BioFET-SIM Calculation\n"
             //comment += "# Date of calculation:\n"
