@@ -24,6 +24,7 @@ import os.path
 import string
 import urllib
 #import numpy
+import pickle
 import scipy
 import cgi
 
@@ -356,14 +357,13 @@ def save_uploaded_file(form):
     return target, pH
 
 # <BFS_CMD_INP>
-def generate_bfs_input(target, params, rho, num_prot, comment, num_qi, file_name):
-    import pickle
-    f = open(pdb_base_path + file_name, 'wb')
+def generate_bfs_input(target, params, sim, num_prot, comment, bfs_file_name):
+    f = open(results_path + bfs_file_name, 'wb')
     data = {}
     data['target']   = target
-    data['rho']      = rho
+    data['rho']      = sim.bfs_inp
     data['num_prot'] = num_prot
-    data['num_qi']   = num_qi
+    data['num_qi']   = len(sim.bfs_inp)
     data['comment']  = comment
     for k in params.keys():
         data[k] = params[k]
@@ -697,11 +697,11 @@ def prepare_pH_response_plot(target, pH_resp): #, mode):
               + results_path + '%s-pH-reo.eps '% target\
               + results_path + '%s-pH-reo.png' % target)
 
-def prepare_results(target, results, x_val, x_lbl, num_prot, dG_G0, G0, bfs_file_name):
+def prepare_results(target, results, x_val, x_lbl, num_prot, dG_G0, G0): #, bfs_file_name):
     num_prot_s = "%2.0f"%num_prot
-    sub = dict(target=target, num_prot=num_prot_s,
-               x_val=x_val, x_lbl=x_lbl,
-               dG_G0=dG_G0, G0=G0, bfs_file_name=bfs_file_name) #, mode=mode)
+    #sub = dict(target=target, num_prot=num_prot_s,
+    #           x_val=x_val, x_lbl=x_lbl,
+    #           dG_G0=dG_G0, G0=G0, bfs_file_name=bfs_file_name) #, mode=mode)
     labels = {'L_d'    : 'Debye Length [nm]',
               'L_tf'   : 'Thomas-Fermi Length [nm]',
               'lay_ox' : 'Oxide Layer Thickness [nm]',

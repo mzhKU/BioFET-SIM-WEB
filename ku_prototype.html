@@ -75,25 +75,19 @@
 
     <!--BFS Parameter definitions-->
     <form id="form_bfs" action="./bfs_cgi/bio_sim.cgi">
-    <fieldset> 
+        <fieldset> 
             <table>
                 <tr>
-                    <td id="targetLab">Structure: </td>
-                    <input type="hidden" id="targetLabHid" name="targetLab" value="">
-                    <input type="hidden" id="timestamp" name="timestamp" value="">
+                    <td id="targetLab">Structure:</td>
                     <td><input type="button" id="bfs_signal" value="BioFET-SIM"></td>
+                    <td>Download <a id="bfs_response" href="">BioFET-SIM Signal</a><label class="cite"> (right-click, "Save as...")</label></td>
+                    <td><input type="hidden" id="targetLabHid" name="targetLab" value="">
+                    <td><input type="hidden" id="timestamp" name="timestamp" value=""></td>
                 </tr>
                 <tr>
-                <!--
-                <tr>
-                    <td>Q<sub>tot</sub> at pH:<input size="6" type="text" id="QLab" value="0.0"></td>
-                </tr>
-                <tr>
-                    <td><div id="sens">Sensitivity: 0.0</div></td>
-                </tr>
-                -->
                     <td id="QLab">Q<sub>tot</sub> at pH 0.0:</td>
                     <td><input type="button" id="pHresp" value="pH Response"></td>
+                    <td>Download <a id="pH_response" href="">pH Response</a><label class="cite"> (right-click, "Save as...")</label></td>
                 </tr>
             </table>
         <table>
@@ -233,13 +227,13 @@
             <tr>
                 <td><label for="comment">Add comment to BFS input file:</label></td>
                 <td><textarea name="comment" rows="5" style="width:300px" id="comment">
-                                </textarea>
+                    </textarea></td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr> 
             <tr>
-                <td colspan="6">Download <a id="bfsInput" href="">BioFET-SIM input</a> file (right-click: Save as..).</td>
+                <td colspan="6">Download <a id="bfsInput" href="">BioFET-SIM input</a> <label class="cite"> (right-click, "Save as...")</label></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -249,7 +243,8 @@
         <input type="hidden" id="pqr" value="$pqr" name="pqr">
         <input type="hidden" value="$16.59" name="Q_tot"> 
         <input type="hidden" value="" id="tmp_pqr" name="tmp_pqr">
-        </form>
+        </fieldset>
+    </form>
         <br /> 
         <hr> 
         <div class="cite">

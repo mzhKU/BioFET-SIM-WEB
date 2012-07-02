@@ -29,11 +29,11 @@ $(document).ready(function()
                 $("#resPlot").attr("src", res_base_path + target + "-reo.png?" + d.getTime());
             } else {
                 $("#resPlot").attr("src", res_base_path + target + "-pH-reo.png?" + d.getTime());
-            }
-            
+            } 
         }
 
         // Jmol selectors
+        //'atomInfo' does not provide charges, they are added to input on server side.
         var target   = $('#target').val();
         var atomInfo = jmolGetPropertyAsArray("atomInfo", "2.1"); 
         var form_bfs = $('#form_bfs').serialize();
@@ -49,18 +49,32 @@ $(document).ready(function()
             }
         }
 
-        /* 
-        'tmp_pqr':  Coordinates of charges after move.
-        'atomInfo': Does not provide access to charges.
-                    Charges are added to BioFET-SIM input on server side.
-        */
-        // Get clicked button id and build up form.
+        // Get clicked button id and build up form, CGI.
         var action = $(this).val()
         form_bfs += '&tmp_pdb=' + pdb; 
         form_bfs += '&action=' + action;
         form_bfs += '&pH=' + $('#pH').val();
+        form_bfs += '&fileName=' + target + ".bfs";
+
+        //BFS Input comment section, visual.
+        $('#fileName').val(target+".bfs");
+        $('#bfsInput').attr('href', res_base_path + target + ".bfs"); 
+        var comment  = "# BioFET-SIM Calculation\n"
+            //comment += "# Date of calculation:\n"
+            comment += "# Calculation target: " + target + "\n"
+            comment += "# pH: " + $('#pH').val() + "\n"
+            comment += "# Description: "
+        $('#comment').html(comment); 
+
+        // Calculation.
         $.post(cgi_base_path + 'bio_run.cgi', form_bfs, plot_resp);
+
+        // Download data files.
+        $('#bfs_response').attr('href', res_base_path + target + "-reo.dat");
+        $('#pH_response').attr('href', res_base_path + target + "-pH-reo.dat"); 
     } 
-    $('#pHresp').click(clickResp);
+
+    // Click event handlers.
     $('#bfs_signal').click(clickResp);
+    $('#pHresp').click(clickResp);
 }); // End ready

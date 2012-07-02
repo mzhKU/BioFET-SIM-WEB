@@ -9,7 +9,6 @@ import cgi, cgitb; cgitb.enable()
 from numpy import arange
 from bio_mod import SimMulti
 from bio_rho import Rho
-from bio_lib import *
 import bio_lib
 import bio_com 
 import copy
@@ -37,32 +36,32 @@ if form.getvalue('overwrite_num_prot'):
 else:
     calc_num_prot = "yes"
 params            = {}
-params['nw_len' ] = float(form['nw_len' ].value)
-params['nw_rad' ] = float(form['nw_rad' ].value)
-params['L_tf'   ] = float(form['L_tf'   ].value)
-params['eps_1'  ] = float(form['eps_1'  ].value)
-params['mu'     ] = float(form['mu'     ].value)
-params['n_0'    ] = float(form['n_0'    ].value)
-params['nw_type'] =       form['nw_type'].value
-params['lay_ox' ] = float(form['lay_ox' ].value)
-params['eps_2'  ] = float(form['eps_2'  ].value)
-params['lay_bf' ] = float(form['lay_bf' ].value)
-params['L_d'    ] = float(form['L_d'    ].value)
-params['eps_3'  ] = float(form['eps_3'  ].value)
-nw_len            = float(form['nw_len' ].value)
-nw_rad            = float(form['nw_rad' ].value)
-lay_ox            = float(form['lay_ox' ].value)
-lay_bf            = float(form['lay_bf' ].value) 
-L_d               = float(form['L_d'    ].value)
-L_tf              = float(form['L_tf'   ].value)
-eps_1             = float(form['eps_1'  ].value)
-eps_2             = float(form['eps_2'  ].value)
-eps_3             = float(form['eps_3'  ].value) 
-mu                = float(form['mu'     ].value)
-n_0               = float(form['n_0'    ].value)
-nw_type           =       form['nw_type'].value 
-comment           =       form['comment'].value
-bfs_file_name     =       form['fileName'].value
+params['nw_len' ] = float(form['nw_len'  ].value)
+params['nw_rad' ] = float(form['nw_rad'  ].value)
+params['L_tf'   ] = float(form['L_tf'    ].value)
+params['eps_1'  ] = float(form['eps_1'   ].value)
+params['mu'     ] = float(form['mu'      ].value)
+params['n_0'    ] = float(form['n_0'     ].value)
+params['nw_type'] =       form['nw_type' ].value
+params['lay_ox' ] = float(form['lay_ox'  ].value)
+params['eps_2'  ] = float(form['eps_2'   ].value)
+params['lay_bf' ] = float(form['lay_bf'  ].value)
+params['L_d'    ] = float(form['L_d'     ].value)
+params['eps_3'  ] = float(form['eps_3'   ].value)
+nw_len            = float(form['nw_len'  ].value)
+nw_rad            = float(form['nw_rad'  ].value)
+lay_ox            = float(form['lay_ox'  ].value)
+lay_bf            = float(form['lay_bf'  ].value) 
+L_d               = float(form['L_d'     ].value)
+L_tf              = float(form['L_tf'    ].value)
+eps_1             = float(form['eps_1'   ].value)
+eps_2             = float(form['eps_2'   ].value)
+eps_3             = float(form['eps_3'   ].value) 
+mu                = float(form['mu'      ].value)
+n_0               = float(form['n_0'     ].value)
+nw_type           =       form['nw_type' ].value 
+comment           =       form['comment' ].value
+#bfs_file_name     =       form['fileName'].value
 # ........................................................................
 # ------------------------------------------------------------------------ 
 
@@ -95,7 +94,7 @@ if __name__ == '__main__':
     rho.set_RQ()
     rho.set_av_RQ()
 
-    # Initialization of simulation object.
+    # Instance of simulation object.
     sim = SimMulti()
 
     # Configuration of protein population on NW.
@@ -117,7 +116,8 @@ if __name__ == '__main__':
                 dG_G0 = round(bio_com.compute(sim.bfs_inp, nw_len, nw_rad, lay_ox, x, L_tf, lay_bf,
                                       eps_1, eps_2, eps_3, n_0, nw_type, num_prot), 8)
                 bfs_resp += "%4.5f %4.5f\n" % (x, dG_G0)
-        bio_lib.prepare_results(target, bfs_resp, x_val, x_lbl, num_prot, dG_G0, G0, bfs_file_name)
+        bio_lib.prepare_results(target, bfs_resp, x_val, x_lbl, num_prot, dG_G0, G0)
+        bio_lib.generate_bfs_input(target, params, sim, num_prot, comment, bfs_file_name)
     # pH response.
     else: 
         pH_resp  = ""
@@ -126,8 +126,7 @@ if __name__ == '__main__':
             rho.set_pqr(target, pHi)
             sim.set_bfs_inp(rho.pqr)
             rho.q_tot = bio_lib.calc_Q_tot(rho.pqr)
-            pH_resp += "%4.2f %4.2f\n" % (pHi, get_resp(sim)[1])
-        print pH_resp
+            pH_resp += "%4.2f %4.5f\n" % (pHi, get_resp(sim)[1])
         bio_lib.prepare_pH_response_plot(target, pH_resp)
 # ........................................................................
 # ------------------------------------------------------------------------ 
