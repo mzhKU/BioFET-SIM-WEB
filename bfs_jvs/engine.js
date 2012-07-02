@@ -6,7 +6,25 @@ $(document).ready(function()
     var ajax_loader   = "<img src='./bfs_jvs/ajax-loader.gif' alt='Loading...'>";
 
     // Check HTTP response.
-    function cr(resp) { console.log(resp); }
+    function cr(resp)
+    {
+        if (typeof resp === "undefined")
+        {
+            $('#loader').css({"visibility":"hidden"});
+            $('#status').html("Ready.");
+            console.log("Response done.");
+        } else {
+            console.log(resp);
+            /*
+            Consider: using a JSON parse, separate parts of data are returned.
+            var back = jQuery.parseJSON(resp);
+            console.log(back[0]);
+            */
+            $('#loader').css({"visibility":"hidden"});
+            //$('#status').html("Ready.");
+            console.log("Response done.");
+        }
+    } 
 
     // Status update.
     function status_update(step) 
@@ -30,6 +48,8 @@ $(document).ready(function()
             } else {
                 $("#resPlot").attr("src", res_base_path + target + "-pH-reo.png?" + d.getTime());
             } 
+            // Clear loader.
+            cr();
         }
 
         // Jmol selectors
@@ -68,6 +88,7 @@ $(document).ready(function()
         $('#comment').html(comment); 
 
         // Calculation.
+        status_update("Calculation...");
         $.post(cgi_base_path + 'bio_run.cgi', form_bfs, plot_resp);
 
         // Download data files.
