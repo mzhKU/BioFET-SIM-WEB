@@ -25,10 +25,10 @@
         </script>
     </head>
 <body>
-    <h2>BioFET-SIM</h2>
+    <h2 name="top">BioFET-SIM</h2>
         <form id="uploadform" method="post" enctype="multipart/form-data" action="">
             Upload a file: <input type="file" name="images[]" id="images" />
-            <button type="submit" id="btn">Upload Files</button>
+            <button type="submit" id="btn">Upload Files</button><a class="cite" href="#reqs">File requirements</a>
         </form>
     <br />
         <form method="get" action="./bfs_cgi/bio_def.cgi" id="setup">
@@ -277,6 +277,15 @@
             <img src="http://s47.sitemeter.com/meter.asp?site=s47biofet-sim" alt="Site Meter" border="0"></a>
             </noscript>
             </p>
+        <hr> 
+            PDB formatting requirements for uploaded files:
+            <a name="reqs"></a>
+                <ul name="reqs">
+                    <li>First line of file must be "MODEL 1"</li>
+                    <li>Last line must of file must be "END"</li>
+                    <li>NMR solution structures are not supported at the moment.</li>
+                </ul>
+            <a href="#top">Top</a>
         </div>
         
 
