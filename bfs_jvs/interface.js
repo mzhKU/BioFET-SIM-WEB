@@ -1,3 +1,16 @@
+$('document').ready(function()
+{
+    $('#btn').click(function()
+    {
+        if($('#images').val() == '' || $('#images').val().split('.')[1] != 'pdb')
+        {
+            alert("Please provide a PDB file for upload.");
+        } else {
+            $('#uploadform').attr('action', 'upload.php');
+        }
+    }); // end upload click
+}); // end ready
+
 /* Fade out lower and upper limit text input of out of focus fields. */
 /* Formatting stuff. */
 function xLabel(n) {

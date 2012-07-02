@@ -110,6 +110,26 @@ if __name__ == '__main__':
         G0, dG_G0 = get_resp(sim)
         x_min = float(form[x_lbl+'_x_min'].value)
         x_max = float(form[x_lbl+'_x_max'].value)
+        if x_lbl == 'nw_len':
+            for x in arange(x_min, x_max, (x_max-x_min)/100.0): 
+                dG_G0 = round(bio_com.compute(sim.bfs_inp, x, nw_rad, lay_ox, L_d, L_tf, lay_bf,
+                                      eps_1, eps_2, eps_3, n_0, nw_type, num_prot), 8)
+                bfs_resp += "%4.5f %4.5f\n" % (x, dG_G0)
+        if x_lbl == 'nw_rad':
+            for x in arange(x_min, x_max, (x_max-x_min)/100.0): 
+                dG_G0 = round(bio_com.compute(sim.bfs_inp, nw_len, x, lay_ox, L_d, L_tf, lay_bf,
+                                      eps_1, eps_2, eps_3, n_0, nw_type, num_prot), 8)
+                bfs_resp += "%4.5f %4.5f\n" % (x, dG_G0)
+        if x_lbl == 'lay_ox':
+            for x in arange(x_min, x_max, (x_max-x_min)/100.0): 
+                dG_G0 = round(bio_com.compute(sim.bfs_inp, nw_len, nw_rad, x, L_d, L_tf, lay_bf,
+                                      eps_1, eps_2, eps_3, n_0, nw_type, num_prot), 8)
+                bfs_resp += "%4.5f %4.5f\n" % (x, dG_G0)
+        if x_lbl == 'L_tf':
+            for x in arange(x_min, x_max, (x_max-x_min)/100.0): 
+                dG_G0 = round(bio_com.compute(sim.bfs_inp, nw_len, nw_rad, lay_ox, L_d, x, lay_bf,
+                                      eps_1, eps_2, eps_3, n_0, nw_type, num_prot), 8)
+                bfs_resp += "%4.5f %4.5f\n" % (x, dG_G0)
         if x_lbl == 'L_d':
             for x in arange(x_min, x_max, (x_max-x_min)/100.0): 
                 dG_G0 = round(bio_com.compute(sim.bfs_inp, nw_len, nw_rad, lay_ox, x, L_tf, lay_bf,
