@@ -1,0 +1,156 @@
+<html>
+<head> 
+<title>BIOFET-SIM 1.0</title>
+
+<link rel="stylesheet" href="./baker.css" type="text/css">
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<meta name="Keywords" content="BIOFET-SIM, biofet, nano-wire, nano wire, nanowire, Thomas-Fermi, Debye length, propka, simulation, nanobiofet, Jan Jensen, Luca De Vico" />
+<meta name="Description" content="Free, BIOFET-SIM, biofet, nano-wire, nano wire, nanowire, Thomas-Fermi, Debye length, propka, simulation, nanobiofet, Jan Jensen, Luca De Vico" />
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-16" />
+
+</head>
+
+<BODY>
+<h2>The BIOFET-SIM Web Interface 1.0 <img src="favicon.png" alt="BioFET-SIM" height="100"/> </h2>
+<!-- <h3>***** BETA *****</h3> -->
+<p>Created by <a href="http://propka.ki.ku.dk/~luca/">Luca De Vico</a></p>
+
+<p>The relationship between Thomas-Fermi length (&lambda;<sub>TF</sub>) and charge carrier density 
+(p<sub>0</sub> in case of p-type semiconductor) is regulated by:</p>
+
+<img src="l_TF.png" alt="lambda_TF equation" height="100"/>
+
+<p>where &#8463; is the reduced Planck's constant, &epsilon;<sub>r</sub> = 
+&epsilon;<sub>0</sub>&epsilon;<sub>1</sub>, m<sup>*</sup> is the effective charge carrier mass, and e the
+elementary charge. In case of a n-type semiconductor one uses n<sub>0</sub>. The effective mass of the 
+charge carrier (hole or electron) is commonly expressed as a fraction of the mass of an electron at rest.
+Typical values of m<sup>*</sup> are reported in Table 1.</p>
+
+<hr>
+
+<blockquote>
+
+<FORM action="lambda_TF_np_0.cgi" METHOD="POST" ENCTYPE="multipart/form-data" name="thisform">
+
+<table style="width:300;">
+
+<tr>
+  <td>Effective charge carrier mass m<sup>*</sup>:</td>
+  <td><input type="text" name="ms" size=4 value="0.98"></td>
+</tr>
+
+<tr>
+  <td>Semiconductor permittivity &epsilon;<sub>1</sub>:</td>
+  <td><input type="text" name="e1" size=4 value="12.0"></td>
+</tr>
+
+</table>
+
+<br><br>
+
+<table style="width:400;">
+
+<tr>
+  <td align="center">Thomas-Fermi length</td>
+  <td><input type="submit" name="whattodo" value="into ->"></td>
+  <td align="center">Charge carrier density</td>
+</tr>
+
+<tr>
+  <td align="center"><input type="text" name="ltf" size=4 value="1.0"> nm</td>
+  <td><input type="submit" name="whattodo" value="<- into"></td>
+  <td align="center"><input type="text" name="np0" size=7 value="1.34e+25"> m<sup>-3</sup></td>
+</tr>
+
+</table>
+
+</blockquote>
+
+</form>
+<hr>
+<p>Go back to the <a href="http://propka.ki.ku.dk/biofet-sim/">BIOFET-SIM Web Interface</a></p>
+
+<table style="width:400; border-top:solid 1px; border-bottom:solid 1px;">
+<caption> Table 1: typical values of m<sup>*</sup> as fraction of the mass of an electron at rest.</caption>
+
+<tr>
+  <th>Semiconductor type</th>
+  <th>m<sup>*</sup></th>
+  <th>&epsilon;<sub>1</sub></th>
+  <th>Ref.</th>
+</tr>
+
+<tr>
+  <td>Silicon n-type</td>
+  <td>0.98</td>
+  <td>12.0</td>
+  <td>(1)</td>
+</tr>
+
+<tr>
+  <td>Silicon p-type</td>
+  <td>0.54</td>
+  <td>12.0</td>
+  <td>(1)</td>
+</tr>
+
+<tr>
+  <td>Indium oxide intrinsic n-type</td>
+  <td>0.35</td>
+  <td>9.0</td>
+  <td>(2)</td>
+</tr>
+
+<tr>
+  <td>Indium Arsenide in inversion layer n-type</td>
+  <td>0.026</td>
+  <td>20.0</td>
+  <td>(1)</td>
+</tr>
+
+<tr>
+  <td colspan="3" style="border-top:dashed 1px">(1) Yacobi, B. G. Semiconductors Materials An Introduction to Basic Principles; Microdevices; Kluver Academic Publisher, New York, 2003; p 54</td>
+</tr>
+<tr>
+  <td colspan="3">(2) Kostlin, H.; Jost, R.; Lems, W. Phys. Status Solidi A 1975, 29, 87-93</td>
+</tr>
+
+</table>
+
+<BR>
+
+<!--
+<p>For assistance see the <a href="http://propka.ki.ku.dk/~luca/wiki/index.php/PROPKA_2.0_Tutorial">PROPKA 2.0 Tutorial</a>. 
+-->
+<p>(Please report errors to "luca _at_  kemi.ku.dk".) </p>
+
+<P CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in; widows: 0; orphans: 0">
+The BioFET method is developed by the<br>
+<font COLOR="#0000ff"><U><A HREF="http://propka.ki.ku.dk/~jhjensen">Jensen
+Research Group</A></U></font><br>
+Department of Chemistry<br>
+
+University of Copenhagen</P>
+
+<a name="cite"/>
+<p>Please cite these references in publications:
+<p> De Vico, L.; S&oslash;rensen, M. H.; Iversen, L.; Rogers, D. M.; S&oslash;rensen, B. S.; Brandbyge, M.; Nyg&aring;rd, J.; Martinez, K. L.; Jensen, J. H. &quot;<a href="http://dx.doi.org/10.1039/C0NR00442A">Quantifying signal changes in nano-wire based biosensors</a>&quot; <I>Nanoscale</I>, DOI:10.1039/C0NR00442A.
+
+<p>Reprints can be obtained by contacting <font COLOR="#0000ff"><U><A HREF="mailto:jhjensen@kemi.ku.dk">Jan
+Jensen</A></U></font>.</P>
+
+<!--
+<p>For more information see the <a href="http://propka.ki.ku.dk/~luca/wiki/index.php/PROPKA_2.0">PROPKA 2.0 Wiki</a>.</p>
+
+<p>Register and download the PROPKA 2.0 source code and scripts: <a href="http://propka.ki.ku.dk/download/">PROPKA 2.0 Download</a>.</p>
+-->
+
+<hr>
+<center>
+
+
+<br><br>
+<font size="-1"><CENTER><I>Last Updated November 9th, 2010</I></CENTER></font>
+</BODY>
+</HTML>
+
