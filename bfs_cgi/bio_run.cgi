@@ -110,6 +110,8 @@ if __name__ == '__main__':
             num_prot = int(bio_lib.get_num_prot(sim.bfs_inp, nw_len, nw_rad))
         else:
             num_prot = int(form['num_prot_inp'].value) 
+
+        # Base conductance and sensitivity.
         G0, dG_G0 = get_resp(sim)
 
         # Return base condductance and sensitivity to client.
@@ -144,8 +146,22 @@ if __name__ == '__main__':
                 bfs_resp += "%4.5f %4.5f\n" % (x, dG_G0)
         bio_lib.prepare_results(target, bfs_resp, x_val, x_lbl, num_prot, dG_G0, G0)
         bio_lib.generate_bfs_input(target, params, sim, num_prot, comment, bfs_file_name)
+
     # pH response.
     else: 
+        # Base conductance and sensitivity.
+        rho.set_pqr(target, pH)
+        sim.set_bfs_inp(rho.pqr)
+        # Configuration of protein population on NW.
+        if calc_num_prot == 'yes':
+            num_prot = int(bio_lib.get_num_prot(sim.bfs_inp, nw_len, nw_rad))
+        else:
+            num_prot = int(form['num_prot_inp'].value) 
+        G0, dG_G0 = get_resp(sim)
+
+        # Return base condductance and sensitivity to client.
+        print "g0=%4.4f;dg0_g0=%4.4f" % (G0, dG_G0) 
+
         pH_resp  = ""
         pH_range = range(1, 15)
         for pHi in pH_range:
