@@ -14,7 +14,8 @@ class SimMulti:
         self.foo =  "bar"
 
     def set_bfs_inp(self, pqr):
-        """Combining the Jmol adjusted geometry with the charge from the PROPKA match.
+        """
+        Combining the Jmol adjusted geometry with the charge from the PROPKA match.
         BFS compute unit requires the 'm' property (number of charges in biomolecule).
         """
         self.bfs_inp = []
@@ -42,7 +43,8 @@ class SimSingl:
     # Initializing simulation.
     def __init__(self, target, av_RQ, pqr, param, Q_tot):
         #def __init__(self, target, av_RQ, pqr):
-        """It appears, Jmol transfers data with unusual line delimiters,
+        """
+        It appears, Jmol transfers data with unusual line delimiters,
         therefore the special split arguments.
         """
         # Reoriented charge distribution coming from Jmol.
