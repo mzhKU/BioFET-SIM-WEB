@@ -7,7 +7,7 @@ print "Content-type: text/plain\n"
 # ........................................................................
 import cgi, cgitb; cgitb.enable() 
 from numpy import arange
-from bio_mod import SimMulti
+from bio_mod import SimMulti, SimSingle
 from bio_rho import Rho
 import bio_lib
 import bio_com 
@@ -94,14 +94,18 @@ if __name__ == '__main__':
     rho.set_RQ()
     rho.set_av_RQ()
 
-    # Instance of simulation object.
-    sim = SimMulti()
+    # Instance of simulation object.  
+    if charge_model == 'singl':
+        sim = SimSingle()
+    else:
+        sim = SimMulti()
 
     # BFS response.
     if button_clicked == 'BioFET-SIM':
         bfs_resp = ""
         rho.set_pqr(target, pH)
         sim.set_bfs_inp(rho.pqr)
+        print sim.bfs_inp
         # Configuration of protein population on NW.
         if calc_num_prot == 'yes':
             num_prot = int(bio_lib.get_num_prot(sim.bfs_inp, nw_len, nw_rad))
