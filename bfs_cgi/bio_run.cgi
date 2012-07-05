@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-print "Content-type: text/plain\n"
+#print "Content-type: text/plain\n"
 
 # ************************************************************************
 # Required.
@@ -105,13 +105,16 @@ if __name__ == '__main__':
         bfs_resp = ""
         rho.set_pqr(target, pH)
         sim.set_bfs_inp(rho.pqr)
-        print sim.bfs_inp
         # Configuration of protein population on NW.
         if calc_num_prot == 'yes':
             num_prot = int(bio_lib.get_num_prot(sim.bfs_inp, nw_len, nw_rad))
         else:
             num_prot = int(form['num_prot_inp'].value) 
         G0, dG_G0 = get_resp(sim)
+
+        # Return base condductance and sensitivity to client.
+        print "g0=%4.4f;dg0_g0=%4.4f" % (G0, dG_G0)
+
         x_min = float(form[x_lbl+'_x_min'].value)
         x_max = float(form[x_lbl+'_x_max'].value)
         if x_lbl == 'nw_len':

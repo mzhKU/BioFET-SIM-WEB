@@ -41,6 +41,10 @@ $(document).ready(function()
     {
         function plot_resp(resp)
         {
+            var sensitivity = resp.split(';')[0].split('=')[1];
+            var base_conductance = resp.split(';')[1].split('=')[1];
+            $('#sensitivity').html('Sensitivity: ' + sensitivity);
+            $('#base_conductance').html('Base conductance G<sub>0</sub>: ' + base_conductance);
             var d = new Date();
             if(action == 'BioFET-SIM')
             {
