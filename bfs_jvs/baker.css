@@ -6,8 +6,8 @@ body {
     background: white;
     color:  black;
     width:  auto;
-    margin-left:  10%;
-    margin-right:  10%;
+    margin-left:  5%;
+    margin-right:  5%;
 }
 
 /* Headers */
@@ -33,7 +33,7 @@ hr {
 
 /* Table */
 table {
-    width:  88%;
+    width:  100%;
     margin:  0pt; 
 }
 td, th {

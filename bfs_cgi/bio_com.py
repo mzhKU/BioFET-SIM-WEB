@@ -23,6 +23,7 @@ def compute(rho, nw_len, nw_rad, lay_ox, L_d, L_tf, lay_bf, eps_1,
     # lay_ox:        Oxide layer thickness ([nm]).
     # lay_bf:        Biofunctionalization layer thickness ([nm]).
     # li_tot:        Distance of charge site in protein to nano wire ([nm]).
+    # L_d:           Debye screening length [nm]
     # offset:        Coordinate of lowest charge*-1.0 ([nm]).  
     GammaSigma = 0.0
     offset = get_z_offset(rho)*0.1
