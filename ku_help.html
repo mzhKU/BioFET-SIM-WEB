@@ -1,0 +1,93 @@
+<html>
+<head> 
+<title>BioFET-SIM Help</title>
+
+<link rel="stylesheet" href="./bfs_jvs/baker.css" type="text/css">
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<meta name="Keywords" content="BIOFET-SIM, biofet, nano-wire, nano wire, nanowire, Thomas-Fermi, Debye length, propka, simulation, nanobiofet, Jan Jensen, Luca De Vico" />
+<meta name="Description" content="Free, BIOFET-SIM, biofet, nano-wire, nano wire, nanowire, Thomas-Fermi, Debye length, propka, simulation, nanobiofet, Jan Jensen, Luca De Vico" />
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-16" />
+
+<script type="text/javascript" src="./bfs_jvs/jq.js"></script>
+<script type="text/javascript" src="./bfs_jvs/help.js"></script>
+
+</head>
+
+<body>
+    <h2>The BioFET-SIM Help Page</h2>
+    <p>Created by <a href="http://propka.ki.ku.dk/~luca/">Luca De Vico</a></p> 
+    <p>The relationship between Thomas-Fermi length (&lambda;<sub>TF</sub>) and charge carrier density(p<sub>0</sub> in case of p-type semiconductor) is regulated by:</p> 
+    <img src="l_TF.png" alt="lambda_TF equation" height="100"/> 
+    <p>where &#8463; is the reduced Planck's constant, &epsilon;<sub>r</sub> = 
+    &epsilon;<sub>0</sub>&epsilon;<sub>1</sub>, m<sup>*</sup> is the effective charge carrier mass, and e the
+    elementary charge. In case of a n-type semiconductor one uses n<sub>0</sub>. The effective mass of the 
+    charge carrier (hole or electron) is commonly expressed as a fraction of the mass of an electron at rest.
+    Typical values of m<sup>*</sup> are reported in Table 1.</p> 
+    <form action="lambda_TF_np_0.cgi" method="post"> 
+        <table>
+            <tr>
+              <td>Effective charge carrier mass m<sup>*</sup>:</td>
+              <td><input type="text" id="ms" name="ms" size=4 value="0.98"></td>
+            </tr> 
+            <tr>
+              <td>Semiconductor permittivity &epsilon;<sub>1</sub>:</td>
+              <td><input type="text" id="e1" name="e1" size=4 value="12.0"></td>
+            </tr> 
+        </table> 
+        <table> 
+            <tr>
+                <td align="center">Thomas-Fermi length</td>
+                <td><input type="submit" name="whattodo" value="into ->"></td>
+                <td align="center">Charge carrier density</td>
+            </tr> 
+            <tr>
+                <td align="center"><input type="text" name="ltf" size=4 value="1.0"> nm</td>
+                <td><input type="submit" name="whattodo" value="<- into"></td>
+                <td align="center"><input type="text" name="np0" size=7 value="1.34e+25"> m<sup>-3</sup></td>
+            </tr> 
+        </table> 
+    </form>
+    <table style="width:400; border-top:solid 1px; border-bottom:solid 1px;">
+        <caption>
+            Table 1: typical values of m<sup>*</sup> as fraction of the mass of an electron at rest.
+        </caption> 
+        <tr>
+          <th>Semiconductor type</th>
+          <th>m<sup>*</sup></th>
+          <th>&epsilon;<sub>1</sub></th>
+          <th>Ref.</th>
+        </tr> 
+        <tr>
+            <td>Silicon n-type</td>
+            <td id="meff_sin">0.98</td>
+            <td id="eps_sin">12.0</td>
+            <td>(1)</td>
+            <td><input type="radio" name="material"></td>
+        </tr> 
+        <tr>
+            <td>Silicon p-type</td>
+            <td class="meff_sip">0.54</td>
+            <td class="eps_sip">12.0</td>
+            <td>(1)</td>
+            <td><input type="radio" name="material"></td>
+        </tr> 
+        <tr>
+          <td>Indium oxide intrinsic n-type</td>
+          <td>0.35</td>
+          <td>9.0</td>
+          <td>(2)</td>
+        </tr> 
+        <tr>
+          <td>Indium Arsenide in inversion layer n-type</td>
+          <td>0.026</td>
+          <td>20.0</td>
+          <td>(1)</td>
+        </tr> 
+    </table> 
+    <div class="cite">
+        (1) Yacobi, B. G. Semiconductors Materials An Introduction to Basic Principles; Microdevices; Kluver Academic Publisher, New York, 2003; p 54<br />
+        (2) Kostlin, H.; Jost, R.; Lems, W. Phys. Status Solidi A 1975, 29, 87-93
+    </div>
+</body>
+</html>
+
