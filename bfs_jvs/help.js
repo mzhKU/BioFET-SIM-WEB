@@ -1,4 +1,7 @@
 $(document).ready(function()
 {
-    var foo = "bar";
+    $('.material').change(function()
+    { 
+        console.log($(this));
+    }); // end change
 }); // end ready
