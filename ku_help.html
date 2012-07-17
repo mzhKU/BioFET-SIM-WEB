@@ -19,20 +19,24 @@
     <p>The relationship between Thomas-Fermi length (&lambda;<sub>TF</sub>) and charge carrier density (p<sub>0</sub> in case of p-type semiconductor) is<br />
     <img src="l_TF.png" alt="lambda_TF equation" height="100"/> 
 
-    <h4>Instructions for BioFET-SIM configuration:</h4>
+    <h3>Instructions:</h3>
+    <div>
     <ol>
         <li>Select semiconductor or define custom material</li>
         <li>Adjust carrier concentration or screening length</li>
         <li>Transfer obtained values to interface</li>
     <ol>
+    </div>
 
+    <hr>
     <div class="material">
+        <h3>Example material properties</h3>
         <table>
             <tr>
-              <td>Semiconductor</td>
-              <td>m<sup>*</sup></td>
-              <td>&epsilon;<sub>1</sub></td>
-              <td>Ref.</td>
+                <td><strong>Material</strong></td>
+                <td><strong>m<sup>*</sup></strong></td>
+                <td><strong>&epsilon;<sub>1</sub></strong></td>
+                <td><strong>Ref.</strong></td>
             </tr> 
             <tr>
                 <td>Silicon n-type</td>
@@ -61,7 +65,9 @@
         </table> 
     </div>
 
+    <hr>
     <div class="properties">
+        <h3>Semiconductor characteristics</h3>
         <table>
             <tr>
               <td>Effective charge carrier mass m<sup>*</sup>:</td>
@@ -73,15 +79,40 @@
             </tr> 
             <tr>
                 <td>Thomas-Fermi length[nm]</td>
-                <td><input type="text" name="ltf" id="ltf" size=40 value="1.0"></td>
+                <td><input type="text" name="ltf" id="ltf" size=10 value="1.00"></td>
             </tr> 
             <tr>
-                <td>Charge carrier density[m-3]</td>
-                <td><input type="text" name="np0" id="np0" size=40 value="1.34e+25"></td>
+                <td>Charge carrier density[cm<sup>-3</sup>]</td>
+                <td><input type="text" name="np0" id="np0" size=10 value="1.335e+19"></td>
             </tr> 
         </table> 
     </div>
+    <hr>
 
+    <div class="recommended">
+        <h3>Recommended device input values</h3>
+            <table>
+                <tr>
+                    <td>Property</td>
+                    <td>Recommended value</td>
+                    <td>Range</td>
+                </tr>
+                <tr>
+                    <td>Nanowire Length[nm]</td>
+                    <td>2000.0</td>
+                </tr>
+                <tr>
+                    <td>Radius[nm]</td>
+                    <td>10.0</td>
+                </tr>
+                <tr>
+                    <td>Oxide Layer Thickness[nm]</td>
+                    <td>2.0</td>
+                </tr> 
+            </table> 
+    </div>
+
+    <hr>
     <div class="cite">
         (1) Yacobi, B. G. Semiconductors Materials An Introduction to Basic Principles; Microdevices; Kluver Academic Publisher, New York, 2003; p 54<br />
         (2) Kostlin, H.; Jost, R.; Lems, W. Phys. Status Solidi A 1975, 29, 87-93
