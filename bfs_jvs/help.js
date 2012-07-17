@@ -25,27 +25,30 @@ $(document).ready(function()
         var eps1               = $('#eps1').val()*eps0; 
 
         // Convert l_TF from nm to meters then square
-        var lTFInMetersSquared = Math.pow(ltf*1E-9, 2);
-
-        // Convert m^{-3} to cm^{-3}
+        var lTFInMetersSquared = Math.pow(ltf*1E-9, 2); 
         var numerator          = hbarSquared*eps1*piPower4over3;
         var denominator        = meff*elChargeSquared*lTFInMetersSquared;
-        var np0                = (Math.pow( numerator/denominator, 3)*1E-6).toExponential(3)
+
+        // Convert m^{-3} to cm^{-3}
+        //var np0                = (Math.pow( numerator/denominator, 3)*1E-6).toExponential(3)
+        
+        // No conversion
+        var np0                = (Math.pow( numerator/denominator, 3)).toExponential(3)
         $('#np0').val(np0);
     }
 
-    // Comes in as centimeter qube
+    // Comes in as meter qube
     function get_ltf(np0)
     {
         var meff        = $('#meff').val()*electron_mass;
         var eps1        = $('#eps1').val()*eps0; 
         var numerator   = hbarSquared*eps1*piPower4over3;
 
-        // m^{-3}
-        //var denominator = meff*elChargeSquared*Math.pow(np0, 1.0/3.0);
+        // Working with m^{-3}
+        var denominator = meff*elChargeSquared*Math.pow(np0, 1.0/3.0);
 
         // Converting from cm^{-3} to m^{-3}
-        var denominator = meff*elChargeSquared*Math.pow(np0*1E6, 1.0/3.0);
+        //var denominator = meff*elChargeSquared*Math.pow(np0*1E6, 1.0/3.0);
 
         // Convert from meter to nm and display two decimal digits
         var lTF         = roundit(Math.sqrt(numerator/denominator)*1E9, 2).toPrecision(3);

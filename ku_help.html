@@ -82,8 +82,10 @@
                 <td><input type="text" name="ltf" id="ltf" size=10 value="1.00"></td>
             </tr> 
             <tr>
-                <td>Charge carrier density[cm<sup>-3</sup>]</td>
-                <td><input type="text" name="np0" id="np0" size=10 value="1.335e+19"></td>
+                <td>Charge carrier density[m<sup>-3</sup>]
+                    <label class="cite"> (Calculated from above values)</label>
+                </td>
+                <td><input type="text" name="np0" id="np0" size=10 value="1.335e+25"></td>
             </tr> 
         </table> 
     </div>
@@ -93,21 +95,34 @@
         <h3>Recommended device input values</h3>
             <table>
                 <tr>
-                    <td>Property</td>
-                    <td>Recommended value</td>
-                    <td>Range</td>
+                    <td><strong>Property</strong></td>
+                    <td><strong>Recommended value</strong></td>
+                    <td><strong>Range</strong></td>
                 </tr>
                 <tr>
-                    <td>Nanowire Length[nm]</td>
+                    <td>Nanowire length[nm]</td>
                     <td>2000.0</td>
+                    <td></td>
                 </tr>
                 <tr>
                     <td>Radius[nm]</td>
                     <td>10.0</td>
+                    <td></td>
                 </tr>
                 <tr>
-                    <td>Oxide Layer Thickness[nm]</td>
+                    <td>Oxide Layer thickness[nm]</td>
                     <td>2.0</td>
+                    <td></td>
+                </tr> 
+                <tr>
+                    <td>Charge carrier density[m<sup>-3</sup>]</td>
+                    <td>1.0E24</td>
+                    <td></td>
+                </tr> 
+                <tr>
+                    <td>Solvent permittivity[&#949;<sub>0</sub>]</td>
+                    <td>78.0</td>
+                    <td></td>
                 </tr> 
             </table> 
     </div>
