@@ -17,7 +17,7 @@ $('document').ready(function()
         // Fill in target name and pH. Q_tot only after PROPKA job finished.
         $('#targetLab').html("Structure: " + target);
         $('#targetLabHid').attr('value', target);
-        $('#QLab').html("Q<sub>tot</sub>at pH " + pH + ": 0.0");
+        $('#QLab').html("Q<sub>tot</sub> at pH " + pH + ": 0.0 [e]");
 
         // Initialize BFS interface.
         status_update('Downloading...');
@@ -76,7 +76,7 @@ $('document').ready(function()
             */ 
             // Q_tot evaluation.
             var q_tot = resp.split(';')[0].split('=')[1];
-            $('#QLab').html("Q<sub>tot</sub>at pH " + pH + ": " + q_tot);
+            $('#QLab').html("Q<sub>tot</sub> at pH " + pH + ": " + q_tot + " [e]");
 
             // Charge distribution evaluation.
             //var pqr = resp.split(';')[1].split('=')[1];
