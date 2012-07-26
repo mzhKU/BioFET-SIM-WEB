@@ -52,10 +52,12 @@ $(document).ready(function()
         if (thisCheck.is(':checked'))
         {
             $('#overwriteLab').attr('style', 'visibility:visible');
+            $('#overwriteLabExpl').attr('style', 'visibility:visible');
             $('#overwrite').attr('style', 'visibility:visible');
         } else {
             $('#overwrite').attr('checked', false);
             $('#overwriteLab').attr('style', 'visibility:hidden');
+            $('#overwriteLabExpl').attr('style', 'visibility:hidden');
             $('#overwrite').attr('style', 'visibility:hidden');
         } 
     }); // end click

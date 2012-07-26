@@ -59,11 +59,12 @@ $(document).ready(function()
         // Jmol selectors
         //'atomInfo' does not provide charges, they are added to input on server side.
         var target   = $('#target').val();
-        var atomInfo = jmolGetPropertyAsArray("atomInfo", "2.1"); 
+        var atomInfo = jmolScriptWait(jmolGetPropertyAsArray("atomInfo", "2.1"));
         var form_bfs = $('#form_bfs').serialize();
         var pdb      = '';
         for(var i=0; i<atomInfo.length; i++)
         {
+            console.log(i);
             // Prevent empty last line.
             if(i<atomInfo.length-1)
             {
@@ -72,7 +73,6 @@ $(document).ready(function()
                 pdb += atomInfo[i].x + ' ' + atomInfo[i].y + ' ' + atomInfo[i].z;
             }
         }
-        console.log(pdb);
 
         // Get clicked button id and build up form, CGI.
         var action = $(this).val()

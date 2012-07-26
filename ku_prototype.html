@@ -38,18 +38,22 @@
     <p>OR</p>
     <fieldset>
         <form method="get" action="./bfs_cgi/bio_def.cgi" id="setup">
-            <p>
-            <label for="uploaded">Use uploaded:</label>
-            <input type="checkbox" value="uploaded" id="uploaded" name="uploaded">
-            <label style="visibility:hidden" for="overwrite" id="overwriteLab">Reinitialize?</label>
-            <input style="visibility:hidden" type="checkbox" value="overwrite" id="overwrite" name="overwrite"><br />
-            <label class="cite"> (Enable when using an uploaded structure)</label>
-            </p>
-            <label for="target">PDB Identifier:</label>
+            <label for="target">Download from PDB: </label>
             <input value="" type="text" size="24" name="target" id="target">
             <label for="pH">pH Value:</label>
             <input value="7.4" type="text" size="6" name="pH" id="pH">
             <input type="submit" value="Initialize">
+            <p>
+            <label for="uploaded">Use uploaded:</label>
+            <input type="checkbox" value="uploaded" id="uploaded" name="uploaded">
+            <label style="visibility:hidden" for="overwrite" id="overwriteLab">Reinitialize? </label>
+            <input style="visibility:hidden" type="checkbox" value="overwrite" id="overwrite" name="overwrite">
+            <label class="cite" style="visibility:hidden" id="overwriteLabExpl">
+                (Enable to overwrite previously uploaded structure)</label>
+            <br />
+            <label class="cite">
+                (Enable when using an uploaded structure)</label>
+            </p>
             <div style="visibility:visible" id="status">Ready.</div>
             <div style="visibility:hidden" id="loader">
             <img src='./bfs_jvs/ajax-loader.gif' alt='Loading...'>

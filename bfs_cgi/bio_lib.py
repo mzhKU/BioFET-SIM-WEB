@@ -573,7 +573,7 @@ def get_compute_function(var):
 """
 
 def availability_closure(state):
-    """'state': '-rec', '-fix', '-reo'"""
+    """'state': '-rec.pdb', '-fix.pdb', '-reo.pdb', '-reo.pka'"""
     def check_availability_and_apply(target, uploaded, overwrite, func):
         if uploaded:
             if overwrite:
