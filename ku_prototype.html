@@ -29,17 +29,21 @@
     <div class="cite">
         <a href="http://www.biofetsim.org/v0.1/biofet-sim-1.0-interface.cgi">BioFET-SIM 1.0</a> (Mobile friendly), <a href="./ku_help.html" target="_blank">Recommended values</a>
     </div><br />
+    <fieldset>
         <form id="uploadform" method="post" enctype="multipart/form-data" action="">
             Upload a file: <input type="file" name="images[]" id="images" />
             <button type="submit" id="btn">Upload</button><a class="cite" href="#reqs">File requirements</a>
         </form>
-    <br />
+    </fieldset>
+    <p>OR</p>
+    <fieldset>
         <form method="get" action="./bfs_cgi/bio_def.cgi" id="setup">
             <p>
             <label for="uploaded">Use uploaded:</label>
             <input type="checkbox" value="uploaded" id="uploaded" name="uploaded">
             <label style="visibility:hidden" for="overwrite" id="overwriteLab">Reinitialize?</label>
-            <input style="visibility:hidden" type="checkbox" value="overwrite" id="overwrite" name="overwrite">
+            <input style="visibility:hidden" type="checkbox" value="overwrite" id="overwrite" name="overwrite"><br />
+            <label class="cite"> (Enable when using an uploaded structure)</label>
             </p>
             <label for="target">PDB Identifier:</label>
             <input value="" type="text" size="24" name="target" id="target">
@@ -54,6 +58,8 @@
             <input type="hidden" name="state" value="download">
             -->
         </form>
+    </fieldset>
+    <br />
     <table>
         <tr>
             <td>
@@ -74,6 +80,7 @@
             </td> 
         </tr> 
     </table>
+    <br />
     <script type="text/javascript" src="./bfs_jvs/interface.js"></script>
 
     <!--BFS Parameter definitions-->
@@ -299,7 +306,5 @@
                 </ul>
             <a href="#top">Top</a>
         </div>
-        
-
 </body>
 </html>

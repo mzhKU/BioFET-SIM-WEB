@@ -72,6 +72,7 @@ $(document).ready(function()
                 pdb += atomInfo[i].x + ' ' + atomInfo[i].y + ' ' + atomInfo[i].z;
             }
         }
+        console.log(pdb);
 
         // Get clicked button id and build up form, CGI.
         var action = $(this).val()
@@ -94,6 +95,7 @@ $(document).ready(function()
         // Calculation.
         status_update("Calculation...");
         $.post(cgi_base_path + 'bio_run.cgi', form_bfs, plot_resp);
+        //$.post(cgi_base_path + 'bio_run.cgi', form_bfs, cr);
 
         // Download data files.
         $('#bfs_response').attr('href', res_base_path + target + "-reo.dat");
