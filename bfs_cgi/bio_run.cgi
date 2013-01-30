@@ -115,7 +115,7 @@ if __name__ == '__main__':
         G0, dG_G0 = get_resp(sim)
 
         # Return base condductance and sensitivity to client.
-        print "g0=%4.4f;dg0_g0=%4.4f" % (G0, dG_G0)
+        print "g0=%6.6f;dg0_g0=%6.6f" % (G0, dG_G0)
 
         x_min = float(form[x_lbl+'_x_min'].value)
         x_max = float(form[x_lbl+'_x_max'].value)
@@ -159,11 +159,11 @@ if __name__ == '__main__':
             num_prot = int(form['num_prot_inp'].value) 
         G0, dG_G0 = get_resp(sim)
 
-        # Return base condductance and sensitivity to client.
+        # Return base conductance and sensitivity to client.
         print "g0=%4.4f;dg0_g0=%4.4f" % (G0, dG_G0) 
 
         pH_resp  = ""
-        pH_range = range(1, 15)
+        pH_range = range(0, 15)
         for pHi in pH_range:
             rho.set_pqr(target, pHi)
             sim.set_bfs_inp(rho.pqr)
