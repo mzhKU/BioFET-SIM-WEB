@@ -135,9 +135,11 @@
             <tr>
                 <td><label for="L_tf">Thomas-Fermi Length [nm]:</label></td>
                 <td><input class="val" type="text" id="L_tf" name="L_tf" value="2.04"></td>
+                <!--
                 <td><input class="low" type="text" id="L_tf_x_min" name="L_tf_x_min" value="1.54" onfocus="xLabel('L_tf')"></td>
                 <td><input class="high" type="text" id="L_tf_x_max" name="L_tf_x_max" value="2.54" onfocus="xLabel('L_tf')"></td>
                 <td><input type="radio" name="abs" value="L_tf" onclick="xLabel('L_tf')"></td>
+                -->
             </tr>
             <tr>
                 <td><label for="eps_1">NW Permittivity [&#949;<sub>0</sub>]:</label></td>
@@ -268,9 +270,13 @@
         </fieldset>
     </form>
         <br /> 
+        <!--
         <hr> 
+        -->
         <div class="cite">
+            <!--
             Original <a href="http://www.biofetsim.org/v0.1/biofet-sim-1.0-interface.cgi" target="_blank">BioFET-SIM Interface 1.0</a><br />
+            -->
             Interface <a href="https://github.com/mzhKU/BioFET-SIM-WEB" target="_blank">repository</a>, 
             command line version <a href="https://github.com/mzhKU/BioFET-SIM-CMD" target="_blank">repository</a>.<br />
             Notifications of observed errors are welcomed at: biofetsim at gmail dot com.<br />
@@ -285,12 +291,27 @@
             De Vico et al., <a href="http://pubs.rsc.org/en/Content/ArticleLanding/2011/NR/c1nr10316d" target="_blank"><I>Nanoscale</I></a>, 2011.<br /> 
             Hediger et al., <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0045379" target="_blank">PLoS ONE</a>, 2012.<br />
 
+        <!--
+        <hr> 
+        -->
+        <p>
+            Interface requirements:
+            <a name="reqs"></a>
+                <ul name="reqs">
+                    <li>First line of uploaded file must be "MODEL 1"</li>
+                    <li>Last line of uploaded file must be "END"</li>
+                    <li>NMR solution structures are not supported at the moment</li>
+                    <li>We recommend to use SUN Java</li>
+                    <li>Saving of state file requires "Allow" of signed applet</li>
+                </ul>
+            <a href="#top">Top</a>
             <P CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in; widows: 0; orphans: 0">
             The BioFET method is developed by the<br>
             <font COLOR="#0000ff"><U><A HREF="http://propka.ki.ku.dk/~jhjensen">Jensen
             Research Group</A></U></font><br> 
             Department of Chemistry<br> 
             University of Copenhagen</P>
+        </p>
 
             <p align=center>
             <!-- Copyright (c)2009 Site Meter -->
@@ -302,17 +323,6 @@
             <img src="http://s47.sitemeter.com/meter.asp?site=s47biofet-sim" alt="Site Meter" border="0"></a>
             </noscript>
             </p>
-        <hr> 
-            Interface requirements:
-            <a name="reqs"></a>
-                <ul name="reqs">
-                    <li>First line of uploaded file must be "MODEL 1"</li>
-                    <li>Last line of uploaded file must be "END"</li>
-                    <li>NMR solution structures are not supported at the moment</li>
-                    <li>We recommend to use SUN Java</li>
-                    <li>Saving of state file requires "Allow" of signed applet</li>
-                </ul>
-            <a href="#top">Top</a>
         </div>
 </body>
 </html>
