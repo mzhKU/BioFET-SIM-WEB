@@ -106,6 +106,7 @@ if __name__ == '__main__':
         rho.set_pqr(target, pH)
         sim.set_bfs_inp(rho.pqr)
         # Configuration of protein population on NW.
+        #print sim.bfs_inp
         if calc_num_prot == 'yes':
             num_prot = int(bio_lib.get_num_prot(sim.bfs_inp, nw_len, nw_rad))
         else:
@@ -114,8 +115,8 @@ if __name__ == '__main__':
         # Base conductance and sensitivity.
         G0, dG_G0 = get_resp(sim)
 
-        # Return base condductance and sensitivity to client.
-        print "g0=%6.6f;dg0_g0=%6.6f" % (G0, dG_G0)
+        # Return base conductance and sensitivity to client.
+        print "g0=%6.6f;dg0_g0=%6.6f;num_prot=%d" % (G0, dG_G0, bio_lib.get_num_prot(sim.bfs_inp, nw_len, nw_rad))
 
         x_min = float(form[x_lbl+'_x_min'].value)
         x_max = float(form[x_lbl+'_x_max'].value)

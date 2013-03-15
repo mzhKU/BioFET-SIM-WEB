@@ -1,13 +1,13 @@
 # ************************************************************************
 # CONDUCTIVITY
 # The BioFET-SIM Compute Unit.
-# 28.12.2011: - Switching to [nm]:
-#               li_tot = lay_bf + lay_ox + float(rho[i][2]) + offset# + pos
-#             - offset = get_z_offset(rho)
 # 16.02.2012: - Extending compute API for conductor mode:
 #               nanowire or nanoribbon, has effect on Gamma_li value.
 #             - Distinction between nanowire and nanoribbon.
 #             - gamma_li    = Gamma_li(nw_rad, li_tot, L_d)
+# 28.12.2011: - Switching to [nm]:
+#               li_tot = lay_bf + lay_ox + float(rho[i][2]) + offset# + pos
+#             - offset = get_z_offset(rho)
 # ........................................................................
 def compute(rho, nw_len, nw_rad, lay_ox, L_d, L_tf, lay_bf, eps_1,
                  eps_2, eps_3, n_0, nw_type, num_prot):
@@ -36,9 +36,8 @@ def compute(rho, nw_len, nw_rad, lay_ox, L_d, L_tf, lay_bf, eps_1,
     # Converts to meter because [q_elem] is Coulomb and [n_0] is in SI units.
     nw_rad = nw_rad*1E-9 
 
-    # Change in relative conductivity.
+    # Change in relative conductance.
     dG_G0 = 2.0/(nw_rad*q_elem*n_0)*gamma*GammaSigma
-    
     if nw_type == 'P':
         dG_G0 *= -1 
     

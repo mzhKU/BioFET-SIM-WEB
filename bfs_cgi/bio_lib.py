@@ -450,22 +450,34 @@ def get_num_prot(rho, nw_len, nw_rad):
     'av_RQ' is formatted as PQR data, but provides only a
     default charge of '1.0'.
     """ 
+    # 15.03.2013: Fixing calculation of num_prot when using unchecked "Constant"
+    #             and single charge model, ZeroDivisionError.
     # 29.05.2012: sim.av_RQ -> sim.rho;
     #             Adjusted coordinate parsing to official PDB documentation description.
-    X, Y, Z = [], [], []
-    for atm in rho:
-        x, y, z = atm[0], atm[1], atm[2]
-        X.append(float(x)*0.1)
-        Y.append(float(y)*0.1)
-        Z.append(float(z)*0.1) 
-    # Scan all residues.
-    x_min, x_max = min(X), max(X)
-    y_min, y_max = min(Y), max(Y)
-    z_min, z_max = min(Z), max(Z)
-    prot_xy = (x_max - x_min)*(y_max - y_min)
-    nw_surface = 2*pi*nw_rad*nw_len
-    n_bio_molecules = nw_surface/prot_xy 
-    return n_bio_molecules
+    if rho[-1][-1] == 'single':
+        X, Y, Z = [], [], []
+        #  Coordinates of charge --- Charge - Bounding box size ---- Identifier
+        # [['0.00', '0.00', '30.83', '16.59', [46.72, 64.22, 61.65], 'single']]
+        # Multiply by 0.1*0.1 to get nm^2.
+        prot_xy = rho[0][4][0]*rho[0][4][1]*0.1*0.1
+        nw_surface = 2*pi*nw_rad*nw_len
+        n_bio_molecules = nw_surface/prot_xy 
+        return n_bio_molecules
+    else:
+        X, Y, Z = [], [], []
+        for atm in rho:
+            x, y, z = atm[0], atm[1], atm[2]
+            X.append(float(x)*0.1)
+            Y.append(float(y)*0.1)
+            Z.append(float(z)*0.1) 
+        # Scan all residues.
+        x_min, x_max = min(X), max(X)
+        y_min, y_max = min(Y), max(Y)
+        z_min, z_max = min(Z), max(Z)
+        prot_xy = (x_max - x_min)*(y_max - y_min)
+        nw_surface = 2*pi*nw_rad*nw_len
+        n_bio_molecules = nw_surface/prot_xy 
+        return n_bio_molecules
 
 def fix_pdb(target):
     """Discard non-'ATOM' and non-'^TER' lines, else PDB2PQR does

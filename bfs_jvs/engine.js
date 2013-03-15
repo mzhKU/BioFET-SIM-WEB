@@ -5,6 +5,14 @@ $(document).ready(function()
     var pdb_base_path = './bfs_pdb/';
     var ajax_loader   = "<img src='./bfs_jvs/ajax-loader.gif' alt='Loading...'>";
 
+    /*
+    For debugging, uncomment
+    $('#debug').html(resp)
+    and
+    set response send to
+    $.post(cgi_base_path + 'bio_run.cgi', form_bfs, cr);
+    */
+
     // Check HTTP response.
     function cr(resp)
     {
@@ -14,7 +22,7 @@ $(document).ready(function()
             $('#status').html("Ready.");
             console.log("Response done.");
         } else {
-            console.log(resp);
+            //$('#debug').html(resp);
             /*
             Consider: using a JSON parse, separate parts of data are returned.
             var back = jQuery.parseJSON(resp);
