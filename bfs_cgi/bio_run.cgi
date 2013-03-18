@@ -75,7 +75,7 @@ bfs_file_name     =       form['fileName'].value
 def get_resp(sim):
     dG_G0 = round(bio_com.compute(sim.bfs_inp, nw_len, nw_rad, lay_ox, L_d, L_tf, lay_bf,
                           eps_1, eps_2, eps_3, n_0, nw_type, num_prot), 8)
-    G0    = round(bio_lib.G0(nw_len, nw_rad, n_0, mu)) 
+    G0    = round(bio_lib.G0(nw_len, nw_rad, n_0, mu), 8) 
     return G0, dG_G0
 # ........................................................................
 # ------------------------------------------------------------------------ 
