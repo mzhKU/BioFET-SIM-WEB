@@ -8,6 +8,6 @@ foreach ($_FILES["images"]["error"] as $key => $error) {
 }
 
 echo "<h2>Successfully uploaded file.</h2>";
-echo "Return to <a href=\"http://www.biofetsim.org/ku_prototype.html\">BioFET-SIM Online</a>.<br />";
-echo "Use " .basename($name, ".pdb") ." as input.";
+echo "Return to <a href=\"http://www.biofetsim.org/biofet-sim.html\">BioFET-SIM Online</a>.<br />";
+echo "Use " .basename($name, ".pdb") ." as input PDB and remember to check \"Use uploaded\".";
 ?>
