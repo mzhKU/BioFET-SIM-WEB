@@ -70,29 +70,39 @@ el_mass = 9.10938215e-31  # Electron mass at rest.
 # ........................................................................  
 
 # KU machine: Directories
-#vmd_base_path = '/opt/vmd_package/Contents/vmd/'
+vmd_base_path = '/opt/vmd_package/Contents/vmd/'
 #pdb_base_path = '/Users/mzhKU_work/Sites/ku_prototype/bfs_pdb/'
 #results_path  = '/Users/mzhKU_work/Sites/ku_prototype/bfs_res/'
 #jmol_path     = '/Users/mzhKU_work/Sites/ku_prototype/bfs_spt/'
 
+# --------------------
+# 14.09.2015: Check if 'ku_prototype' is correct.
+pdb_base_path = '/Users/mzhKU_work/Sites/ku_prototype/bfs_pdb/'
+results_path  = '/Users/mzhKU_work/Sites/ku_prototype/bfs_res/'
+jmol_path     = '/Users/mzhKU_work/Sites/ku_prototype/bfs_spt/'
+# --------------------
+
 # KU machine: Applications
-#vmd_cmd_path              = '/Users/mzhKU_work/software/vmd_package/Contents/vmd/vmd_MACOSXX86'
-#external_python_base_path = '/Library/Frameworks/Python.framework/Versions/Current/bin/python'
-#propka_path               = '/Users/mzhKU_work/software/propka3/propka.py'
-#pdb2pqr_base_path         = '/opt/pdb2pqr/pdb2pqr.py'
+vmd_cmd_path              = '/Users/mzhKU_work/software/vmd_package/Contents/vmd/vmd_MACOSXX86'
+external_python_base_path = '/Library/Frameworks/Python.framework/Versions/Current/bin/python'
+propka_path               = '/Users/mzhKU_work/software/propka3/propka.py'
+pdb2pqr_base_path         = '/opt/pdb2pqr/pdb2pqr.py'
+gnuplot_exe               = '/usr/local/bin/gnuplot'
+convert_exe               = '/usr/local/bin/convert'
 
 # PROPKA: Directories
-vmd_base_path = '/var/www/vmd/bin_vmd/vmd'
-pdb_base_path = '/var/www/propka/biofet-sim/bfs_pdb/'
-results_path  = '/var/www/propka/biofet-sim/bfs_res/'
+#vmd_base_path = '/var/www/vmd/bin_vmd/vmd'
+#pdb_base_path = '/var/www/propka/biofet-sim/bfs_pdb/'
+#results_path  = '/var/www/propka/biofet-sim/bfs_res/'
+
 # PROPKA: Applications
-external_python_base_path = '/usr/bin/python'
-vmd_cmd_path              = '/var/www/vmd/bin_vmd/vmd'
-pdb2pqr_base_path         = '/opt/pdb2pqr/pdb2pqr.py'
-python3_path              = '/usr/local/bin/python3'
-propka_path               = '/opt/propka30/propka.py'
-gnuplot_exe               = '/usr/bin/gnuplot'
-convert_exe               = '/usr/bin/convert'
+#external_python_base_path = '/usr/bin/python'
+#vmd_cmd_path              = '/var/www/vmd/bin_vmd/vmd'
+#pdb2pqr_base_path         = '/opt/pdb2pqr/pdb2pqr.py'
+#python3_path              = '/usr/local/bin/python3'
+#propka_path               = '/opt/propka30/propka.py'
+#gnuplot_exe               = '/usr/bin/gnuplot'
+#convert_exe               = '/usr/bin/convert'
 # ------------------------------------------------------------------------ 
 
 # ************************************************************************
